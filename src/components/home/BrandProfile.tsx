@@ -1,43 +1,45 @@
 import { motion } from 'framer-motion'
 import { Facebook, Instagram, MessageCircle, Music2, ExternalLink } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-
-const socialLinks = [
-  {
-    name: 'WhatsApp',
-    icon: MessageCircle,
-    url: 'https://wa.me/8801518934708',
-    color: 'from-green-500 to-green-600',
-    hoverGlow: 'hover:shadow-green-500/30',
-    handle: '+880 1518 934708',
-  },
-  {
-    name: 'Facebook',
-    icon: Facebook,
-    url: 'https://www.facebook.com/share/1CvH4aQ5kU/?mibextid=wwXIfr',
-    color: 'from-blue-500 to-blue-600',
-    hoverGlow: 'hover:shadow-blue-500/30',
-    handle: 'Shokher Bike Wala',
-  },
-  {
-    name: 'TikTok',
-    icon: Music2,
-    url: 'https://www.tiktok.com/@shokherbikewala?_r=1&_t=ZS-964cHi86h1Q',
-    color: 'from-pink-500 to-rose-600',
-    hoverGlow: 'hover:shadow-pink-500/30',
-    handle: '@shokherbikewala',
-  },
-  {
-    name: 'Instagram',
-    icon: Instagram,
-    url: 'https://www.instagram.com/shokherbikewala?igsh=MWJsbW96aXphNjZsaA==',
-    color: 'from-purple-500 via-pink-500 to-orange-500',
-    hoverGlow: 'hover:shadow-purple-500/30',
-    handle: '@shokherbikewala',
-  },
-]
+import { useStore } from '@/context/StoreContext'
 
 export default function BrandProfile() {
+  const { brandSettings } = useStore()
+
+  const socialLinks = [
+    {
+      name: 'WhatsApp',
+      icon: MessageCircle,
+      url: brandSettings.whatsapp,
+      color: 'from-green-500 to-green-600',
+      hoverGlow: 'hover:shadow-green-500/30',
+      handle: '+880 1518 934708',
+    },
+    {
+      name: 'Facebook',
+      icon: Facebook,
+      url: brandSettings.facebook,
+      color: 'from-blue-500 to-blue-600',
+      hoverGlow: 'hover:shadow-blue-500/30',
+      handle: 'Shokher Bike Wala',
+    },
+    {
+      name: 'TikTok',
+      icon: Music2,
+      url: brandSettings.tiktok,
+      color: 'from-pink-500 to-rose-600',
+      hoverGlow: 'hover:shadow-pink-500/30',
+      handle: '@shokherbikewala',
+    },
+    {
+      name: 'Instagram',
+      icon: Instagram,
+      url: brandSettings.instagram,
+      color: 'from-purple-500 via-pink-500 to-orange-500',
+      hoverGlow: 'hover:shadow-purple-500/30',
+      handle: '@shokherbikewala',
+    },
+  ]
   return (
     <section className="relative py-14 sm:py-24 overflow-hidden">
       <div className="absolute inset-0">

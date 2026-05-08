@@ -1,4 +1,4 @@
-import { Product, Category, BrandSettings } from '@/types'
+import { Product, Category, BrandSettings, Testimonial, Inquiry } from '@/types'
 
 export const demoBrandSettings: BrandSettings = {
   id: '1',
@@ -161,5 +161,66 @@ export const demoProducts: Product[] = [
     featured: false,
     in_stock: true,
     created_at: new Date().toISOString(),
+  },
+]
+
+export const demoTestimonials: Testimonial[] = [
+  {
+    id: 1,
+    name: 'Rafiq Ahmed',
+    rating: 5,
+    text: 'Amazing quality helmet! The finish is premium and feels very safe. Delivery was super fast too. Will definitely order again from Shokher Bike Wala.',
+    product: 'Steelbird SBA-21 GT',
+  },
+  {
+    id: 2,
+    name: 'Tanvir Hassan',
+    rating: 5,
+    text: 'Best gloves I have ever used. Perfect grip and very comfortable for long rides. The touchscreen feature works flawlessly.',
+    product: 'Riding Leather Gloves Pro',
+  },
+  {
+    id: 3,
+    name: 'Kamal Hossain',
+    rating: 5,
+    text: 'The LED light kit completely transformed my bike! Easy to install and the colors are vibrant. Great customer service via WhatsApp.',
+    product: 'LED Strip Light Kit',
+  },
+  {
+    id: 4,
+    name: 'Shakib Rahman',
+    rating: 4,
+    text: 'Ordered the phone mount and jacket together. Both products are excellent quality. The jacket fits perfectly and looks stylish.',
+    product: 'Windproof Racing Jacket',
+  },
+]
+
+export const demoInquiries: Inquiry[] = [
+  {
+    id: 1,
+    customer_name: 'Arif Khan',
+    phone: '+880 1712 345678',
+    product_name: 'Steelbird SBA-21 GT Full Face Helmet',
+    message: 'Is this helmet available in matte black? I want to order 2 pieces.',
+    status: 'new',
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    customer_name: 'Sohel Rana',
+    phone: '+880 1898 765432',
+    product_name: 'LED Strip Light Kit',
+    message: 'Can you install this on my Yamaha R15? What is the total cost with installation?',
+    status: 'contacted',
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+  },
+  {
+    id: 3,
+    customer_name: 'Nusrat Jahan',
+    phone: '+880 1567 890123',
+    product_name: 'Riding Leather Gloves Pro',
+    message: 'Do you have this in size S for women? Need it urgently.',
+    status: 'completed',
+    created_at: new Date(Date.now() - 172800000).toISOString(),
   },
 ]

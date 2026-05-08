@@ -2,35 +2,37 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Facebook, Instagram, MessageCircle, Music2, Mail, MapPin, Phone } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-
-const socialLinks = [
-  {
-    name: 'WhatsApp',
-    icon: MessageCircle,
-    url: 'https://wa.me/8801518934708',
-    color: 'hover:text-green-400 hover:shadow-green-400/20',
-  },
-  {
-    name: 'Facebook',
-    icon: Facebook,
-    url: 'https://www.facebook.com/share/1CvH4aQ5kU/?mibextid=wwXIfr',
-    color: 'hover:text-blue-400 hover:shadow-blue-400/20',
-  },
-  {
-    name: 'TikTok',
-    icon: Music2,
-    url: 'https://www.tiktok.com/@shokherbikewala?_r=1&_t=ZS-964cHi86h1Q',
-    color: 'hover:text-pink-400 hover:shadow-pink-400/20',
-  },
-  {
-    name: 'Instagram',
-    icon: Instagram,
-    url: 'https://www.instagram.com/shokherbikewala?igsh=MWJsbW96aXphNjZsaA==',
-    color: 'hover:text-purple-400 hover:shadow-purple-400/20',
-  },
-]
+import { useStore } from '@/context/StoreContext'
 
 export default function Footer() {
+  const { brandSettings, categories } = useStore()
+
+  const socialLinks = [
+    {
+      name: 'WhatsApp',
+      icon: MessageCircle,
+      url: brandSettings.whatsapp,
+      color: 'hover:text-green-400 hover:shadow-green-400/20',
+    },
+    {
+      name: 'Facebook',
+      icon: Facebook,
+      url: brandSettings.facebook,
+      color: 'hover:text-blue-400 hover:shadow-blue-400/20',
+    },
+    {
+      name: 'TikTok',
+      icon: Music2,
+      url: brandSettings.tiktok,
+      color: 'hover:text-pink-400 hover:shadow-pink-400/20',
+    },
+    {
+      name: 'Instagram',
+      icon: Instagram,
+      url: brandSettings.instagram,
+      color: 'hover:text-purple-400 hover:shadow-purple-400/20',
+    },
+  ]
   return (
     <footer className="relative bg-dark-50 border-t border-white/5 carbon-fiber pb-20 md:pb-0">
       <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
@@ -105,15 +107,15 @@ export default function Footer() {
                 Categories
               </h3>
               <ul className="space-y-2.5">
-                {['Helmets', 'Gloves', 'Jackets', 'LED Lights', 'Phone Mounts', 'Exhaust Systems'].map(
+                {categories.slice(0, 6).map(
                   (cat) => (
-                    <li key={cat}>
+                    <li key={cat.id}>
                       <Link
-                        to={`/products?category=${cat.toLowerCase().replace(' ', '-')}`}
+                        to={`/products?category=${cat.slug}`}
                         className="text-gray-400 hover:text-cyan transition-colors text-sm font-racing tracking-wide inline-flex items-center gap-1.5 group"
                       >
                         <span className="w-0 group-hover:w-2.5 h-0.5 bg-gradient-to-r from-cyan to-cyan/50 transition-all duration-300 rounded-full" />
-                        {cat}
+                        {cat.name}
                       </Link>
                     </li>
                   )

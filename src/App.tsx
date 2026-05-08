@@ -14,6 +14,10 @@ import AdminDashboard from '@/pages/admin/AdminDashboard'
 import ProductsManage from '@/pages/admin/ProductsManage'
 import CategoriesManage from '@/pages/admin/CategoriesManage'
 import BrandSettings from '@/pages/admin/BrandSettings'
+import TestimonialsManage from '@/pages/admin/TestimonialsManage'
+import HeroManage from '@/pages/admin/HeroManage'
+import OrdersManage from '@/pages/admin/OrdersManage'
+import { StoreProvider } from '@/context/StoreContext'
 import { useEffect } from 'react'
 
 function ScrollToTop() {
@@ -47,18 +51,23 @@ function PublicLayout() {
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/admin/login" element={<AdminLoginPage />} />
-        <Route path="/admin" element={<AdminDashboard />}>
-          <Route path="products" element={<ProductsManage />} />
-          <Route path="categories" element={<CategoriesManage />} />
-          <Route path="settings" element={<BrandSettings />} />
-        </Route>
-        <Route path="/*" element={<PublicLayout />} />
-      </Routes>
-    </Router>
+    <StoreProvider>
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin" element={<AdminDashboard />}>
+            <Route path="products" element={<ProductsManage />} />
+            <Route path="categories" element={<CategoriesManage />} />
+            <Route path="testimonials" element={<TestimonialsManage />} />
+            <Route path="hero" element={<HeroManage />} />
+            <Route path="orders" element={<OrdersManage />} />
+            <Route path="settings" element={<BrandSettings />} />
+          </Route>
+          <Route path="/*" element={<PublicLayout />} />
+        </Routes>
+      </Router>
+    </StoreProvider>
   )
 }
 

@@ -2,50 +2,24 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-
-const testimonials = [
-  {
-    id: 1,
-    name: 'Rafiq Ahmed',
-    rating: 5,
-    text: 'Amazing quality helmet! The finish is premium and feels very safe. Delivery was super fast too. Will definitely order again from Shokher Bike Wala.',
-    product: 'Steelbird SBA-21 GT',
-  },
-  {
-    id: 2,
-    name: 'Tanvir Hassan',
-    rating: 5,
-    text: 'Best gloves I have ever used. Perfect grip and very comfortable for long rides. The touchscreen feature works flawlessly.',
-    product: 'Riding Leather Gloves Pro',
-  },
-  {
-    id: 3,
-    name: 'Kamal Hossain',
-    rating: 5,
-    text: 'The LED light kit completely transformed my bike! Easy to install and the colors are vibrant. Great customer service via WhatsApp.',
-    product: 'LED Strip Light Kit',
-  },
-  {
-    id: 4,
-    name: 'Shakib Rahman',
-    rating: 4,
-    text: 'Ordered the phone mount and jacket together. Both products are excellent quality. The jacket fits perfectly and looks stylish.',
-    product: 'Windproof Racing Jacket',
-  },
-]
+import { useStore } from '@/context/StoreContext'
 
 export default function TestimonialsSection() {
+  const { testimonials } = useStore()
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
+    if (testimonials.length === 0) return
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % testimonials.length)
     }, 5000)
     return () => clearInterval(interval)
-  }, [])
+  }, [testimonials.length])
 
   const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length)
   const next = () => setCurrent((c) => (c + 1) % testimonials.length)
+
+  if (testimonials.length === 0) return null
 
   return (
     <section className="relative py-14 sm:py-24 overflow-hidden">

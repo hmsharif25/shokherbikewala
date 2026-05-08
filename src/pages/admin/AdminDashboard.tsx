@@ -13,22 +13,28 @@ import {
   Users,
   TrendingUp,
   DollarSign,
+  MessageSquareQuote,
+  Sparkles,
 } from 'lucide-react'
 import { useState } from 'react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-import { demoProducts, demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 
 const sidebarLinks = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
   { name: 'Products', path: '/admin/products', icon: Package },
   { name: 'Categories', path: '/admin/categories', icon: Grid3X3 },
+  { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquareQuote },
+  { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
+  { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ]
 
 function DashboardHome() {
+  const { products, categories } = useStore()
   const stats = [
-    { label: 'Total Products', value: demoProducts.length.toString(), icon: ShoppingBag, color: 'text-primary', bg: 'bg-primary/10', change: '+12%' },
-    { label: 'Categories', value: demoCategories.length.toString(), icon: Grid3X3, color: 'text-cyan', bg: 'bg-cyan/10', change: '+3' },
+    { label: 'Total Products', value: products.length.toString(), icon: ShoppingBag, color: 'text-primary', bg: 'bg-primary/10', change: '+12%' },
+    { label: 'Categories', value: categories.length.toString(), icon: Grid3X3, color: 'text-cyan', bg: 'bg-cyan/10', change: '+3' },
     { label: 'Total Customers', value: '2,500+', icon: Users, color: 'text-gold', bg: 'bg-gold/10', change: '+8%' },
     { label: 'Revenue', value: '৳125K', icon: DollarSign, color: 'text-green-400', bg: 'bg-green-400/10', change: '+15%' },
   ]
@@ -77,8 +83,8 @@ function DashboardHome() {
                 </tr>
               </thead>
               <tbody>
-                {demoProducts.slice(0, 5).map((product) => {
-                  const category = demoCategories.find(c => c.id === product.category_id)
+                {products.slice(0, 5).map((product) => {
+                  const category = categories.find(c => c.id === product.category_id)
                   return (
                     <tr key={product.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="py-3">

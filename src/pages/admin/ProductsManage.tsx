@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Pencil, Trash2, X, Save, Package } from 'lucide-react'
-import { demoProducts, demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 import { Product } from '@/types'
 
 export default function ProductsManage() {
-  const [products, setProducts] = useState<Product[]>(demoProducts)
+  const { products, categories, addProduct, updateProduct, deleteProduct } = useStore()
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [isAdding, setIsAdding] = useState(false)
   const [form, setForm] = useState({
@@ -20,7 +20,7 @@ export default function ProductsManage() {
   })
 
   const openAdd = () => {
-    setForm({ name: '', description: '', price: '', discount_price: '', category_id: demoCategories[0]?.id || '', images: '', in_stock: true, featured: false })
+    setForm({ name: '', description: '', price: '', discount_price: '', category_id: categories[0]?.id || '', images: '', in_stock: true, featured: false })
     setEditingProduct(null)
     setIsAdding(true)
   }
@@ -56,9 +56,9 @@ export default function ProductsManage() {
     }
 
     if (editingProduct) {
-      setProducts(products.map(p => p.id === editingProduct.id ? newProduct : p))
+      updateProduct(editingProduct.id, newProduct)
     } else {
-      setProducts([newProduct, ...products])
+      addProduct(newProduct)
     }
     setIsAdding(false)
     setEditingProduct(null)
@@ -66,7 +66,7 @@ export default function ProductsManage() {
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
-      setProducts(products.filter(p => p.id !== id))
+      deleteProduct(id)
     }
   }
 
@@ -123,7 +123,7 @@ export default function ProductsManage() {
                     onChange={e => setForm({ ...form, category_id: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   >
-                    {demoCategories.map(cat => (
+                    {categories.map(cat => (
                       <option key={cat.id} value={cat.id} className="bg-dark-50">{cat.name}</option>
                     ))}
                   </select>
@@ -225,7 +225,7 @@ export default function ProductsManage() {
             </thead>
             <tbody>
               {products.map(product => {
-                const category = demoCategories.find(c => c.id === product.category_id)
+                const category = categories.find(c => c.id === product.category_id)
                 return (
                   <motion.tr
                     key={product.id}
