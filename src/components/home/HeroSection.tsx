@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ChevronDown, Zap, Shield, Truck, Gauge, Flame } from 'lucide-react'
 import ParticleBackground from '@/components/ui/ParticleBackground'
 import RPMGauge from '@/components/ui/RPMGauge'
+import GlitchText from '@/components/ui/GlitchText'
 import { useEffect, useState } from 'react'
 
 const taglines = [
@@ -124,16 +125,19 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-[2.5rem] leading-tight sm:text-6xl md:text-7xl lg:text-8xl font-display font-black mb-4 sm:mb-8"
         >
-          <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+          <GlitchText
+            as="span"
+            className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+          >
             SHOKHER
-          </span>
+          </GlitchText>
           <br />
           <motion.span
             className="bg-gradient-to-r from-primary via-primary-400 to-gold bg-clip-text text-transparent text-glow inline-block"
             animate={{ textShadow: ['0 0 20px rgba(255,69,0,0.3)', '0 0 40px rgba(255,69,0,0.6)', '0 0 20px rgba(255,69,0,0.3)'] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            BIKE WALA
+            <GlitchText as="span">BIKE WALA</GlitchText>
           </motion.span>
         </motion.h1>
 
