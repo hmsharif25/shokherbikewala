@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -32,6 +32,8 @@
     color: #ffffff;
     font-family: 'Inter', 'Segoe UI', sans-serif;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
@@ -231,6 +233,101 @@
       0 0 30px rgba(255,69,0,0.1),
       0 0 60px rgba(255,69,0,0.05);
   }
+
+  .animate-turbo-spin {
+    animation: turboSpin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .animate-engine-pulse {
+    animation: enginePulse 1.5s ease-in-out infinite;
+  }
+
+  .animate-drift-in {
+    animation: driftIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-nitro-glow {
+    animation: nitroGlow 2s ease-in-out infinite;
+  }
+
+  .animate-rev-counter {
+    animation: revCounter 3s ease-in-out infinite;
+  }
+
+  .animate-headlight-sweep {
+    animation: headlightSweep 4s ease-in-out infinite;
+  }
+
+  .hud-border {
+    position: relative;
+    border: 1px solid rgba(0,212,255,0.15);
+  }
+
+  .hud-border::before,
+  .hud-border::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: rgba(255,69,0,0.6);
+    pointer-events: none;
+  }
+
+  .hud-border::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+
+  .hud-border::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+  }
+
+  .rpm-gauge {
+    background: conic-gradient(
+      from 180deg,
+      rgba(255,69,0,0) 0deg,
+      rgba(255,69,0,0.3) 120deg,
+      rgba(255,215,0,0.4) 200deg,
+      rgba(255,0,0,0.6) 270deg,
+      rgba(255,69,0,0) 360deg
+    );
+  }
+
+  .carbon-fiber {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.015) 2px,
+        rgba(255,255,255,0.015) 4px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.01) 2px,
+        rgba(255,255,255,0.01) 4px
+      );
+  }
+
+  .speedometer-ring {
+    border: 2px solid transparent;
+    background-image: linear-gradient(#0a0a0a, #0a0a0a),
+      conic-gradient(from 180deg, #FF4500, #FFD700, #00D4FF, #FF4500);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+
+  .exhaust-smoke {
+    filter: blur(8px);
+    animation: exhaustSmoke 3s ease-in-out infinite;
+  }
 }
 
 @keyframes float {
@@ -292,10 +389,79 @@
   50% { opacity: 0.6; transform: scale(1.2) translateX(10px); }
 }
 
+@keyframes turboSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes enginePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255,69,0,0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(255,69,0,0);
+  }
+}
+
+@keyframes driftIn {
+  0% {
+    transform: translateX(-80px) rotate(-3deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(8px) rotate(0.5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes nitroGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0,212,255,0.3), 0 0 10px rgba(0,212,255,0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,212,255,0.5), 0 0 40px rgba(0,212,255,0.2), 0 0 80px rgba(0,212,255,0.1);
+  }
+}
+
+@keyframes revCounter {
+  0%, 100% { transform: rotate(-120deg); }
+  50% { transform: rotate(30deg); }
+}
+
+@keyframes headlightSweep {
+  0%, 100% {
+    background-position: -200% 0;
+    opacity: 0.3;
+  }
+  50% {
+    background-position: 200% 0;
+    opacity: 0.6;
+  }
+}
+
+@keyframes exhaustSmoke {
+  0% { opacity: 0.2; transform: translateX(0) scale(1); }
+  50% { opacity: 0.4; transform: translateX(20px) scale(1.5); }
+  100% { opacity: 0; transform: translateX(40px) scale(2); }
+}
+
 @media (max-width: 640px) {
   .mobile-card-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .font-display {
+    letter-spacing: -0.02em;
   }
 }
 

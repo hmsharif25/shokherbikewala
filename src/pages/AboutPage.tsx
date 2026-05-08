@@ -8,14 +8,14 @@ export default function AboutPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-24 pb-16"
+      className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 speed-lines-bg"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
-          <motion.span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4 border border-primary/20">
-            ABOUT US
+        <AnimatedSection className="text-center mb-12 sm:mb-16">
+          <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-racing tracking-widest mb-4 border border-primary/20 uppercase">
+            About Us
           </motion.span>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold mb-6">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-display font-bold mb-4 sm:mb-6">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               We Are{' '}
             </span>
@@ -23,12 +23,12 @@ export default function AboutPage() {
               Shokher Bike Wala
             </span>
           </h1>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-lg leading-relaxed">
             Your trusted destination for premium bike accessories in Bangladesh. We bring the best quality products for every rider.
           </p>
         </AnimatedSection>
 
-        <AnimatedSection delay={0.2} className="mb-20">
+        <AnimatedSection delay={0.2} className="mb-14 sm:mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="relative">
               <div className="aspect-video rounded-2xl overflow-hidden glass p-1">
@@ -63,8 +63,8 @@ export default function AboutPage() {
                   { number: '4.8', label: 'Avg Rating' },
                 ].map((stat) => (
                   <div key={stat.label} className="p-4 rounded-xl glass">
-                    <div className="text-2xl font-display font-bold text-primary">{stat.number}</div>
-                    <div className="text-sm text-gray-400">{stat.label}</div>
+                      <div className="text-xl sm:text-2xl font-display font-bold text-primary">{stat.number}</div>
+                      <div className="text-xs sm:text-sm text-gray-400 font-racing">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -72,7 +72,7 @@ export default function AboutPage() {
           </div>
         </AnimatedSection>
 
-        <AnimatedSection className="mb-20">
+        <AnimatedSection className="mb-14 sm:mb-20">
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-center mb-12">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Our{' '}
@@ -81,7 +81,7 @@ export default function AboutPage() {
               Values
             </span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
             {[
               { icon: Shield, title: 'Quality First', description: 'Only genuine, certified products make it to our store', color: 'text-primary', bg: 'bg-primary/10' },
               { icon: Heart, title: 'Rider Passion', description: 'We are riders ourselves, we know what you need', color: 'text-pink-400', bg: 'bg-pink-400/10' },
@@ -93,13 +93,13 @@ export default function AboutPage() {
               <AnimatedSection key={value.title} delay={i * 0.1}>
                 <motion.div
                   whileHover={{ y: -5 }}
-                  className="p-6 rounded-2xl glass group hover:shadow-xl transition-all"
+                  className="p-4 sm:p-6 rounded-2xl glass group hover:shadow-xl transition-all border border-white/5 hover:border-primary/15 racing-card"
                 >
                   <div className={`w-12 h-12 rounded-xl ${value.bg} flex items-center justify-center mb-4`}>
                     <value.icon className={`w-6 h-6 ${value.color}`} />
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2">{value.title}</h3>
-                  <p className="text-gray-400 text-sm">{value.description}</p>
+                  <h3 className="text-white font-bold text-base sm:text-lg mb-2 font-racing">{value.title}</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">{value.description}</p>
                 </motion.div>
               </AnimatedSection>
             ))}

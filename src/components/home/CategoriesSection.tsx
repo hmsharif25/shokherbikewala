@@ -6,7 +6,7 @@ import { demoCategories } from '@/data/demo-data'
 
 export default function CategoriesSection() {
   return (
-    <section className="relative py-16 sm:py-24">
+    <section className="relative py-14 sm:py-24">
       <div className="absolute inset-0 bg-gradient-to-b from-dark via-surface/30 to-dark" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
@@ -14,10 +14,10 @@ export default function CategoriesSection() {
         <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
 
         <AnimatedSection className="text-center mb-10 sm:mb-16">
-          <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gold/10 text-gold text-sm font-semibold mb-4 border border-gold/20">
-            BROWSE BY TYPE
+          <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gold/10 text-gold text-xs sm:text-sm font-racing tracking-widest mb-4 border border-gold/20 uppercase">
+            Browse By Type
           </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Shop by{' '}
             </span>
@@ -30,14 +30,14 @@ export default function CategoriesSection() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
           {demoCategories.map((category, i) => (
             <AnimatedSection key={category.id} delay={i * 0.08}>
               <Link to={`/products?category=${category.slug}`}>
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative group rounded-2xl overflow-hidden cursor-pointer h-44 sm:h-52 md:h-60 racing-card"
+                  className="relative group rounded-2xl overflow-hidden cursor-pointer h-40 sm:h-52 md:h-60 racing-card border border-white/5 hover:border-primary/20"
                 >
                   <img
                     src={category.image_url}
@@ -48,7 +48,7 @@ export default function CategoriesSection() {
 
                   <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6">
                     <motion.h3
-                      className="text-white font-display font-bold text-base sm:text-lg md:text-xl mb-1 text-glow"
+                      className="text-white font-display font-bold text-sm sm:text-lg md:text-xl mb-1 text-glow"
                     >
                       {category.name}
                     </motion.h3>

@@ -48,7 +48,7 @@ export default function TestimonialsSection() {
   const next = () => setCurrent((c) => (c + 1) % testimonials.length)
 
   return (
-    <section className="relative py-16 sm:py-24 overflow-hidden">
+    <section className="relative py-14 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-dark via-surface/30 to-dark" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
 
@@ -56,10 +56,10 @@ export default function TestimonialsSection() {
         <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
 
         <AnimatedSection className="text-center mb-10 sm:mb-16">
-          <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gold/10 text-gold text-sm font-semibold mb-4 border border-gold/20">
-            TESTIMONIALS
+          <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gold/10 text-gold text-xs sm:text-sm font-racing tracking-widest mb-4 border border-gold/20 uppercase">
+            Testimonials
           </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               What Riders{' '}
             </span>
@@ -78,7 +78,7 @@ export default function TestimonialsSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.4 }}
-                className="p-6 sm:p-8 md:p-12 rounded-2xl glass-premium tachometer-glow text-center"
+                className="p-6 sm:p-8 md:p-12 rounded-2xl glass-premium tachometer-glow text-center hud-border border border-white/5"
               >
                 <Quote className="w-10 h-10 text-primary/30 mx-auto mb-6" />
 
@@ -101,15 +101,15 @@ export default function TestimonialsSection() {
                   ))}
                 </div>
 
-                <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8 italic">
+                <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed mb-8 italic">
                   &ldquo;{testimonials[current].text}&rdquo;
                 </p>
 
                 <div>
-                  <p className="text-white font-bold text-lg">
+                  <p className="text-white font-bold text-lg font-racing">
                     {testimonials[current].name}
                   </p>
-                  <p className="text-primary text-sm">
+                  <p className="text-primary text-xs sm:text-sm font-racing tracking-wide">
                     Purchased: {testimonials[current].product}
                   </p>
                 </div>

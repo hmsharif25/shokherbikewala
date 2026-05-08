@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ShoppingBag, ArrowRight, Star, Tag } from 'lucide-react'
+import { ShoppingBag, ArrowRight, Star, Tag, Zap } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { demoProducts, demoCategories } from '@/data/demo-data'
 
@@ -8,7 +8,7 @@ export default function FeaturedProducts() {
   const featured = demoProducts.filter((p) => p.featured)
 
   return (
-    <section className="relative py-16 sm:py-24">
+    <section className="relative py-14 sm:py-24">
       <div className="absolute inset-0">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-cyan/5 rounded-full blur-3xl" />
@@ -18,12 +18,13 @@ export default function FeaturedProducts() {
         {/* Racing stripe divider top */}
         <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
 
-        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-14 gap-4">
+        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-14 gap-4">
           <div>
-            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-cyan/10 text-cyan text-sm font-semibold mb-4 border border-cyan/20">
-              HOT DEALS
+            <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-cyan/10 text-cyan text-xs sm:text-sm font-racing tracking-widest mb-4 border border-cyan/20 uppercase">
+              <Zap className="w-3 h-3" />
+              Hot Deals
             </motion.span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold">
               <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Featured{' '}
               </span>
@@ -41,7 +42,7 @@ export default function FeaturedProducts() {
           </Link>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {featured.map((product, i) => {
             const category = demoCategories.find((c) => c.id === product.category_id)
             return (
@@ -52,7 +53,7 @@ export default function FeaturedProducts() {
               >
                 <motion.div
                   whileHover={{ y: -8, scale: 1.02 }}
-                  className="group relative rounded-2xl overflow-hidden glass racing-card hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 animate-neon-border"
+                  className="group relative rounded-2xl overflow-hidden glass racing-card hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/20"
                 >
                   <div className="relative h-40 sm:h-60 overflow-hidden">
                     <img
@@ -80,7 +81,7 @@ export default function FeaturedProducts() {
                     )}
                   </div>
 
-                  <div className="p-3 sm:p-6">
+                  <div className="p-3 sm:p-5">
                     <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
@@ -91,7 +92,7 @@ export default function FeaturedProducts() {
                       <span className="text-[10px] sm:text-xs text-gray-500 ml-1">(4.8)</span>
                     </div>
 
-                    <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-1 font-racing">
                       {product.name}
                     </h3>
 

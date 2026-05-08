@@ -28,11 +28,11 @@ export default function ProductsPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-24 pb-16 speed-lines-bg"
+      className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 speed-lines-bg"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="mb-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
+        <AnimatedSection className="mb-8 sm:mb-10">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               All{' '}
             </span>
@@ -40,7 +40,7 @@ export default function ProductsPage() {
               Products
             </span>
           </h1>
-          <p className="text-gray-400">Browse our complete collection of premium bike accessories</p>
+          <p className="text-gray-400 text-sm sm:text-base font-racing tracking-wide">Browse our complete collection of premium bike accessories</p>
         </AnimatedSection>
 
         <AnimatedSection delay={0.1} className="mb-8">
@@ -117,14 +117,14 @@ export default function ProductsPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
           {filteredProducts.map((product, i) => {
             const category = demoCategories.find((c) => c.id === product.category_id)
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
                 <motion.div
                   whileHover={{ y: -5 }}
-                  className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500"
+                  className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/15"
                 >
                   <div className="relative h-32 sm:h-48 overflow-hidden">
                     <img
@@ -152,7 +152,7 @@ export default function ProductsPage() {
                         <Star key={star} className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-gold text-gold" />
                       ))}
                     </div>
-                    <h3 className="text-white font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="text-white font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1 font-racing">
                       {product.name}
                     </h3>
                     <p className="text-gray-400 text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>

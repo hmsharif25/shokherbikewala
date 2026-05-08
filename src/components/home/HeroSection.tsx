@@ -45,14 +45,16 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <ParticleBackground />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/50 to-dark z-[1]" />
 
-      {/* Animated speed lines */}
       <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
-        <div className="absolute top-[20%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-speed-lines" style={{ animationDelay: '0s' }} />
-        <div className="absolute top-[40%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan/20 to-transparent animate-speed-lines" style={{ animationDelay: '0.5s' }} />
-        <div className="absolute top-[60%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/20 to-transparent animate-speed-lines" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-[80%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-speed-lines" style={{ animationDelay: '0.3s' }} />
+        {[20, 35, 50, 65, 80].map((top, i) => (
+          <div
+            key={top}
+            className="absolute left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-speed-lines"
+            style={{ top: `${top}%`, animationDelay: `${i * 0.4}s` }}
+          />
+        ))}
       </div>
 
       <div className="absolute inset-0 z-[1]">
@@ -61,65 +63,73 @@ export default function HeroSection() {
         <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gold/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      {/* Checkered flag accent */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 z-[1] checkered-accent opacity-30" />
+      <div className="absolute bottom-0 left-0 right-0 h-20 z-[1] checkered-accent opacity-20" />
 
-      <div className="absolute inset-0 z-[1] opacity-10">
-        <div
-          className="absolute inset-0 speed-lines-bg"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,69,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,69,0,0.1) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px',
-          }}
-        />
-      </div>
+      <div className="absolute inset-0 z-[1] opacity-[0.07] carbon-fiber" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="mb-6"
+          className="mb-8"
         >
           <motion.div
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ rotate: [0, 3, -3, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             className="inline-block"
           >
-            <div className="w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-6 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center animate-neon-border border border-primary/20 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-cyan/10" />
-              <img src="/logo.png" alt="Shokher Bike Wala" className="w-full h-full object-contain p-2 relative z-10" />
+            <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 rounded-2xl speedometer-ring flex items-center justify-center animate-neon-border overflow-hidden relative p-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-dark/80 to-cyan/10 rounded-2xl" />
+              <img src="/logo.png" alt="Shokher Bike Wala" className="w-full h-full object-contain p-3 relative z-10 drop-shadow-[0_0_12px_rgba(255,69,0,0.3)]" />
             </div>
           </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-4"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs sm:text-sm font-racing tracking-widest uppercase">
+            <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            Premium Bike Accessories
+            <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          </span>
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-black mb-8"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black mb-6 sm:mb-8"
         >
-          <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
             SHOKHER
           </span>
           <br />
-          <span className="bg-gradient-to-r from-primary via-primary-400 to-gold bg-clip-text text-transparent text-glow">
+          <motion.span
+            className="bg-gradient-to-r from-primary via-primary-400 to-gold bg-clip-text text-transparent text-glow inline-block"
+            animate={{ textShadow: ['0 0 20px rgba(255,69,0,0.3)', '0 0 40px rgba(255,69,0,0.6)', '0 0 20px rgba(255,69,0,0.3)'] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
             BIKE WALA
-          </span>
+          </motion.span>
         </motion.h1>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="h-8 mb-10"
+          className="h-8 sm:h-10 mb-8 sm:mb-10"
         >
-          <p className="text-lg sm:text-xl md:text-2xl text-cyan font-light tracking-wide text-glow-cyan">
+          <p className="text-base sm:text-xl md:text-2xl text-cyan font-racing font-light tracking-wide text-glow-cyan">
             {displayText}
             <motion.span
               animate={{ opacity: [1, 0] }}
               transition={{ duration: 0.5, repeat: Infinity }}
-              className="inline-block w-0.5 h-6 bg-cyan ml-1 align-middle"
+              className="inline-block w-0.5 h-5 sm:h-6 bg-cyan ml-1 align-middle"
             />
           </p>
         </motion.div>
@@ -128,23 +138,23 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-5 justify-center mb-20"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center mb-14 sm:mb-20 px-4 sm:px-0"
         >
-          <Link to="/products">
+          <Link to="/products" className="w-full sm:w-auto">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl text-lg animate-pulse-glow hover:shadow-2xl hover:shadow-primary/40 transition-shadow flex items-center gap-2"
+              className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl text-base sm:text-lg animate-pulse-glow hover:shadow-2xl hover:shadow-primary/40 transition-shadow flex items-center justify-center gap-2 font-racing tracking-wide"
             >
               <Flame className="w-5 h-5" />
               Explore Products
             </motion.button>
           </Link>
-          <Link to="/contact">
+          <Link to="/contact" className="w-full sm:w-auto">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 border border-cyan/30 text-cyan font-bold rounded-xl text-lg hover:bg-cyan/10 hover:border-cyan/60 transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 border border-cyan/30 text-cyan font-bold rounded-xl text-base sm:text-lg hover:bg-cyan/10 hover:border-cyan/60 transition-all flex items-center justify-center gap-2 font-racing tracking-wide"
             >
               <Gauge className="w-5 h-5" />
               Contact Us
@@ -156,22 +166,23 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
-          className="grid grid-cols-3 gap-8 max-w-xl mx-auto"
+          className="grid grid-cols-3 gap-3 sm:gap-8 max-w-xl mx-auto"
         >
           {[
-            { icon: Shield, label: 'Certified Quality', color: 'text-primary' },
-            { icon: Truck, label: 'Fast Delivery', color: 'text-cyan' },
-            { icon: Zap, label: 'Best Prices', color: 'text-gold' },
+            { icon: Shield, label: 'Certified Quality', color: 'text-primary', glow: 'hover:shadow-primary/20' },
+            { icon: Truck, label: 'Fast Delivery', color: 'text-cyan', glow: 'hover:shadow-cyan/20' },
+            { icon: Zap, label: 'Best Prices', color: 'text-gold', glow: 'hover:shadow-gold/20' },
           ].map((item, i) => (
             <motion.div
               key={item.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.4 + i * 0.15 }}
-              className="text-center p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/5 hover:border-primary/20 transition-all"
+              whileHover={{ y: -4, scale: 1.05 }}
+              className={`text-center p-3 sm:p-4 rounded-xl glass hud-border hover:shadow-lg ${item.glow} transition-all duration-300 cursor-default`}
             >
-              <item.icon className={`w-7 h-7 mx-auto mb-2 ${item.color}`} />
-              <span className="text-xs text-gray-300 font-medium">{item.label}</span>
+              <item.icon className={`w-6 h-6 sm:w-7 sm:h-7 mx-auto mb-1.5 sm:mb-2 ${item.color}`} />
+              <span className="text-[10px] sm:text-xs text-gray-300 font-racing tracking-wide">{item.label}</span>
             </motion.div>
           ))}
         </motion.div>
@@ -181,13 +192,15 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
+          className="flex flex-col items-center gap-1"
         >
-          <ChevronDown className="w-6 h-6 text-gray-500" />
+          <span className="text-[10px] text-gray-500 font-racing tracking-widest uppercase">Scroll</span>
+          <ChevronDown className="w-5 h-5 text-gray-500" />
         </motion.div>
       </motion.div>
     </section>
