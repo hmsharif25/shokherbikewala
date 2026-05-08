@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Bike, Lock, Mail, Eye, EyeOff, User, ArrowLeft } from 'lucide-react'
+import { Lock, Mail, Eye, EyeOff, User, ArrowLeft } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import ParticleBackground from '@/components/ui/ParticleBackground'
@@ -15,7 +15,8 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const navigate = useNavigate()
-  const { signInWithEmail, signUpWithEmail, signInWithGoogle } = useAuth()
+  const { signInWithEmail, signUpWithEmail, signInWithGoogle, configured } =
+    useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,12 +30,18 @@ export default function AuthPage() {
         setLoading(false)
         return
       }
-      const { error: err } = await signUpWithEmail(email, password, name)
+      const { error: err, needsConfirm } = await signUpWithEmail(
+        email,
+        password,
+        name,
+      )
       if (err) {
         setError(err)
-      } else {
-        setSuccess('Account created! You can now sign in.')
+      } else if (needsConfirm) {
+        setSuccess('Check your email to confirm the account, then sign in.')
         setIsSignUp(false)
+      } else {
+        navigate('/')
       }
     } else {
       const { error: err } = await signInWithEmail(email, password)
@@ -90,7 +97,11 @@ export default function AuthPage() {
               className="w-16 h-16 mx-auto mb-4 rounded-2xl speedometer-ring flex items-center justify-center overflow-hidden relative p-0.5"
             >
               <div className="w-full h-full bg-dark rounded-xl flex items-center justify-center">
-                <Bike className="w-8 h-8 text-primary" />
+                <img
+                  src="/logo.png"
+                  alt="Shokher Bike Wala"
+                  className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,69,0,0.6)]"
+                />
               </div>
             </motion.div>
             <h1 className="text-2xl font-display font-bold text-white mb-1">
@@ -100,6 +111,12 @@ export default function AuthPage() {
               {isSignUp ? 'Join the riders community' : 'Sign in to your account'}
             </p>
           </div>
+
+          {!configured && (
+            <div className="mb-6 p-3 rounded-lg bg-gold/10 border border-gold/20 text-gold text-xs text-center font-racing tracking-wide">
+              Demo mode — set <code className="px-1">VITE_SUPABASE_ANON_KEY</code> to enable real auth.
+            </div>
+          )}
 
           {error && (
             <motion.div

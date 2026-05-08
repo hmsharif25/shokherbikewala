@@ -3,6 +3,8 @@ import { MessageCircle, Facebook, Instagram, Music2, Phone, Mail, MapPin, Send }
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
 import { useState } from 'react'
+import { submitInquiry } from '@/lib/db'
+import { useStore } from '@/context/StoreContext'
 
 const contactMethods = [
   {
@@ -45,11 +47,35 @@ const contactMethods = [
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', phone: '', message: '' })
+  const [submitting, setSubmitting] = useState(false)
+  const { addInquiry } = useStore()
 
-  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+  const handleWhatsAppSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitting(true)
+    try {
+      // Persist locally so it shows in the admin inquiries view immediately.
+      addInquiry({
+        id: Date.now(),
+        customer_name: formData.name,
+        phone: formData.phone,
+        product_name: '',
+        message: formData.message,
+        status: 'new',
+        created_at: new Date().toISOString(),
+      })
+      // And to Supabase when configured (silently best-effort).
+      submitInquiry({
+        customer_name: formData.name,
+        phone: formData.phone,
+        message: formData.message,
+      })
+    } catch {
+      // ignore
+    }
     const text = `Hi! I'm ${formData.name}.\nPhone: ${formData.phone}\n\n${formData.message}`
     window.open(`https://wa.me/8801518934708?text=${encodeURIComponent(text)}`, '_blank')
+    setSubmitting(false)
   }
 
   return (
@@ -164,12 +190,13 @@ export default function ContactPage() {
                 </div>
                 <motion.button
                   type="submit"
+                  disabled={submitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-green-500/30 transition-shadow"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-green-500/30 transition-shadow disabled:opacity-60"
                 >
                   <Send className="w-5 h-5" />
-                  Send via WhatsApp
+                  {submitting ? 'Sending...' : 'Send via WhatsApp'}
                 </motion.button>
               </form>
             </div>

@@ -1,17 +1,36 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Home, ShoppingBag, Grid3X3, User, MessageCircle } from 'lucide-react'
+import { Home, ShoppingBag, Grid3X3, User, MessageCircle, ShieldCheck } from 'lucide-react'
+import { useAuth } from '@/context/AuthContext'
 
-const navItems = [
+type NavItem = {
+  name: string
+  path: string
+  icon: typeof Home
+  external?: boolean
+}
+
+const baseNavItems: NavItem[] = [
   { name: 'Home', path: '/', icon: Home },
-  { name: 'Products', path: '/products', icon: ShoppingBag },
-  { name: 'Categories', path: '/categories', icon: Grid3X3 },
-  { name: 'About', path: '/about', icon: User },
-  { name: 'Chat', path: 'https://wa.me/8801518934708', icon: MessageCircle, external: true },
+  { name: 'Shop', path: '/products', icon: ShoppingBag },
+  { name: 'Browse', path: '/categories', icon: Grid3X3 },
 ]
 
 export default function MobileBottomNav() {
   const location = useLocation()
+  const { user, isAdmin } = useAuth()
+
+  const accountItem: NavItem = isAdmin
+    ? { name: 'Admin', path: '/admin', icon: ShieldCheck }
+    : user
+      ? { name: 'Account', path: '/auth', icon: User }
+      : { name: 'Sign In', path: '/auth', icon: User }
+
+  const navItems: NavItem[] = [
+    ...baseNavItems,
+    accountItem,
+    { name: 'Chat', path: 'https://wa.me/8801518934708', icon: MessageCircle, external: true },
+  ]
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">

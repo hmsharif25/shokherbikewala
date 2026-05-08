@@ -11,8 +11,13 @@ interface User {
 interface AuthContextType {
   user: User | null
   loading: boolean
+  configured: boolean
   signInWithEmail: (email: string, password: string) => Promise<{ error: string | null }>
-  signUpWithEmail: (email: string, password: string, name: string) => Promise<{ error: string | null }>
+  signUpWithEmail: (
+    email: string,
+    password: string,
+    name: string,
+  ) => Promise<{ error: string | null; needsConfirm?: boolean }>
   signInWithGoogle: () => Promise<{ error: string | null }>
   signOut: () => Promise<void>
   isAdmin: boolean
@@ -20,15 +25,25 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
-const ADMIN_EMAILS = ['admin@shokherbikewala.com']
+const ADMIN_EMAILS = [
+  'hmsharif2002@gmail.com',
+  'admin@shokherbikewala.com',
+]
 const DEMO_USER_KEY = 'sbw_demo_user'
+const DEMO_ADMIN_PASSWORD = 'admin'
+
+const normalizeEmail = (email: string) => email.trim().toLowerCase()
+
+const isAdminEmail = (email: string) =>
+  ADMIN_EMAILS.map(normalizeEmail).includes(normalizeEmail(email))
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const configured = isSupabaseConfigured()
 
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
+    if (!configured) {
       const demoUser = localStorage.getItem(DEMO_USER_KEY)
       if (demoUser) {
         try {
@@ -46,19 +61,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser({
           id: session.user.id,
           email: session.user.email || '',
-          name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+          name:
+            session.user.user_metadata?.full_name ||
+            session.user.email?.split('@')[0],
           avatar: session.user.user_metadata?.avatar_url,
         })
       }
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser({
           id: session.user.id,
           email: session.user.email || '',
-          name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+          name:
+            session.user.user_metadata?.full_name ||
+            session.user.email?.split('@')[0],
           avatar: session.user.user_metadata?.avatar_url,
         })
       } else {
@@ -67,39 +88,70 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [configured])
 
   const signInWithEmail = async (email: string, password: string) => {
-    if (!isSupabaseConfigured()) {
-      const demoUser: User = { id: 'demo-1', email, name: email.split('@')[0] }
+    const cleanEmail = normalizeEmail(email)
+    if (!configured) {
+      if (isAdminEmail(cleanEmail) && password !== DEMO_ADMIN_PASSWORD) {
+        return {
+          error:
+            'Demo admin password is "admin". Configure Supabase for real auth.',
+        }
+      }
+      const demoUser: User = {
+        id: 'demo-' + Date.now(),
+        email: cleanEmail,
+        name: cleanEmail.split('@')[0],
+      }
       setUser(demoUser)
       localStorage.setItem(DEMO_USER_KEY, JSON.stringify(demoUser))
       return { error: null }
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error: error?.message || null }
-  }
-
-  const signUpWithEmail = async (email: string, password: string, name: string) => {
-    if (!isSupabaseConfigured()) {
-      const demoUser: User = { id: 'demo-' + Date.now(), email, name }
-      setUser(demoUser)
-      localStorage.setItem(DEMO_USER_KEY, JSON.stringify(demoUser))
-      return { error: null }
-    }
-
-    const { error } = await supabase.auth.signUp({
-      email,
+    const { error } = await supabase.auth.signInWithPassword({
+      email: cleanEmail,
       password,
-      options: { data: { full_name: name } },
     })
     return { error: error?.message || null }
   }
 
+  const signUpWithEmail = async (
+    email: string,
+    password: string,
+    name: string,
+  ) => {
+    const cleanEmail = normalizeEmail(email)
+    if (!configured) {
+      const demoUser: User = {
+        id: 'demo-' + Date.now(),
+        email: cleanEmail,
+        name,
+      }
+      setUser(demoUser)
+      localStorage.setItem(DEMO_USER_KEY, JSON.stringify(demoUser))
+      return { error: null }
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email: cleanEmail,
+      password,
+      options: {
+        data: { full_name: name },
+        emailRedirectTo: window.location.origin,
+      },
+    })
+    if (error) return { error: error.message }
+    return { error: null, needsConfirm: !data.session }
+  }
+
   const signInWithGoogle = async () => {
-    if (!isSupabaseConfigured()) {
-      const demoUser: User = { id: 'demo-google', email: 'demo@gmail.com', name: 'Demo User' }
+    if (!configured) {
+      const demoUser: User = {
+        id: 'demo-google-' + Date.now(),
+        email: 'demo@gmail.com',
+        name: 'Demo User',
+      }
       setUser(demoUser)
       localStorage.setItem(DEMO_USER_KEY, JSON.stringify(demoUser))
       return { error: null }
@@ -113,28 +165,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signOut = async () => {
-    if (!isSupabaseConfigured()) {
+    if (!configured) {
       setUser(null)
       localStorage.removeItem(DEMO_USER_KEY)
-      localStorage.removeItem('admin_demo')
       return
     }
     await supabase.auth.signOut()
     setUser(null)
   }
 
-  const isAdmin = user ? (ADMIN_EMAILS.includes(user.email) || user.id.startsWith('demo')) : false
+  const isAdmin = user ? isAdminEmail(user.email) : false
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      loading,
-      signInWithEmail,
-      signUpWithEmail,
-      signInWithGoogle,
-      signOut,
-      isAdmin,
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        configured,
+        signInWithEmail,
+        signUpWithEmail,
+        signInWithGoogle,
+        signOut,
+        isAdmin,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
@@ -147,3 +201,5 @@ export function useAuth() {
   }
   return context
 }
+
+export const ADMIN_EMAIL_LIST = ADMIN_EMAILS
