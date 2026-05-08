@@ -32,7 +32,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative bg-dark-50 border-t border-white/5 carbon-fiber">
+    <footer className="relative bg-dark-50 border-t border-white/5 carbon-fiber pb-20 md:pb-0">
       <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">

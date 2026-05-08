@@ -2,16 +2,12 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import PageTransition from '@/components/ui/PageTransition'
 import { demoCategories, demoProducts } from '@/data/demo-data'
 
 export default function CategoriesPage() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 speed-lines-bg"
-    >
+    <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-8 sm:mb-12">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4">
@@ -64,6 +60,6 @@ export default function CategoriesPage() {
           })}
         </div>
       </div>
-    </motion.div>
+    </PageTransition>
   )
 }

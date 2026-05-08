@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { MessageCircle, Facebook, Instagram, Music2, Phone, Mail, MapPin, Send } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import PageTransition from '@/components/ui/PageTransition'
 import { useState } from 'react'
 
 const contactMethods = [
@@ -52,12 +53,7 @@ export default function ContactPage() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 speed-lines-bg"
-    >
+    <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center mb-10 sm:mb-16">
           <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-cyan/10 text-cyan text-xs sm:text-sm font-racing tracking-widest mb-4 border border-cyan/20 uppercase">
@@ -180,6 +176,6 @@ export default function ContactPage() {
           </AnimatedSection>
         </div>
       </div>
-    </motion.div>
+    </PageTransition>
   )
 }

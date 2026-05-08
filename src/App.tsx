@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import FloatingWhatsApp from '@/components/layout/FloatingWhatsApp'
+import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import HomePage from '@/pages/HomePage'
 import ProductsPage from '@/pages/ProductsPage'
 import CategoriesPage from '@/pages/CategoriesPage'
@@ -39,6 +40,7 @@ function PublicLayout() {
       </AnimatePresence>
       <Footer />
       <FloatingWhatsApp />
+      <MobileBottomNav />
     </>
   )
 }

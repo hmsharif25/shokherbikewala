@@ -459,6 +459,10 @@
   }
 }
 
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 @media (max-width: 480px) {
   .font-display {
     letter-spacing: -0.02em;
