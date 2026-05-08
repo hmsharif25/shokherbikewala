@@ -40,7 +40,7 @@ export default function Footer() {
           <AnimatedSection delay={0}>
             <div className="space-y-4">
               <Link to="/" className="flex items-center gap-3">
-                <img src="/logo.jpg" alt="Shokher Bike Wala" className="w-12 h-12 rounded-lg object-contain" />
+                <img src="/logo.png" alt="Shokher Bike Wala" className="w-12 h-12 rounded-lg object-contain" />
                 <span className="font-display text-xl font-bold bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">
                   Shokher Bike Wala
                 </span>

@@ -76,7 +76,7 @@ export default function HeroSection() {
             className="inline-block"
           >
             <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center box-glow border border-white/10 overflow-hidden">
-              <img src="/logo.jpg" alt="Shokher Bike Wala" className="w-full h-full object-contain p-1" />
+              <img src="/logo.png" alt="Shokher Bike Wala" className="w-full h-full object-contain p-1" />
             </div>
           </motion.div>
         </motion.div>

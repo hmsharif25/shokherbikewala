@@ -46,7 +46,7 @@ export default function Navbar() {
                 transition={{ type: 'spring', stiffness: 300 }}
                 className="flex items-center gap-2"
               >
-                <img src="/logo.jpg" alt="Shokher Bike Wala" className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg object-contain" />
+                <img src="/logo.png" alt="Shokher Bike Wala" className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg object-contain" />
                 <span className="font-display text-base lg:text-xl font-bold bg-gradient-to-r from-primary via-gold to-cyan bg-clip-text text-transparent hidden sm:inline">
                   Shokher Bike Wala
                 </span>
