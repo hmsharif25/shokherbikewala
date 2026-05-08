@@ -117,16 +117,16 @@ export default function ProductsPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
           {filteredProducts.map((product, i) => {
             const category = demoCategories.find((c) => c.id === product.category_id)
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
                 <motion.div
                   whileHover={{ y: -5 }}
-                  className="group rounded-2xl overflow-hidden glass hover:shadow-xl hover:shadow-primary/10 transition-all duration-500"
+                  className="group rounded-2xl overflow-hidden glass-premium hover:shadow-xl hover:shadow-primary/10 transition-all duration-500"
                 >
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-32 sm:h-48 overflow-hidden">
                     <img
                       src={product.images[0]}
                       alt={product.name}
@@ -134,41 +134,41 @@ export default function ProductsPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />
                     {product.discount_price && (
-                      <div className="absolute top-3 left-3 px-2 py-1 bg-primary rounded-full text-xs font-bold text-white flex items-center gap-1">
-                        <Tag className="w-3 h-3" />
+                      <div className="absolute top-2 left-2 sm:top-3 sm:left-3 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary rounded-full text-[10px] sm:text-xs font-bold text-white flex items-center gap-0.5 sm:gap-1">
+                        <Tag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                         {Math.round(((product.price - product.discount_price) / product.price) * 100)}% OFF
                       </div>
                     )}
                     {category && (
-                      <div className="absolute top-3 right-3 px-2 py-1 glass rounded-full text-xs text-gray-300">
+                      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2 py-0.5 sm:py-1 glass rounded-full text-[10px] sm:text-xs text-gray-300 hidden sm:block">
                         {category.name}
                       </div>
                     )}
                   </div>
 
-                  <div className="p-4">
-                    <div className="flex items-center gap-1 mb-2">
+                  <div className="p-2.5 sm:p-4">
+                    <div className="flex items-center gap-0.5 mb-1 sm:mb-2">
                       {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className="w-3 h-3 fill-gold text-gold" />
+                        <Star key={star} className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-gold text-gold" />
                       ))}
                     </div>
-                    <h3 className="text-white font-bold mb-1 group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="text-white font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1">
                       {product.name}
                     </h3>
-                    <p className="text-gray-400 text-sm mb-3 line-clamp-2">{product.description}</p>
+                    <p className="text-gray-400 text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
                     <div className="flex items-center justify-between">
                       <div>
                         {product.discount_price ? (
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg font-display font-bold text-primary">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+                            <span className="text-sm sm:text-lg font-display font-bold text-primary">
                               ৳{product.discount_price.toLocaleString()}
                             </span>
-                            <span className="text-xs text-gray-500 line-through">
+                            <span className="text-[10px] sm:text-xs text-gray-500 line-through">
                               ৳{product.price.toLocaleString()}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-lg font-display font-bold text-primary">
+                          <span className="text-sm sm:text-lg font-display font-bold text-primary">
                             ৳{product.price.toLocaleString()}
                           </span>
                         )}
@@ -179,9 +179,9 @@ export default function ProductsPage() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
+                        className="p-1.5 sm:p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
                       >
-                        <ShoppingBag className="w-4 h-4" />
+                        <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </motion.a>
                     </div>
                   </div>

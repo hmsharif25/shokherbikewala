@@ -25,7 +25,7 @@ export default function CategoriesPage() {
           <p className="text-gray-400">Find the perfect accessories for your ride</p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {demoCategories.map((category, i) => {
             const productCount = demoProducts.filter(p => p.category_id === category.id).length
             return (
@@ -34,7 +34,7 @@ export default function CategoriesPage() {
                   <motion.div
                     whileHover={{ y: -8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="group relative rounded-2xl overflow-hidden h-64 cursor-pointer"
+                    className="group relative rounded-2xl overflow-hidden h-40 sm:h-64 cursor-pointer"
                   >
                     <img
                       src={category.image_url}

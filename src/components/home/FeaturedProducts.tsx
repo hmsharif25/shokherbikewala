@@ -38,7 +38,7 @@ export default function FeaturedProducts() {
           </Link>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {featured.map((product, i) => {
             const category = demoCategories.find((c) => c.id === product.category_id)
             return (
@@ -51,7 +51,7 @@ export default function FeaturedProducts() {
                   whileHover={{ y: -8 }}
                   className="group relative rounded-2xl overflow-hidden glass hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
                 >
-                  <div className="relative h-56 overflow-hidden">
+                  <div className="relative h-36 sm:h-56 overflow-hidden">
                     <img
                       src={product.images[0]}
                       alt={product.name}
@@ -77,38 +77,38 @@ export default function FeaturedProducts() {
                     )}
                   </div>
 
-                  <div className="p-5">
-                    <div className="flex items-center gap-1 mb-2">
+                  <div className="p-3 sm:p-5">
+                    <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                           key={star}
-                          className="w-3.5 h-3.5 fill-gold text-gold"
+                          className="w-2.5 sm:w-3.5 h-2.5 sm:h-3.5 fill-gold text-gold"
                         />
                       ))}
-                      <span className="text-xs text-gray-500 ml-1">(4.8)</span>
+                      <span className="text-[10px] sm:text-xs text-gray-500 ml-1">(4.8)</span>
                     </div>
 
-                    <h3 className="text-white font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                    <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-1">
                       {product.name}
                     </h3>
 
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                    <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 hidden sm:block">
                       {product.description}
                     </p>
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
                         {product.discount_price ? (
                           <>
-                            <span className="text-xl font-display font-bold text-primary">
+                            <span className="text-sm sm:text-xl font-display font-bold text-primary">
                               ৳{product.discount_price.toLocaleString()}
                             </span>
-                            <span className="text-sm text-gray-500 line-through">
+                            <span className="text-[10px] sm:text-sm text-gray-500 line-through">
                               ৳{product.price.toLocaleString()}
                             </span>
                           </>
                         ) : (
-                          <span className="text-xl font-display font-bold text-primary">
+                          <span className="text-sm sm:text-xl font-display font-bold text-primary">
                             ৳{product.price.toLocaleString()}
                           </span>
                         )}
@@ -120,9 +120,9 @@ export default function FeaturedProducts() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        className="p-2.5 rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
+                        className="p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
                       >
-                        <ShoppingBag className="w-5 h-5" />
+                        <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
                       </motion.a>
                     </div>
                   </div>

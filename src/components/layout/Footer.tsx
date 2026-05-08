@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Bike, Facebook, Instagram, MessageCircle, Music2, Mail, MapPin, Phone } from 'lucide-react'
+import { Facebook, Instagram, MessageCircle, Music2, Mail, MapPin, Phone } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 
 const socialLinks = [
@@ -39,8 +39,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <AnimatedSection delay={0}>
             <div className="space-y-4">
-              <Link to="/" className="flex items-center gap-2">
-                <Bike className="w-8 h-8 text-primary" />
+              <Link to="/" className="flex items-center gap-3">
+                <img src="/logo.jpg" alt="Shokher Bike Wala" className="w-12 h-12 rounded-lg object-contain" />
                 <span className="font-display text-xl font-bold bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">
                   Shokher Bike Wala
                 </span>

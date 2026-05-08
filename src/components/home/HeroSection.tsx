@@ -75,8 +75,8 @@ export default function HeroSection() {
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             className="inline-block"
           >
-            <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-primary-600 flex items-center justify-center box-glow">
-              <Zap className="w-10 h-10 text-white" />
+            <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center box-glow border border-white/10 overflow-hidden">
+              <img src="/logo.jpg" alt="Shokher Bike Wala" className="w-full h-full object-contain p-1" />
             </div>
           </motion.div>
         </motion.div>

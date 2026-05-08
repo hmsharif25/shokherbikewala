@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ShoppingBag, Bike } from 'lucide-react'
+import { Menu, X, ShoppingBag } from 'lucide-react'
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -42,14 +42,15 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 lg:h-20">
             <Link to="/" className="flex items-center gap-2 group">
               <motion.div
-                whileHover={{ rotate: 15, scale: 1.1 }}
+                whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 300 }}
+                className="flex items-center gap-2"
               >
-                <Bike className="w-8 h-8 text-primary" />
+                <img src="/logo.jpg" alt="Shokher Bike Wala" className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg object-contain" />
+                <span className="font-display text-base lg:text-xl font-bold bg-gradient-to-r from-primary via-gold to-cyan bg-clip-text text-transparent hidden sm:inline">
+                  Shokher Bike Wala
+                </span>
               </motion.div>
-              <span className="font-display text-lg lg:text-xl font-bold bg-gradient-to-r from-primary via-gold to-cyan bg-clip-text text-transparent">
-                SBW
-              </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-1">
