@@ -1,15 +1,11 @@
 import { motion } from 'framer-motion'
 import { Bike, Heart, Shield, Target, Users, Zap } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import PageTransition from '@/components/ui/PageTransition'
 
 export default function AboutPage() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 speed-lines-bg"
-    >
+    <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center mb-12 sm:mb-16">
           <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-racing tracking-widest mb-4 border border-primary/20 uppercase">
@@ -106,6 +102,6 @@ export default function AboutPage() {
           </div>
         </AnimatedSection>
       </div>
-    </motion.div>
+    </PageTransition>
   )
 }

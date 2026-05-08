@@ -42,7 +42,7 @@ export default function HeroSection() {
   }, [displayText, isTyping, taglineIndex])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
       <ParticleBackground />
 
       <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/50 to-dark z-[1]" />
@@ -67,7 +67,7 @@ export default function HeroSection() {
 
       <div className="absolute inset-0 z-[1] opacity-[0.07] carbon-fiber" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -79,7 +79,7 @@ export default function HeroSection() {
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             className="inline-block"
           >
-            <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 rounded-2xl speedometer-ring flex items-center justify-center animate-neon-border overflow-hidden relative p-1">
+            <div className="w-20 h-20 sm:w-32 sm:h-32 mx-auto mb-4 sm:mb-6 rounded-2xl speedometer-ring flex items-center justify-center animate-neon-border overflow-hidden relative p-1">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-dark/80 to-cyan/10 rounded-2xl" />
               <img src="/logo.png" alt="Shokher Bike Wala" className="w-full h-full object-contain p-3 relative z-10 drop-shadow-[0_0_12px_rgba(255,69,0,0.3)]" />
             </div>
@@ -103,7 +103,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black mb-6 sm:mb-8"
+          className="text-[2.5rem] leading-tight sm:text-6xl md:text-7xl lg:text-8xl font-display font-black mb-4 sm:mb-8"
         >
           <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
             SHOKHER
@@ -122,9 +122,9 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="h-8 sm:h-10 mb-8 sm:mb-10"
+          className="h-7 sm:h-10 mb-6 sm:mb-10"
         >
-          <p className="text-base sm:text-xl md:text-2xl text-cyan font-racing font-light tracking-wide text-glow-cyan">
+          <p className="text-sm sm:text-xl md:text-2xl text-cyan font-racing font-light tracking-wide text-glow-cyan">
             {displayText}
             <motion.span
               animate={{ opacity: [1, 0] }}
@@ -138,13 +138,13 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center mb-14 sm:mb-20 px-4 sm:px-0"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-5 justify-center mb-10 sm:mb-20 px-2 sm:px-0"
         >
           <Link to="/products" className="w-full sm:w-auto">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl text-base sm:text-lg animate-pulse-glow hover:shadow-2xl hover:shadow-primary/40 transition-shadow flex items-center justify-center gap-2 font-racing tracking-wide"
+              className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl text-sm sm:text-lg animate-pulse-glow hover:shadow-2xl hover:shadow-primary/40 transition-shadow flex items-center justify-center gap-2 font-racing tracking-wide"
             >
               <Flame className="w-5 h-5" />
               Explore Products
@@ -154,7 +154,7 @@ export default function HeroSection() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 border border-cyan/30 text-cyan font-bold rounded-xl text-base sm:text-lg hover:bg-cyan/10 hover:border-cyan/60 transition-all flex items-center justify-center gap-2 font-racing tracking-wide"
+              className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 border border-cyan/30 text-cyan font-bold rounded-xl text-sm sm:text-lg hover:bg-cyan/10 hover:border-cyan/60 transition-all flex items-center justify-center gap-2 font-racing tracking-wide"
             >
               <Gauge className="w-5 h-5" />
               Contact Us
@@ -166,7 +166,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
-          className="grid grid-cols-3 gap-3 sm:gap-8 max-w-xl mx-auto"
+          className="grid grid-cols-3 gap-2 sm:gap-8 max-w-md sm:max-w-xl mx-auto"
         >
           {[
             { icon: Shield, label: 'Certified Quality', color: 'text-primary', glow: 'hover:shadow-primary/20' },
