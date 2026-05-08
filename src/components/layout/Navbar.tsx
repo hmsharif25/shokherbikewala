@@ -34,7 +34,7 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'glass-dark shadow-lg shadow-primary/5'
+            ? 'glass-dark shadow-lg shadow-primary/10'
             : 'bg-transparent'
         }`}
       >
@@ -46,7 +46,7 @@ export default function Navbar() {
                 transition={{ type: 'spring', stiffness: 300 }}
                 className="flex items-center gap-2"
               >
-                <img src="/logo.png" alt="Shokher Bike Wala" className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg object-contain" />
+                <img src="/logo.png" alt="Shokher Bike Wala" className="w-10 h-10 lg:w-12 lg:h-12 rounded-lg object-contain drop-shadow-[0_0_8px_rgba(255,69,0,0.3)]" />
                 <span className="font-display text-base lg:text-xl font-bold bg-gradient-to-r from-primary via-gold to-cyan bg-clip-text text-transparent hidden sm:inline">
                   Shokher Bike Wala
                 </span>
@@ -72,7 +72,7 @@ export default function Navbar() {
                   {location.pathname === link.path && (
                     <motion.div
                       layoutId="navbar-indicator"
-                      className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-primary to-cyan rounded-full"
+                      className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-primary to-cyan rounded-full shadow-[0_0_8px_rgba(255,69,0,0.5)]"
                       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     />
                   )}

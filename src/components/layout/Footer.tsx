@@ -35,13 +35,14 @@ export default function Footer() {
     <footer className="relative bg-dark-50 border-t border-white/5">
       <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div className="racing-stripe-divider mb-10 sm:mb-12 rounded-full" />
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10">
           <AnimatedSection delay={0}>
             <div className="space-y-4">
               <Link to="/" className="flex items-center gap-3">
-                <img src="/logo.png" alt="Shokher Bike Wala" className="w-12 h-12 rounded-lg object-contain" />
-                <span className="font-display text-xl font-bold bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">
+                <img src="/logo.png" alt="Shokher Bike Wala" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-contain drop-shadow-[0_0_8px_rgba(255,69,0,0.3)]" />
+                <span className="font-display text-sm sm:text-xl font-bold bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">
                   Shokher Bike Wala
                 </span>
               </Link>

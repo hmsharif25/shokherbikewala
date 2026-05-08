@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ChevronDown, Zap, Shield, Truck } from 'lucide-react'
+import { ChevronDown, Zap, Shield, Truck, Gauge, Flame } from 'lucide-react'
 import ParticleBackground from '@/components/ui/ParticleBackground'
 import { useEffect, useState } from 'react'
 
@@ -47,15 +47,26 @@ export default function HeroSection() {
 
       <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/60 to-dark z-[1]" />
 
+      {/* Animated speed lines */}
+      <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
+        <div className="absolute top-[20%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-speed-lines" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-[40%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan/20 to-transparent animate-speed-lines" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-[60%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/20 to-transparent animate-speed-lines" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-[80%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-speed-lines" style={{ animationDelay: '0.3s' }} />
+      </div>
+
       <div className="absolute inset-0 z-[1]">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
         <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gold/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
       </div>
 
+      {/* Checkered flag accent */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 z-[1] checkered-accent opacity-30" />
+
       <div className="absolute inset-0 z-[1] opacity-10">
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 speed-lines-bg"
           style={{
             backgroundImage: `linear-gradient(rgba(255,69,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,69,0,0.1) 1px, transparent 1px)`,
             backgroundSize: '60px 60px',
@@ -63,7 +74,7 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -75,8 +86,9 @@ export default function HeroSection() {
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             className="inline-block"
           >
-            <div className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-4 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center box-glow border border-white/10 overflow-hidden">
-              <img src="/logo.png" alt="Shokher Bike Wala" className="w-full h-full object-contain p-1" />
+            <div className="w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-6 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center animate-neon-border border border-primary/20 overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-cyan/10" />
+              <img src="/logo.png" alt="Shokher Bike Wala" className="w-full h-full object-contain p-2 relative z-10" />
             </div>
           </motion.div>
         </motion.div>
@@ -85,7 +97,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-black mb-6"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-black mb-8"
         >
           <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
             SHOKHER
@@ -100,7 +112,7 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="h-8 mb-8"
+          className="h-8 mb-10"
         >
           <p className="text-lg sm:text-xl md:text-2xl text-cyan font-light tracking-wide text-glow-cyan">
             {displayText}
@@ -116,14 +128,15 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+          className="flex flex-col sm:flex-row gap-5 justify-center mb-20"
         >
           <Link to="/products">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl text-lg animate-pulse-glow hover:shadow-2xl hover:shadow-primary/40 transition-shadow"
+              className="px-10 py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl text-lg animate-pulse-glow hover:shadow-2xl hover:shadow-primary/40 transition-shadow flex items-center gap-2"
             >
+              <Flame className="w-5 h-5" />
               Explore Products
             </motion.button>
           </Link>
@@ -131,8 +144,9 @@ export default function HeroSection() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 border border-cyan/30 text-cyan font-bold rounded-xl text-lg hover:bg-cyan/10 hover:border-cyan/60 transition-all"
+              className="px-10 py-4 border border-cyan/30 text-cyan font-bold rounded-xl text-lg hover:bg-cyan/10 hover:border-cyan/60 transition-all flex items-center gap-2"
             >
+              <Gauge className="w-5 h-5" />
               Contact Us
             </motion.button>
           </Link>
@@ -142,7 +156,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
-          className="grid grid-cols-3 gap-6 max-w-lg mx-auto"
+          className="grid grid-cols-3 gap-8 max-w-xl mx-auto"
         >
           {[
             { icon: Shield, label: 'Certified Quality', color: 'text-primary' },
@@ -154,10 +168,10 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.4 + i * 0.15 }}
-              className="text-center"
+              className="text-center p-3 rounded-xl bg-white/5 backdrop-blur-sm border border-white/5 hover:border-primary/20 transition-all"
             >
-              <item.icon className={`w-6 h-6 mx-auto mb-2 ${item.color}`} />
-              <span className="text-xs text-gray-400">{item.label}</span>
+              <item.icon className={`w-7 h-7 mx-auto mb-2 ${item.color}`} />
+              <span className="text-xs text-gray-300 font-medium">{item.label}</span>
             </motion.div>
           ))}
         </motion.div>

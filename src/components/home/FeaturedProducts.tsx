@@ -8,14 +8,17 @@ export default function FeaturedProducts() {
   const featured = demoProducts.filter((p) => p.featured)
 
   return (
-    <section className="relative py-24">
+    <section className="relative py-16 sm:py-24">
       <div className="absolute inset-0">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-cyan/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
+        {/* Racing stripe divider top */}
+        <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
+
+        <AnimatedSection className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-14 gap-4">
           <div>
             <motion.span className="inline-block px-4 py-1.5 rounded-full bg-cyan/10 text-cyan text-sm font-semibold mb-4 border border-cyan/20">
               HOT DEALS
@@ -38,7 +41,7 @@ export default function FeaturedProducts() {
           </Link>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {featured.map((product, i) => {
             const category = demoCategories.find((c) => c.id === product.category_id)
             return (
@@ -48,10 +51,10 @@ export default function FeaturedProducts() {
                 direction={i % 2 === 0 ? 'left' : 'right'}
               >
                 <motion.div
-                  whileHover={{ y: -8 }}
-                  className="group relative rounded-2xl overflow-hidden glass hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="group relative rounded-2xl overflow-hidden glass racing-card hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 animate-neon-border"
                 >
-                  <div className="relative h-36 sm:h-56 overflow-hidden">
+                  <div className="relative h-40 sm:h-60 overflow-hidden">
                     <img
                       src={product.images[0]}
                       alt={product.name}
@@ -77,7 +80,7 @@ export default function FeaturedProducts() {
                     )}
                   </div>
 
-                  <div className="p-3 sm:p-5">
+                  <div className="p-3 sm:p-6">
                     <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star

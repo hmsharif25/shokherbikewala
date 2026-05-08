@@ -39,7 +39,7 @@ const socialLinks = [
 
 export default function BrandProfile() {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-16 sm:py-24 overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-dark via-surface/50 to-dark" />
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -47,7 +47,9 @@ export default function BrandProfile() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
+        <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
+
+        <AnimatedSection className="text-center mb-10 sm:mb-16">
           <motion.span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4 border border-primary/20">
             CONNECT WITH US
           </motion.span>
@@ -64,7 +66,7 @@ export default function BrandProfile() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {socialLinks.map((social, i) => (
             <AnimatedSection key={social.name} delay={i * 0.1} direction="up">
               <motion.a
@@ -73,13 +75,13 @@ export default function BrandProfile() {
                 rel="noopener noreferrer"
                 whileHover={{ y: -8, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`block p-6 rounded-2xl glass group cursor-pointer transition-all duration-300 hover:shadow-2xl ${social.hoverGlow}`}
+                className={`block p-4 sm:p-6 rounded-2xl glass racing-card group cursor-pointer transition-all duration-300 hover:shadow-2xl ${social.hoverGlow}`}
               >
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${social.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <social.icon className="w-7 h-7 text-white" />
+                <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${social.color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+                  <social.icon className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                 </div>
-                <h3 className="text-white font-bold text-lg mb-1">{social.name}</h3>
-                <p className="text-gray-400 text-sm mb-3">{social.handle}</p>
+                <h3 className="text-white font-bold text-sm sm:text-lg mb-1">{social.name}</h3>
+                <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 truncate">{social.handle}</p>
                 <div className="flex items-center gap-1 text-xs text-gray-500 group-hover:text-primary transition-colors">
                   <span>Visit</span>
                   <ExternalLink className="w-3 h-3" />

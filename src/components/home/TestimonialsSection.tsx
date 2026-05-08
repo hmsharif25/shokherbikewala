@@ -48,12 +48,14 @@ export default function TestimonialsSection() {
   const next = () => setCurrent((c) => (c + 1) % testimonials.length)
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-16 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-dark via-surface/30 to-dark" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
+        <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
+
+        <AnimatedSection className="text-center mb-10 sm:mb-16">
           <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gold/10 text-gold text-sm font-semibold mb-4 border border-gold/20">
             TESTIMONIALS
           </motion.span>
@@ -76,7 +78,7 @@ export default function TestimonialsSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.4 }}
-                className="p-8 md:p-12 rounded-2xl glass text-center"
+                className="p-6 sm:p-8 md:p-12 rounded-2xl glass-premium tachometer-glow text-center"
               >
                 <Quote className="w-10 h-10 text-primary/30 mx-auto mb-6" />
 

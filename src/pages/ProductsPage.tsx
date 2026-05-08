@@ -28,7 +28,7 @@ export default function ProductsPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-24 pb-16"
+      className="min-h-screen pt-24 pb-16 speed-lines-bg"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-10">
@@ -124,7 +124,7 @@ export default function ProductsPage() {
               <AnimatedSection key={product.id} delay={i * 0.05}>
                 <motion.div
                   whileHover={{ y: -5 }}
-                  className="group rounded-2xl overflow-hidden glass-premium hover:shadow-xl hover:shadow-primary/10 transition-all duration-500"
+                  className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500"
                 >
                   <div className="relative h-32 sm:h-48 overflow-hidden">
                     <img
