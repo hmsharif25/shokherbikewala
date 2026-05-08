@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { Product, Category, BrandSettings, Testimonial, Inquiry } from '@/types'
 import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
+import { isSupabaseConfigured } from '@/lib/supabase'
+import { loadRemotePublic } from '@/lib/db'
 
 interface StoreState {
   products: Product[]
@@ -29,6 +31,7 @@ interface StoreContextType extends StoreState {
   updateInquiry: (id: number, inquiry: Inquiry) => void
   deleteInquiry: (id: number) => void
   resetAll: () => void
+  remoteLoaded: boolean
 }
 
 const STORAGE_KEY = 'sbw_store'
@@ -67,10 +70,37 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoreState>(() => {
     return loadFromStorage() || defaultState
   })
+  const [remoteLoaded, setRemoteLoaded] = useState(false)
 
   useEffect(() => {
     saveToStorage(state)
   }, [state])
+
+  // Hydrate public data from Supabase when configured.
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return
+    let cancelled = false
+    loadRemotePublic().then((remote) => {
+      if (cancelled) return
+      setState((prev) => ({
+        products: remote.products && remote.products.length > 0
+          ? remote.products
+          : prev.products,
+        categories: remote.categories && remote.categories.length > 0
+          ? remote.categories
+          : prev.categories,
+        brandSettings: remote.brandSettings ?? prev.brandSettings,
+        testimonials: remote.testimonials && remote.testimonials.length > 0
+          ? remote.testimonials
+          : prev.testimonials,
+        inquiries: prev.inquiries,
+      }))
+      setRemoteLoaded(true)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const setProducts = useCallback((products: Product[]) => {
     setState(prev => ({ ...prev, products }))
@@ -190,6 +220,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       updateInquiry,
       deleteInquiry,
       resetAll,
+      remoteLoaded,
     }}>
       {children}
     </StoreContext.Provider>

@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Bike, Lock, Mail, Eye, EyeOff } from 'lucide-react'
+import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react'
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
+import ParticleBackground from '@/components/ui/ParticleBackground'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')
@@ -12,7 +13,7 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const { signInWithEmail } = useAuth()
+  const { signInWithEmail, isAdmin } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,15 +23,25 @@ export default function AdminLoginPage() {
     const { error: authError } = await signInWithEmail(email, password)
     if (authError) {
       setError(authError)
-    } else {
-      navigate('/admin')
+      setLoading(false)
+      return
     }
-    setLoading(false)
+    // Wait a tick for context to flush; navigate after.
+    setTimeout(() => {
+      navigate('/admin')
+      setLoading(false)
+    }, 50)
   }
 
+  // Already authenticated as admin? Skip the form.
+  useEffect(() => {
+    if (isAdmin) navigate('/admin', { replace: true })
+  }, [isAdmin, navigate])
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-dark">
-      <div className="absolute inset-0">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-dark relative overflow-hidden">
+      <ParticleBackground />
+      <div className="absolute inset-0 z-[1]">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan/5 rounded-full blur-3xl" />
       </div>
@@ -39,25 +50,44 @@ export default function AdminLoginPage() {
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative w-full max-w-md"
+        className="relative z-10 w-full max-w-md"
       >
-        <div className="p-8 rounded-2xl glass">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-primary transition-colors mb-6 text-sm font-racing"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Store
+        </Link>
+
+        <div className="p-8 rounded-2xl glass-premium border border-white/10">
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-              className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-primary to-primary-600 flex items-center justify-center box-glow"
+              className="w-16 h-16 mx-auto mb-4 rounded-2xl speedometer-ring flex items-center justify-center overflow-hidden relative p-0.5"
             >
-              <Bike className="w-8 h-8 text-white" />
+              <div className="w-full h-full bg-dark rounded-xl flex items-center justify-center relative">
+                <img
+                  src="/logo.png"
+                  alt="Shokher Bike Wala"
+                  className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,69,0,0.6)]"
+                />
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan absolute -bottom-0.5 -right-0.5 bg-dark rounded-full p-0.5 border border-cyan/40" />
+              </div>
             </motion.div>
-            <h1 className="text-2xl font-display font-bold text-white mb-1">Admin Panel</h1>
-            <p className="text-gray-400 text-sm">Sign in to manage your store</p>
+            <h1 className="text-2xl font-display font-bold text-white mb-1">
+              <span className="bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent">Admin</span> Panel
+            </h1>
+            <p className="text-gray-400 text-sm font-racing tracking-wide">
+              Sign in to manage your store
+            </p>
           </div>
 
           {!isSupabaseConfigured() && (
-            <div className="mb-6 p-3 rounded-lg bg-gold/10 border border-gold/20 text-gold text-sm text-center">
-              Demo mode - Supabase not configured. Click login to enter demo admin.
+            <div className="mb-6 p-3 rounded-lg bg-gold/10 border border-gold/20 text-gold text-xs text-center font-racing tracking-wide">
+              Demo mode — admin password is <code className="px-1">admin</code>. Set <code className="px-1">VITE_SUPABASE_ANON_KEY</code> for real auth.
             </div>
           )}
 

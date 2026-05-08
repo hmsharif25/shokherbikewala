@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ShoppingBag, Zap, User, LogOut } from 'lucide-react'
+import { Menu, X, ShoppingBag, Zap, User, LogOut, ShieldCheck } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 
 const navLinks = [
@@ -16,7 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
-  const { user, signOut } = useAuth()
+  const { user, isAdmin, signOut } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -113,7 +113,17 @@ export default function Navbar() {
 
               {user ? (
                 <div className="hidden md:flex items-center gap-2">
-                  <span className="text-xs text-gray-400 font-racing">{user.name || user.email}</span>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-primary/15 to-gold/10 border border-primary/30 text-primary text-xs font-racing tracking-wide hover:from-primary/25 hover:to-gold/20 transition-all"
+                      title="Admin panel"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      Admin
+                    </Link>
+                  )}
+                  <span className="text-xs text-gray-400 font-racing max-w-[150px] truncate">{user.name || user.email}</span>
                   <button
                     onClick={() => signOut()}
                     className="p-2 text-gray-400 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
@@ -200,14 +210,26 @@ export default function Navbar() {
               <div className="absolute bottom-8 left-6 right-6">
                 <div className="h-px bg-gradient-to-r from-primary/30 via-cyan/20 to-transparent mb-4" />
                 {user ? (
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400 text-xs font-racing">{user.name || user.email}</span>
-                    <button
-                      onClick={() => signOut()}
-                      className="text-xs text-red-400 hover:text-red-300 font-racing"
-                    >
-                      Sign Out
-                    </button>
+                  <div className="space-y-3">
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary/15 to-gold/10 border border-primary/30 text-primary text-sm font-racing tracking-wide"
+                      >
+                        <ShieldCheck className="w-4 h-4" />
+                        Admin Panel
+                      </Link>
+                    )}
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400 text-xs font-racing truncate">{user.name || user.email}</span>
+                      <button
+                        onClick={() => signOut()}
+                        className="text-xs text-red-400 hover:text-red-300 font-racing flex items-center gap-1"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        Sign Out
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <Link
