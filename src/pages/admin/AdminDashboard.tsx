@@ -19,6 +19,7 @@ import {
 import { useState } from 'react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
+import { useAuth } from '@/context/AuthContext'
 
 const sidebarLinks = [
   { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
@@ -122,8 +123,10 @@ export default function AdminDashboard() {
   const navigate = useNavigate()
   const isExactDashboard = location.pathname === '/admin'
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_demo')
+  const { signOut } = useAuth()
+
+  const handleLogout = async () => {
+    await signOut()
     navigate('/admin/login')
   }
 

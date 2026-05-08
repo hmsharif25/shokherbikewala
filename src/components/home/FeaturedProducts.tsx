@@ -52,86 +52,89 @@ export default function FeaturedProducts() {
                 delay={i * 0.1}
                 direction={i % 2 === 0 ? 'left' : 'right'}
               >
-                <motion.div
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="group relative rounded-2xl overflow-hidden glass racing-card hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/20"
-                >
-                  <div className="relative h-40 sm:h-60 overflow-hidden">
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />
+                <Link to={`/products/${product.slug}`}>
+                  <motion.div
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className="group relative rounded-2xl overflow-hidden glass racing-card hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/20"
+                  >
+                    <div className="relative h-40 sm:h-60 overflow-hidden">
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />
 
-                    {product.discount_price && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute top-3 left-3 px-3 py-1 bg-primary rounded-full text-xs font-bold text-white flex items-center gap-1"
-                      >
-                        <Tag className="w-3 h-3" />
-                        {Math.round(((product.price - product.discount_price) / product.price) * 100)}% OFF
-                      </motion.div>
-                    )}
+                      {product.discount_price && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute top-3 left-3 px-3 py-1 bg-primary rounded-full text-xs font-bold text-white flex items-center gap-1"
+                        >
+                          <Tag className="w-3 h-3" />
+                          {Math.round(((product.price - product.discount_price) / product.price) * 100)}% OFF
+                        </motion.div>
+                      )}
 
-                    {category && (
-                      <div className="absolute top-3 right-3 px-3 py-1 glass rounded-full text-xs text-gray-300">
-                        {category.name}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-3 sm:p-5">
-                    <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className="w-2.5 sm:w-3.5 h-2.5 sm:h-3.5 fill-gold text-gold"
-                        />
-                      ))}
-                      <span className="text-[10px] sm:text-xs text-gray-500 ml-1">(4.8)</span>
+                      {category && (
+                        <div className="absolute top-3 right-3 px-3 py-1 glass rounded-full text-xs text-gray-300">
+                          {category.name}
+                        </div>
+                      )}
                     </div>
 
-                    <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-1 font-racing">
-                      {product.name}
-                    </h3>
+                    <div className="p-3 sm:p-5">
+                      <div className="flex items-center gap-0.5 sm:gap-1 mb-1 sm:mb-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            className="w-2.5 sm:w-3.5 h-2.5 sm:h-3.5 fill-gold text-gold"
+                          />
+                        ))}
+                        <span className="text-[10px] sm:text-xs text-gray-500 ml-1">(4.8)</span>
+                      </div>
 
-                    <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 hidden sm:block">
-                      {product.description}
-                    </p>
+                      <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-1 font-racing">
+                        {product.name}
+                      </h3>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
-                        {product.discount_price ? (
-                          <>
+                      <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 hidden sm:block">
+                        {product.description}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+                          {product.discount_price ? (
+                            <>
+                              <span className="text-sm sm:text-xl font-display font-bold text-primary">
+                                ৳{product.discount_price.toLocaleString()}
+                              </span>
+                              <span className="text-[10px] sm:text-sm text-gray-500 line-through">
+                                ৳{product.price.toLocaleString()}
+                              </span>
+                            </>
+                          ) : (
                             <span className="text-sm sm:text-xl font-display font-bold text-primary">
-                              ৳{product.discount_price.toLocaleString()}
-                            </span>
-                            <span className="text-[10px] sm:text-sm text-gray-500 line-through">
                               ৳{product.price.toLocaleString()}
                             </span>
-                          </>
-                        ) : (
-                          <span className="text-sm sm:text-xl font-display font-bold text-primary">
-                            ৳{product.price.toLocaleString()}
-                          </span>
-                        )}
-                      </div>
+                          )}
+                        </div>
 
-                      <motion.a
-                        href={`https://wa.me/8801518934708?text=Hi! I'm interested in ${product.name} (৳${(product.discount_price || product.price).toLocaleString()})`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
-                      >
-                        <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </motion.a>
+                        <motion.a
+                          href={`https://wa.me/8801518934708?text=Hi! I'm interested in ${product.name} (৳${(product.discount_price || product.price).toLocaleString()})`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
+                        >
+                          <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+                        </motion.a>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               </AnimatedSection>
             )
           })}

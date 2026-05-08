@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Bike, Lock, Mail, Eye, EyeOff } from 'lucide-react'
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { isSupabaseConfigured } from '@/lib/supabase'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')
@@ -11,34 +12,20 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { signInWithEmail } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    if (!isSupabaseConfigured()) {
-      localStorage.setItem('admin_demo', 'true')
+    const { error: authError } = await signInWithEmail(email, password)
+    if (authError) {
+      setError(authError)
+    } else {
       navigate('/admin')
-      return
     }
-
-    try {
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      if (authError) {
-        setError(authError.message)
-      } else {
-        navigate('/admin')
-      }
-    } catch {
-      setError('An unexpected error occurred')
-    } finally {
-      setLoading(false)
-    }
+    setLoading(false)
   }
 
   return (

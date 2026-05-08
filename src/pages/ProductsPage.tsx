@@ -4,7 +4,7 @@ import { Search, SlidersHorizontal, ShoppingBag, Star, Tag, X } from 'lucide-rea
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
 import { useStore } from '@/context/StoreContext'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, Link } from 'react-router-dom'
 
 export default function ProductsPage() {
   const { products, categories, brandSettings } = useStore()
@@ -119,70 +119,73 @@ export default function ProductsPage() {
             const category = categories.find((c) => c.id === product.category_id)
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
-                <motion.div
-                  whileHover={{ y: -5 }}
-                  className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/15"
-                >
-                  <div className="relative h-32 sm:h-48 overflow-hidden">
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />
-                    {product.discount_price && (
-                      <div className="absolute top-2 left-2 sm:top-3 sm:left-3 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary rounded-full text-[10px] sm:text-xs font-bold text-white flex items-center gap-0.5 sm:gap-1">
-                        <Tag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                        {Math.round(((product.price - product.discount_price) / product.price) * 100)}% OFF
-                      </div>
-                    )}
-                    {category && (
-                      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2 py-0.5 sm:py-1 glass rounded-full text-[10px] sm:text-xs text-gray-300 hidden sm:block">
-                        {category.name}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-2.5 sm:p-4">
-                    <div className="flex items-center gap-0.5 mb-1 sm:mb-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-gold text-gold" />
-                      ))}
+                <Link to={`/products/${product.slug}`}>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/15"
+                  >
+                    <div className="relative h-32 sm:h-48 overflow-hidden">
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />
+                      {product.discount_price && (
+                        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary rounded-full text-[10px] sm:text-xs font-bold text-white flex items-center gap-0.5 sm:gap-1">
+                          <Tag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                          {Math.round(((product.price - product.discount_price) / product.price) * 100)}% OFF
+                        </div>
+                      )}
+                      {category && (
+                        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2 py-0.5 sm:py-1 glass rounded-full text-[10px] sm:text-xs text-gray-300 hidden sm:block">
+                          {category.name}
+                        </div>
+                      )}
                     </div>
-                    <h3 className="text-white font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1 font-racing">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-400 text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        {product.discount_price ? (
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+
+                    <div className="p-2.5 sm:p-4">
+                      <div className="flex items-center gap-0.5 mb-1 sm:mb-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-gold text-gold" />
+                        ))}
+                      </div>
+                      <h3 className="text-white font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1 font-racing">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-400 text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          {product.discount_price ? (
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+                              <span className="text-sm sm:text-lg font-display font-bold text-primary">
+                                ৳{product.discount_price.toLocaleString()}
+                              </span>
+                              <span className="text-[10px] sm:text-xs text-gray-500 line-through">
+                                ৳{product.price.toLocaleString()}
+                              </span>
+                            </div>
+                          ) : (
                             <span className="text-sm sm:text-lg font-display font-bold text-primary">
-                              ৳{product.discount_price.toLocaleString()}
-                            </span>
-                            <span className="text-[10px] sm:text-xs text-gray-500 line-through">
                               ৳{product.price.toLocaleString()}
                             </span>
-                          </div>
-                        ) : (
-                          <span className="text-sm sm:text-lg font-display font-bold text-primary">
-                            ৳{product.price.toLocaleString()}
-                          </span>
-                        )}
+                          )}
+                        </div>
+                        <motion.a
+                          href={`${brandSettings.whatsapp}?text=Hi! I'm interested in ${product.name}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-1.5 sm:p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        </motion.a>
                       </div>
-                      <motion.a
-                        href={`${brandSettings.whatsapp}?text=Hi! I'm interested in ${product.name}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-1.5 sm:p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      </motion.a>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               </AnimatedSection>
             )
           })}
