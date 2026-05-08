@@ -51,10 +51,15 @@ export default {
       fontFamily: {
         display: ['Orbitron', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        racing: ['Rajdhani', 'sans-serif'],
       },
       animation: {
         'spin-slow': 'spin 8s linear infinite',
         'bounce-slow': 'bounce 3s infinite',
+        'turbo-spin': 'turboSpin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+        'engine-pulse': 'enginePulse 1.5s ease-in-out infinite',
+        'drift-in': 'driftIn 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+        'nitro-glow': 'nitroGlow 2s ease-in-out infinite',
       },
     },
   },

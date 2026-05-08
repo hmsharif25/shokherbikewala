@@ -82,7 +82,7 @@ function Counter({ end, suffix = '', label }: CounterProps) {
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-white mb-1">
+      <div className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-white mb-1">
         {count.toLocaleString()}
         <span className="text-primary">{suffix}</span>
       </div>
@@ -93,7 +93,7 @@ function Counter({ end, suffix = '', label }: CounterProps) {
 
 export default function FeaturesSection() {
   return (
-    <section className="relative py-16 sm:py-24 speed-lines-bg">
+    <section className="relative py-14 sm:py-24 speed-lines-bg">
       <div className="absolute inset-0">
         <div className="absolute top-0 right-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-cyan/5 rounded-full blur-3xl" />
@@ -103,7 +103,7 @@ export default function FeaturesSection() {
         <div className="racing-stripe-divider mb-10 sm:mb-14 rounded-full" />
 
         <AnimatedSection className="mb-16 sm:mb-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 py-8 sm:py-12 px-4 sm:px-8 rounded-2xl glass-premium tachometer-glow">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 py-8 sm:py-12 px-4 sm:px-8 rounded-2xl glass-premium tachometer-glow hud-border">
             <Counter end={5000} suffix="+" label="Products Sold" />
             <Counter end={2500} suffix="+" label="Happy Riders" />
             <Counter end={150} suffix="+" label="Brands" />
@@ -112,7 +112,7 @@ export default function FeaturesSection() {
         </AnimatedSection>
 
         <AnimatedSection className="text-center mb-10 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Why Choose{' '}
             </span>
@@ -125,12 +125,12 @@ export default function FeaturesSection() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
           {features.map((feature, i) => (
             <AnimatedSection key={feature.title} delay={i * 0.1}>
               <motion.div
                 whileHover={{ y: -5, scale: 1.02 }}
-                className="p-4 sm:p-6 rounded-2xl glass racing-card group hover:shadow-xl hover:shadow-primary/10 transition-all duration-300"
+                className="p-4 sm:p-6 rounded-2xl glass racing-card group hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border border-white/5 hover:border-primary/15"
               >
                 <motion.div
                   whileHover={{ rotate: 10, scale: 1.1 }}
@@ -138,7 +138,7 @@ export default function FeaturesSection() {
                 >
                   <feature.icon className={`w-5 h-5 sm:w-7 sm:h-7 ${feature.color}`} />
                 </motion.div>
-                <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-white font-bold text-sm sm:text-lg mb-1 sm:mb-2 group-hover:text-primary transition-colors font-racing">
                   {feature.title}
                 </h3>
                 <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">

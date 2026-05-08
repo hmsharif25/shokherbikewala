@@ -56,14 +56,14 @@ export default function ContactPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-24 pb-16"
+      className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 speed-lines-bg"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
-          <motion.span className="inline-block px-4 py-1.5 rounded-full bg-cyan/10 text-cyan text-sm font-semibold mb-4 border border-cyan/20">
-            GET IN TOUCH
+        <AnimatedSection className="text-center mb-10 sm:mb-16">
+          <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-cyan/10 text-cyan text-xs sm:text-sm font-racing tracking-widest mb-4 border border-cyan/20 uppercase">
+            Get In Touch
           </motion.span>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold mb-6">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-display font-bold mb-4 sm:mb-6">
             <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Contact{' '}
             </span>
@@ -71,7 +71,7 @@ export default function ContactPage() {
               Us
             </span>
           </h1>
-          <p className="text-gray-400 max-w-xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-lg">
             Have a question? Need help choosing the right accessory? We&apos;re here to help!
           </p>
         </AnimatedSection>
@@ -91,12 +91,12 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     whileHover={{ y: -5, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`block p-5 rounded-2xl glass group cursor-pointer transition-all duration-300 hover:shadow-xl ${method.hoverGlow}`}
+                    className={`block p-4 sm:p-5 rounded-2xl glass group cursor-pointer transition-all duration-300 hover:shadow-xl border border-white/5 hover:border-white/10 racing-card ${method.hoverGlow}`}
                   >
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${method.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
                       <method.icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="text-white font-bold mb-1">{method.title}</h3>
+                    <h3 className="text-white font-bold mb-1 font-racing">{method.title}</h3>
                     <p className="text-gray-500 text-xs mb-1">{method.description}</p>
                     <p className="text-gray-300 text-sm">{method.value}</p>
                   </motion.a>
@@ -105,8 +105,8 @@ export default function ContactPage() {
             </div>
 
             <AnimatedSection delay={0.4}>
-              <div className="p-6 rounded-2xl glass mt-6">
-                <h3 className="text-white font-bold text-lg mb-4">Quick Info</h3>
+              <div className="p-5 sm:p-6 rounded-2xl glass mt-6 border border-white/5">
+                <h3 className="text-white font-bold text-lg mb-4 font-racing">Quick Info</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-gray-400">
                     <Phone className="w-5 h-5 text-primary flex-shrink-0" />
@@ -126,8 +126,8 @@ export default function ContactPage() {
           </div>
 
           <AnimatedSection delay={0.2} direction="right">
-            <div className="p-8 rounded-2xl glass">
-              <h2 className="text-2xl font-display font-bold text-white mb-2">Send a Message</h2>
+            <div className="p-6 sm:p-8 rounded-2xl glass border border-white/5">
+              <h2 className="text-xl sm:text-2xl font-display font-bold text-white mb-2">Send a Message</h2>
               <p className="text-gray-400 text-sm mb-6">
                 Fill out the form and we&apos;ll reply via WhatsApp
               </p>
