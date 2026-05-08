@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
-import { demoCategories, demoProducts } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 
 export default function CategoriesPage() {
+  const { categories: demoCategories, products: demoProducts } = useStore()
   return (
     <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

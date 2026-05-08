@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Pencil, Trash2, X, Save, Grid3X3 } from 'lucide-react'
-import { demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 import { Category } from '@/types'
 
 export default function CategoriesManage() {
-  const [categories, setCategories] = useState<Category[]>(demoCategories)
+  const { categories, addCategory, updateCategory, deleteCategory } = useStore()
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
   const [isAdding, setIsAdding] = useState(false)
   const [form, setForm] = useState({ name: '', image_url: '' })
@@ -32,9 +32,9 @@ export default function CategoriesManage() {
     }
 
     if (editingCategory) {
-      setCategories(categories.map(c => c.id === editingCategory.id ? newCat : c))
+      updateCategory(editingCategory.id, newCat)
     } else {
-      setCategories([newCat, ...categories])
+      addCategory(newCat)
     }
     setIsAdding(false)
     setEditingCategory(null)
@@ -42,7 +42,7 @@ export default function CategoriesManage() {
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this category?')) {
-      setCategories(categories.filter(c => c.id !== id))
+      deleteCategory(id)
     }
   }
 

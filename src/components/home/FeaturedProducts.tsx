@@ -2,10 +2,11 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ShoppingBag, ArrowRight, Star, Tag, Zap } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-import { demoProducts, demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 
 export default function FeaturedProducts() {
-  const featured = demoProducts.filter((p) => p.featured)
+  const { products, categories } = useStore()
+  const featured = products.filter((p) => p.featured)
 
   return (
     <section className="relative py-14 sm:py-24">
@@ -44,7 +45,7 @@ export default function FeaturedProducts() {
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {featured.map((product, i) => {
-            const category = demoCategories.find((c) => c.id === product.category_id)
+            const category = categories.find((c) => c.id === product.category_id)
             return (
               <AnimatedSection
                 key={product.id}

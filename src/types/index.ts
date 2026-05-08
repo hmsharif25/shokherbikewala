@@ -31,3 +31,21 @@ export interface BrandSettings {
   tiktok: string
   instagram: string
 }
+
+export interface Testimonial {
+  id: number
+  name: string
+  rating: number
+  text: string
+  product: string
+}
+
+export interface Inquiry {
+  id: number
+  customer_name: string
+  phone: string
+  product_name: string
+  message: string
+  status: 'new' | 'contacted' | 'completed' | 'cancelled'
+  created_at: string
+}

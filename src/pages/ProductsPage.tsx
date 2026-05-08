@@ -3,26 +3,27 @@ import { motion } from 'framer-motion'
 import { Search, SlidersHorizontal, ShoppingBag, Star, Tag, X } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
-import { demoProducts, demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 import { useSearchParams } from 'react-router-dom'
 
 export default function ProductsPage() {
+  const { products, categories, brandSettings } = useStore()
   const [searchParams] = useSearchParams()
   const categorySlug = searchParams.get('category')
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    categorySlug ? demoCategories.find(c => c.slug === categorySlug)?.id || null : null
+    categorySlug ? categories.find(c => c.slug === categorySlug)?.id || null : null
   )
   const [showFilters, setShowFilters] = useState(false)
 
   const filteredProducts = useMemo(() => {
-    return demoProducts.filter((p) => {
+    return products.filter((p) => {
       const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
         p.description.toLowerCase().includes(search.toLowerCase())
       const matchCategory = !selectedCategory || p.category_id === selectedCategory
       return matchSearch && matchCategory
     })
-  }, [search, selectedCategory])
+  }, [search, selectedCategory, products])
 
   return (
     <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
@@ -83,7 +84,7 @@ export default function ProductsPage() {
                 >
                   All
                 </button>
-                {demoCategories.map((cat) => (
+                {categories.map((cat) => (
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id === selectedCategory ? null : cat.id)}
@@ -105,7 +106,7 @@ export default function ProductsPage() {
           <div className="mb-6 flex items-center gap-2">
             <span className="text-gray-400 text-sm">Filtered by:</span>
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
-              {demoCategories.find(c => c.id === selectedCategory)?.name}
+              {categories.find(c => c.id === selectedCategory)?.name}
               <button onClick={() => setSelectedCategory(null)}>
                 <X className="w-3 h-3" />
               </button>
@@ -115,7 +116,7 @@ export default function ProductsPage() {
 
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
           {filteredProducts.map((product, i) => {
-            const category = demoCategories.find((c) => c.id === product.category_id)
+            const category = categories.find((c) => c.id === product.category_id)
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
                 <motion.div
@@ -170,7 +171,7 @@ export default function ProductsPage() {
                         )}
                       </div>
                       <motion.a
-                        href={`https://wa.me/8801518934708?text=Hi! I'm interested in ${product.name}`}
+                        href={`${brandSettings.whatsapp}?text=Hi! I'm interested in ${product.name}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.1 }}

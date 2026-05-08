@@ -2,9 +2,10 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-import { demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 
 export default function CategoriesSection() {
+  const { categories: demoCategories } = useStore()
   return (
     <section className="relative py-14 sm:py-24">
       <div className="absolute inset-0 bg-gradient-to-b from-dark via-surface/30 to-dark" />

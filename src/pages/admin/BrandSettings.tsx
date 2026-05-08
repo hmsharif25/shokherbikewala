@@ -1,16 +1,26 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Bike } from 'lucide-react'
-import { demoBrandSettings } from '@/data/demo-data'
+import { Save, Bike, RotateCcw } from 'lucide-react'
+import { useStore } from '@/context/StoreContext'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 
 export default function BrandSettings() {
-  const [settings, setSettings] = useState(demoBrandSettings)
+  const store = useStore()
+  const [settings, setSettings] = useState(store.brandSettings)
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
+    store.setBrandSettings(settings)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleReset = () => {
+    if (confirm('Reset all data to defaults? This will clear all your changes.')) {
+      store.resetAll()
+      setSettings(store.brandSettings)
+      window.location.reload()
+    }
   }
 
   return (
@@ -116,6 +126,15 @@ export default function BrandSettings() {
             >
               <Save className="w-4 h-4" />
               Save Settings
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleReset}
+              className="flex items-center gap-2 px-6 py-2.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 font-medium rounded-lg text-sm transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Reset All Data
             </motion.button>
             {saved && (
               <motion.span
