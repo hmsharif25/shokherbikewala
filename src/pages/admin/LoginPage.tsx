@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react'
 import { isSupabaseConfigured } from '@/lib/supabase'
@@ -34,9 +34,9 @@ export default function AdminLoginPage() {
   }
 
   // Already authenticated as admin? Skip the form.
-  if (isAdmin) {
-    navigate('/admin', { replace: true })
-  }
+  useEffect(() => {
+    if (isAdmin) navigate('/admin', { replace: true })
+  }, [isAdmin, navigate])
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-dark relative overflow-hidden">
