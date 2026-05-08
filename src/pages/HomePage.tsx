@@ -5,6 +5,7 @@ import FeaturedProducts from '@/components/home/FeaturedProducts'
 import CategoriesSection from '@/components/home/CategoriesSection'
 import FeaturesSection from '@/components/home/FeaturesSection'
 import TestimonialsSection from '@/components/home/TestimonialsSection'
+import SectionReveal from '@/components/ui/SectionReveal'
 
 export default function HomePage() {
   return (
@@ -13,13 +14,24 @@ export default function HomePage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
+      className="relative"
     >
       <HeroSection />
-      <FeaturedProducts />
-      <CategoriesSection />
-      <FeaturesSection />
-      <BrandProfile />
-      <TestimonialsSection />
+      <SectionReveal from="up">
+        <FeaturedProducts />
+      </SectionReveal>
+      <SectionReveal from="left">
+        <CategoriesSection />
+      </SectionReveal>
+      <SectionReveal from="right">
+        <FeaturesSection />
+      </SectionReveal>
+      <SectionReveal from="up">
+        <BrandProfile />
+      </SectionReveal>
+      <SectionReveal from="up">
+        <TestimonialsSection />
+      </SectionReveal>
     </motion.div>
   )
 }

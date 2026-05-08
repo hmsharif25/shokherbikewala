@@ -22,6 +22,7 @@ import OrdersManage from '@/pages/admin/OrdersManage'
 import HUDOverlay from '@/components/ui/HUDOverlay'
 import GamingCursor from '@/components/ui/GamingCursor'
 import PageLoader from '@/components/ui/PageLoader'
+import GamingBackdrop from '@/components/ui/GamingBackdrop'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { useEffect } from 'react'
@@ -81,6 +82,7 @@ function App() {
         <Router>
           <ScrollToTop />
           <PageLoader />
+          <GamingBackdrop />
           <HUDOverlay />
           <GamingCursor />
           <Routes>
