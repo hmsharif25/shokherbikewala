@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Facebook, Instagram, MessageCircle, Music2, Mail, MapPin, Phone } from 'lucide-react'
+import { Facebook, Instagram, MessageCircle, Music2, Mail, MapPin, Phone, Sparkles, ChevronRight } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
 
@@ -12,60 +12,86 @@ export default function Footer() {
       name: 'WhatsApp',
       icon: MessageCircle,
       url: brandSettings.whatsapp,
-      color: 'hover:text-green-400 hover:shadow-green-400/20',
+      tone: 'hover:text-green-500 hover:border-green-500/45 hover:shadow-green-500/30',
     },
     {
       name: 'Facebook',
       icon: Facebook,
       url: brandSettings.facebook,
-      color: 'hover:text-blue-400 hover:shadow-blue-400/20',
+      tone: 'hover:text-blue-500 hover:border-blue-500/45 hover:shadow-blue-500/30',
     },
     {
       name: 'TikTok',
       icon: Music2,
       url: brandSettings.tiktok,
-      color: 'hover:text-pink-400 hover:shadow-pink-400/20',
+      tone: 'hover:text-pink-500 hover:border-pink-500/45 hover:shadow-pink-500/30',
     },
     {
       name: 'Instagram',
       icon: Instagram,
       url: brandSettings.instagram,
-      color: 'hover:text-purple-400 hover:shadow-purple-400/20',
+      tone: 'hover:text-purple-500 hover:border-purple-500/45 hover:shadow-purple-500/30',
     },
   ]
-  return (
-    <footer className="relative bg-dark-50 border-t border-white/5 carbon-fiber pb-20 md:pb-0">
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-        <div className="racing-stripe-divider mb-8 sm:mb-12 rounded-full" />
+  return (
+    <footer className="relative bg-bg-2 border-t border-line carbon-fiber pb-20 md:pb-0 overflow-hidden">
+      <div className="absolute inset-0 footer-brand-band pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full divider-glow" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-10 sm:pb-14">
+        {/* Top brand band */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-10 sm:mb-14 pb-8 sm:pb-10 border-b border-line">
+          <div className="flex items-center gap-4">
+            <div className="premium-frame w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center p-1">
+              <img
+                src="/logo.png"
+                alt="Shokher Bike Wala"
+                className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(255,106,26,0.4)]"
+              />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="font-display text-base sm:text-xl font-bold text-gradient-fire">
+                SHOKHER BIKE WALA
+              </span>
+              <span className="font-racing text-xs text-fg-soft tracking-[0.25em] uppercase">
+                Premium Accessories • Bangladesh
+              </span>
+            </div>
+          </div>
+
+          <a
+            href={brandSettings.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-premium text-sm w-full md:w-auto"
+          >
+            <Sparkles className="w-4 h-4" />
+            Order on WhatsApp
+            <ChevronRight className="w-4 h-4" />
+          </a>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <AnimatedSection delay={0}>
             <div className="space-y-4">
-              <Link to="/" className="flex items-center gap-3">
-                <img src="/logo.png" alt="Shokher Bike Wala" className="w-10 h-10 sm:w-12 sm:h-12 object-contain drop-shadow-[0_0_8px_rgba(255,69,0,0.3)]" />
-                <div className="flex flex-col leading-none">
-                  <span className="font-display text-sm sm:text-base font-bold bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent">
-                    SHOKHER
-                  </span>
-                  <span className="font-display text-[10px] sm:text-xs font-semibold text-cyan/70 tracking-[0.15em]">
-                    BIKE WALA
-                  </span>
-                </div>
-              </Link>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <h3 className="font-display text-xs font-semibold text-primary uppercase tracking-[0.25em]">
+                About
+              </h3>
+              <p className="text-fg-muted text-sm leading-relaxed">
                 Your ultimate destination for premium bike accessories. Ride with style, ride with safety.
               </p>
-              <div className="flex gap-2.5">
+              <div className="flex flex-wrap gap-2.5 pt-1">
                 {socialLinks.map((social) => (
                   <motion.a
                     key={social.name}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.15, y: -2 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`p-2.5 rounded-xl bg-white/5 text-gray-400 transition-all duration-300 hover:bg-white/10 border border-white/5 hover:border-white/10 ${social.color}`}
+                    whileHover={{ scale: 1.12, y: -2 }}
+                    whileTap={{ scale: 0.92 }}
+                    aria-label={social.name}
+                    className={`p-2.5 rounded-xl bg-bg/50 text-fg-muted border border-line transition-all duration-300 hover:bg-bg ${social.tone}`}
                   >
                     <social.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </motion.a>
@@ -76,7 +102,7 @@ export default function Footer() {
 
           <AnimatedSection delay={0.1}>
             <div className="space-y-4">
-              <h3 className="font-display text-xs font-semibold text-primary uppercase tracking-[0.2em]">
+              <h3 className="font-display text-xs font-semibold text-primary uppercase tracking-[0.25em]">
                 Quick Links
               </h3>
               <ul className="space-y-2.5">
@@ -90,9 +116,9 @@ export default function Footer() {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className="text-gray-400 hover:text-primary transition-colors text-sm font-racing tracking-wide inline-flex items-center gap-1.5 group"
+                      className="text-fg-muted hover:text-primary transition-colors text-sm font-racing tracking-wide inline-flex items-center gap-1.5 group"
                     >
-                      <span className="w-0 group-hover:w-2.5 h-0.5 bg-gradient-to-r from-primary to-primary/50 transition-all duration-300 rounded-full" />
+                      <span className="w-0 group-hover:w-2.5 h-0.5 bg-gradient-to-r from-primary to-primary/40 transition-all duration-300 rounded-full" />
                       {link.name}
                     </Link>
                   </li>
@@ -103,48 +129,46 @@ export default function Footer() {
 
           <AnimatedSection delay={0.2}>
             <div className="space-y-4">
-              <h3 className="font-display text-xs font-semibold text-cyan uppercase tracking-[0.2em]">
+              <h3 className="font-display text-xs font-semibold text-cyan uppercase tracking-[0.25em]">
                 Categories
               </h3>
               <ul className="space-y-2.5">
-                {categories.slice(0, 6).map(
-                  (cat) => (
-                    <li key={cat.id}>
-                      <Link
-                        to={`/products?category=${cat.slug}`}
-                        className="text-gray-400 hover:text-cyan transition-colors text-sm font-racing tracking-wide inline-flex items-center gap-1.5 group"
-                      >
-                        <span className="w-0 group-hover:w-2.5 h-0.5 bg-gradient-to-r from-cyan to-cyan/50 transition-all duration-300 rounded-full" />
-                        {cat.name}
-                      </Link>
-                    </li>
-                  )
-                )}
+                {categories.slice(0, 6).map((cat) => (
+                  <li key={cat.id}>
+                    <Link
+                      to={`/products?category=${cat.slug}`}
+                      className="text-fg-muted hover:text-cyan transition-colors text-sm font-racing tracking-wide inline-flex items-center gap-1.5 group"
+                    >
+                      <span className="w-0 group-hover:w-2.5 h-0.5 bg-gradient-to-r from-cyan to-cyan/40 transition-all duration-300 rounded-full" />
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </AnimatedSection>
 
           <AnimatedSection delay={0.3}>
             <div className="space-y-4">
-              <h3 className="font-display text-xs font-semibold text-gold uppercase tracking-[0.2em]">
+              <h3 className="font-display text-xs font-semibold text-gold uppercase tracking-[0.25em]">
                 Contact
               </h3>
               <ul className="space-y-3.5">
-                <li className="flex items-start gap-3 text-gray-400 text-sm">
-                  <div className="p-1.5 rounded-lg bg-primary/10 flex-shrink-0 mt-0.5">
+                <li className="flex items-start gap-3 text-fg-muted text-sm">
+                  <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20 flex-shrink-0 mt-0.5">
                     <Phone className="w-3.5 h-3.5 text-primary" />
                   </div>
                   <span className="font-racing tracking-wide">+880 1518 934708</span>
                 </li>
-                <li className="flex items-start gap-3 text-gray-400 text-sm">
-                  <div className="p-1.5 rounded-lg bg-primary/10 flex-shrink-0 mt-0.5">
-                    <Mail className="w-3.5 h-3.5 text-primary" />
+                <li className="flex items-start gap-3 text-fg-muted text-sm">
+                  <div className="p-1.5 rounded-lg bg-cyan/10 border border-cyan/20 flex-shrink-0 mt-0.5">
+                    <Mail className="w-3.5 h-3.5 text-cyan" />
                   </div>
                   <span className="font-racing tracking-wide break-all">info@shokherbikewala.com</span>
                 </li>
-                <li className="flex items-start gap-3 text-gray-400 text-sm">
-                  <div className="p-1.5 rounded-lg bg-primary/10 flex-shrink-0 mt-0.5">
-                    <MapPin className="w-3.5 h-3.5 text-primary" />
+                <li className="flex items-start gap-3 text-fg-muted text-sm">
+                  <div className="p-1.5 rounded-lg bg-gold/10 border border-gold/20 flex-shrink-0 mt-0.5">
+                    <MapPin className="w-3.5 h-3.5 text-gold" />
                   </div>
                   <span className="font-racing tracking-wide">Bangladesh</span>
                 </li>
@@ -153,13 +177,13 @@ export default function Footer() {
           </AnimatedSection>
         </div>
 
-        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-white/5">
+        <div className="mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-line">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p className="text-gray-500 text-xs font-racing tracking-wide">
+            <p className="text-fg-soft text-xs font-racing tracking-wide">
               &copy; {new Date().getFullYear()} Shokher Bike Wala. All rights reserved.
             </p>
-            <p className="text-gray-600 text-xs font-racing tracking-widest uppercase">
-              Ride Safe, Ride Stylish
+            <p className="text-fg-soft text-xs font-racing tracking-[0.25em] uppercase">
+              Ride Safe • Ride Stylish
             </p>
           </div>
         </div>
