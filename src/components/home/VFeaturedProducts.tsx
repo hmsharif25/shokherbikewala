@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, ShoppingCart, ArrowRight, Star, ChevronDown } from 'lucide-react'
+import { ShoppingCart, ArrowRight, Star, ChevronDown } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
@@ -12,7 +12,6 @@ export default function VFeaturedProducts() {
   const [activeSlug, setActiveSlug] = useState<string>('all')
   const [sortBy, setSortBy] = useState<SortBy>('featured')
   const [sortOpen, setSortOpen] = useState(false)
-  const [favIds, setFavIds] = useState<Set<string>>(new Set())
 
   // Top 6 categories appear as filter pills
   const visibleCategories = useMemo(() => categories.slice(0, 6), [categories])
@@ -29,15 +28,6 @@ export default function VFeaturedProducts() {
     else pool = [...pool].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
     return pool.slice(0, 8)
   }, [products, categories, activeSlug, sortBy])
-
-  const toggleFav = (id: string) => {
-    setFavIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }
 
   return (
     <section className="relative py-20 sm:py-24 overflow-hidden">
@@ -125,7 +115,6 @@ export default function VFeaturedProducts() {
               const discountPct = product.discount_price
                 ? Math.round(((product.price - product.discount_price) / product.price) * 100)
                 : 0
-              const fav = favIds.has(product.id)
               const rating = 4.5 + ((i * 7) % 5) / 10
               const reviewsCount = 60 + ((i * 13) % 90)
               return (
@@ -144,18 +133,6 @@ export default function VFeaturedProducts() {
                         -{discountPct}%
                       </span>
                     )}
-
-                    <button
-                      onClick={() => toggleFav(product.id)}
-                      aria-label={fav ? 'Remove from favourites' : 'Add to favourites'}
-                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full backdrop-blur-md border flex items-center justify-center transition-all ${
-                        fav
-                          ? 'bg-primary text-white border-transparent'
-                          : 'bg-bg/80 border-line text-fg-muted hover:text-primary'
-                      }`}
-                    >
-                      <Heart className={`w-4 h-4 ${fav ? 'fill-current' : ''}`} />
-                    </button>
 
                     <Link to={`/products/${product.slug}`} className="block w-full h-full">
                       <img
