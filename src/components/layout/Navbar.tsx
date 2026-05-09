@@ -72,7 +72,7 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4">
-          <div className="v-capsule rounded-full pl-3 pr-2 sm:pl-5 sm:pr-3 py-1.5 sm:py-2 flex items-center gap-3 sm:gap-4">
+          <div className="v-capsule v-live-nav rounded-full pl-3 pr-2 sm:pl-5 sm:pr-3 py-1.5 sm:py-2 flex items-center gap-3 sm:gap-4">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
               <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1 flex items-center justify-center">
