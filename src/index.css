@@ -5594,6 +5594,10 @@ html {
   align-items: center;
   text-align: center;
   justify-content: center;
+  padding-inline: 0.15em;
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -5605,6 +5609,7 @@ html {
   color: rgb(var(--c-fg));
   font-style: italic;
   text-transform: uppercase;
+  padding-right: 0.08em;
 }
 
 .sb-cinematic-line-mid {

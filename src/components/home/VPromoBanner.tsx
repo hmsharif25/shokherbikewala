@@ -29,7 +29,7 @@ export default function VPromoBanner() {
   const { homeSections } = useStore()
 
   return (
-    <section className="v-premium-section v-newsletter-showcase relative py-14 sm:py-20 overflow-hidden">
+    <section className="v-premium-section v-newsletter-showcase relative py-14 sm:py-20 overflow-x-clip overflow-y-visible">
       <div className="sb-scanline-overlay" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal>

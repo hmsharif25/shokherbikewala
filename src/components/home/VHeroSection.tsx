@@ -29,7 +29,7 @@ export default function VHeroSection() {
   return (
     <section
       ref={ref}
-      className="sb-cinematic-hero relative min-h-[100dvh] overflow-hidden pt-24 pb-12 sm:pt-28 sm:pb-16"
+      className="sb-cinematic-hero relative min-h-[100dvh] overflow-x-clip overflow-y-visible pt-24 pb-12 sm:pt-28 sm:pb-16"
     >
       {/* Atmospheric background layers */}
       <div className="sb-hero-bg" />
