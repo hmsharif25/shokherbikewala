@@ -27,7 +27,7 @@ export default function VBrandStory() {
   const { homeSections } = useStore()
 
   return (
-    <section className="sb-clean-section sb-showroom-section relative py-20 sm:py-28 overflow-hidden">
+    <section className="sb-clean-section sb-showroom-section relative py-20 sm:py-28 overflow-x-clip overflow-y-visible">
       <div className="sb-showroom-grid pointer-events-none" aria-hidden="true" />
       <div className="sb-hex-pattern" />
       <div className="sb-scanline-overlay" />
