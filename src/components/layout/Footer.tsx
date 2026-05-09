@@ -19,41 +19,11 @@ import {
 import { motion } from 'framer-motion'
 import { useStore } from '@/context/StoreContext'
 
-const TRUST_BADGES = [
-  { icon: Shield, title: 'Premium Quality', sub: 'Engineered for performance & safety' },
-  { icon: Truck, title: 'Free Shipping', sub: 'Free shipping on orders over ৳5000' },
-  { icon: Award, title: '2 Year Warranty', sub: 'Quality guaranteed with extended care' },
-  { icon: RotateCcw, title: 'Easy Returns', sub: 'Hassle-free returns within 7 days' },
-]
-
-const SHOP_LINKS = [
-  { name: 'Helmets', path: '/products?category=helmets' },
-  { name: 'Gloves', path: '/products?category=gloves' },
-  { name: 'Riding Jackets', path: '/products?category=jackets' },
-  { name: 'LED Lights', path: '/products?category=led-lights' },
-  { name: 'Exhaust Systems', path: '/products?category=exhaust-systems' },
-  { name: 'All Accessories', path: '/products' },
-]
-
-const COMPANY_LINKS = [
-  { name: 'About Us', path: '/about' },
-  { name: 'Our Story', path: '/about' },
-  { name: 'Brands', path: '/categories' },
-  { name: 'Blog', path: '/about' },
-  { name: 'Contact Us', path: '/contact' },
-]
-
-const SUPPORT_LINKS = [
-  { name: 'Shipping Information', path: '/contact' },
-  { name: 'Returns & Exchanges', path: '/contact' },
-  { name: 'Warranty Policy', path: '/contact' },
-  { name: 'FAQ', path: '/' },
-  { name: 'Track Your Order', path: '/track' },
-  { name: 'Size Guide', path: '/contact' },
-]
+const BADGE_ICONS = [Shield, Truck, Award, RotateCcw]
 
 export default function Footer() {
-  const { brandSettings } = useStore()
+  const { brandSettings, siteConfig } = useStore()
+  const footerConfig = siteConfig.footer
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -82,29 +52,32 @@ export default function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trust badges */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-12 sm:mb-16">
-          {TRUST_BADGES.map((b, i) => (
-            <motion.div
-              key={b.title}
-              initial={{ opacity: 0, y: 24, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.25 } }}
-              className="v-capsule sb-neon-card rounded-2xl px-3 py-4 flex items-center gap-3"
-            >
-              <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
-                <b.icon className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <p className="font-headline font-bold text-fg text-xs sm:text-sm uppercase tracking-wider">
-                  {b.title}
-                </p>
-                <p className="text-fg-soft text-[10px] sm:text-xs font-ui leading-tight mt-0.5 line-clamp-2">
-                  {b.sub}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          {footerConfig.trustBadges.map((b, i) => {
+            const Icon = BADGE_ICONS[i % BADGE_ICONS.length]
+            return (
+              <motion.div
+                key={b.title + i}
+                initial={{ opacity: 0, y: 24, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.25 } }}
+                className="v-capsule sb-neon-card rounded-2xl px-3 py-4 flex items-center gap-3"
+              >
+                <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-headline font-bold text-fg text-xs sm:text-sm uppercase tracking-wider">
+                    {b.title}
+                  </p>
+                  <p className="text-fg-soft text-[10px] sm:text-xs font-ui leading-tight mt-0.5 line-clamp-2">
+                    {b.sub}
+                  </p>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12">
@@ -160,7 +133,7 @@ export default function Footer() {
               <span className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
             </h4>
             <ul className="space-y-2.5">
-              {SHOP_LINKS.map((l) => (
+              {footerConfig.shopLinks.map((l) => (
                 <li key={l.path + l.name}>
                   <Link
                     to={l.path}
@@ -181,7 +154,7 @@ export default function Footer() {
               <span className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
             </h4>
             <ul className="space-y-2.5">
-              {COMPANY_LINKS.map((l) => (
+              {footerConfig.companyLinks.map((l) => (
                 <li key={l.path + l.name}>
                   <Link
                     to={l.path}
@@ -202,7 +175,7 @@ export default function Footer() {
               <span className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
             </h4>
             <ul className="space-y-2.5">
-              {SUPPORT_LINKS.map((l) => (
+              {footerConfig.supportLinks.map((l) => (
                 <li key={l.path + l.name}>
                   <Link
                     to={l.path}
@@ -307,7 +280,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs font-ui">
           <p className="text-fg-soft">
-            © {new Date().getFullYear()} Shokher Bikewala. All rights reserved.
+            {footerConfig.copyrightText.replace('{year}', new Date().getFullYear().toString())}
           </p>
           <div className="flex items-center gap-3 flex-wrap">
             {['VISA', 'Mastercard', 'bKash', 'Nagad', 'COD'].map((p) => (

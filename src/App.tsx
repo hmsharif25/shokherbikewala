@@ -34,6 +34,10 @@ const TestimonialsManage = lazy(() => import('@/pages/admin/TestimonialsManage')
 const HeroManage = lazy(() => import('@/pages/admin/HeroManage'))
 const OrdersManage = lazy(() => import('@/pages/admin/OrdersManage'))
 const HomeSectionsManage = lazy(() => import('@/pages/admin/HomeSectionsManage'))
+const SEOManage = lazy(() => import('@/pages/admin/SEOManage'))
+const FAQManage = lazy(() => import('@/pages/admin/FAQManage'))
+const FooterManage = lazy(() => import('@/pages/admin/FooterManage'))
+const PagesManage = lazy(() => import('@/pages/admin/PagesManage'))
 
 function RouteFallback() {
   return (
@@ -134,6 +138,10 @@ function AppRoutes() {
           <Route path="hero" element={<HeroManage />} />
           <Route path="sections" element={<HomeSectionsManage />} />
           <Route path="orders" element={<OrdersManage />} />
+          <Route path="seo" element={<SEOManage />} />
+          <Route path="faq" element={<FAQManage />} />
+          <Route path="footer" element={<FooterManage />} />
+          <Route path="pages" element={<PagesManage />} />
           <Route path="settings" element={<BrandSettings />} />
         </Route>
         <Route path="/*" element={<PublicLayout />} />

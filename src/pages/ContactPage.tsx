@@ -48,7 +48,7 @@ const contactMethods = [
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', phone: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
-  const { addInquiry } = useStore()
+  const { addInquiry, siteConfig } = useStore()
 
   const handleWhatsAppSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -94,7 +94,7 @@ export default function ContactPage() {
             </span>
           </h1>
           <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-lg">
-            Have a question? Need help choosing the right accessory? We&apos;re here to help!
+            {siteConfig.pages.contactDescription}
           </p>
         </AnimatedSection>
 
