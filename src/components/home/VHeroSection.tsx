@@ -71,16 +71,6 @@ export default function VHeroSection() {
         style={{ y, opacity }}
         className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[calc(100dvh-8rem)]"
       >
-        <motion.span
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="sb-eyebrow-bar"
-        >
-          <span className="sb-eyebrow-bar-line" />
-          Premium Motorcycle Accessories
-        </motion.span>
-
         <motion.h1
           initial={{ opacity: 0, y: 22, filter: 'blur(10px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -90,16 +80,6 @@ export default function VHeroSection() {
           <span className="sb-cinematic-line">SHOKHER</span>
           <span className="sb-cinematic-line sb-cinematic-line-accent">BIKEWALA</span>
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.32 }}
-          className="sb-cinematic-copy text-center max-w-lg mx-auto"
-        >
-          High performance accessories for those who live to ride. Built for
-          speed, designed for dominance.
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 14 }}
