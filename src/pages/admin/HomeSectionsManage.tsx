@@ -85,7 +85,7 @@ export default function HomeSectionsManage() {
     <div className="space-y-6 max-w-3xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-display font-bold text-white mb-1">Homepage Sections</h1>
+          <h1 className="text-2xl font-display font-bold text-fg mb-1">Homepage Sections</h1>
           <p className="text-gray-400 text-sm">
             Toggle visibility and edit content for each homepage section &middot;{' '}
             <span className="text-primary font-medium">{visibleCount}/{totalCount} visible</span>
@@ -145,7 +145,7 @@ export default function HomeSectionsManage() {
                   className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                     isEditing
                       ? 'bg-primary/20 text-primary'
-                      : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                      : 'bg-white/5 text-gray-400 hover:text-fg hover:bg-bg-2'
                   }`}
                   title="Edit content"
                 >
@@ -192,7 +192,7 @@ export default function HomeSectionsManage() {
                     <input
                       value={config.heading}
                       onChange={e => handleFieldChange(meta.key, 'heading', e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold tracking-wide"
+                      className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-bold tracking-wide"
                       placeholder="Section heading..."
                     />
                   </div>
@@ -202,7 +202,7 @@ export default function HomeSectionsManage() {
                       value={config.subheading}
                       onChange={e => handleFieldChange(meta.key, 'subheading', e.target.value)}
                       rows={2}
-                      className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                      className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                       placeholder="Section subheading..."
                     />
                   </div>

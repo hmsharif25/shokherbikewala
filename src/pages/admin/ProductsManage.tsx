@@ -75,7 +75,7 @@ export default function ProductsManage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-display font-bold text-white mb-1">Products</h1>
+          <h1 className="text-2xl font-display font-bold text-fg mb-1">Products</h1>
           <p className="text-gray-400 text-sm">{products.length} products in your store</p>
         </div>
         <motion.button
@@ -102,7 +102,7 @@ export default function ProductsManage() {
                 <h2 className="text-lg font-bold text-white">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h2>
-                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-white">
+                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-fg">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -114,7 +114,7 @@ export default function ProductsManage() {
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
                     placeholder="Product name"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
@@ -122,7 +122,7 @@ export default function ProductsManage() {
                   <select
                     value={form.category_id}
                     onChange={e => setForm({ ...form, category_id: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   >
                     {categories.map(cat => (
                       <option key={cat.id} value={cat.id} className="bg-dark-50">{cat.name}</option>
@@ -136,7 +136,7 @@ export default function ProductsManage() {
                     value={form.price}
                     onChange={e => setForm({ ...form, price: e.target.value })}
                     placeholder="0"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
@@ -146,7 +146,7 @@ export default function ProductsManage() {
                     value={form.discount_price}
                     onChange={e => setForm({ ...form, discount_price: e.target.value })}
                     placeholder="Leave empty for no discount"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -156,7 +156,7 @@ export default function ProductsManage() {
                     value={form.description}
                     onChange={e => setForm({ ...form, description: e.target.value })}
                     placeholder="Product description"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -203,7 +203,7 @@ export default function ProductsManage() {
                 </motion.button>
                 <button
                   onClick={() => setIsAdding(false)}
-                  className="px-5 py-2.5 text-gray-400 hover:text-white text-sm transition-colors"
+                  className="px-5 py-2.5 text-gray-400 hover:text-fg text-sm transition-colors"
                 >
                   Cancel
                 </button>

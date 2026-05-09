@@ -34,20 +34,42 @@ import { useAuth } from '@/context/AuthContext'
 import { loadRemoteInquiries } from '@/lib/db'
 import { isSupabaseConfigured } from '@/lib/supabase'
 
-const sidebarLinks = [
-  { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
-  { name: 'Products', path: '/admin/products', icon: Package },
-  { name: 'Categories', path: '/admin/categories', icon: Grid3X3 },
-  { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquareQuote },
-  { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
-  { name: 'Home Sections', path: '/admin/sections', icon: LayoutList },
-  { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
-  { name: 'SEO Settings', path: '/admin/seo', icon: Search },
-  { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
-  { name: 'Footer', path: '/admin/footer', icon: PanelBottom },
-  { name: 'Pages', path: '/admin/pages', icon: FileText },
-  { name: 'Settings', path: '/admin/settings', icon: Settings },
+const sidebarGroups = [
+  {
+    label: null,
+    links: [
+      { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    ],
+  },
+  {
+    label: 'Store',
+    links: [
+      { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
+      { name: 'Products', path: '/admin/products', icon: Package },
+      { name: 'Categories', path: '/admin/categories', icon: Grid3X3 },
+    ],
+  },
+  {
+    label: 'Content',
+    links: [
+      { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
+      { name: 'Home Sections', path: '/admin/sections', icon: LayoutList },
+      { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquareQuote },
+      { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
+      { name: 'Pages', path: '/admin/pages', icon: FileText },
+    ],
+  },
+  {
+    label: 'Settings',
+    links: [
+      { name: 'SEO Settings', path: '/admin/seo', icon: Search },
+      { name: 'Footer', path: '/admin/footer', icon: PanelBottom },
+      { name: 'Brand Settings', path: '/admin/settings', icon: Settings },
+    ],
+  },
 ]
+
+const allSidebarLinks = sidebarGroups.flatMap((g) => g.links)
 
 const statusMeta: Record<
   'new' | 'contacted' | 'completed' | 'cancelled',
@@ -357,21 +379,32 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        <nav className="p-4 space-y-1">
-          {sidebarLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                location.pathname === link.path
-                  ? 'bg-primary/15 text-primary border border-primary/30'
-                  : 'text-fg-muted hover:text-fg hover:bg-primary/5 border border-transparent'
-              }`}
-            >
-              <link.icon className="w-5 h-5" />
-              {link.name}
-            </Link>
+        <nav className="p-4 space-y-4 overflow-y-auto max-h-[calc(100vh-10rem)]">
+          {sidebarGroups.map((group, gi) => (
+            <div key={gi}>
+              {group.label && (
+                <div className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-fg-soft/60">
+                  {group.label}
+                </div>
+              )}
+              <div className="space-y-0.5">
+                {group.links.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      location.pathname === link.path
+                        ? 'bg-primary/15 text-primary border border-primary/30'
+                        : 'text-fg-muted hover:text-fg hover:bg-primary/5 border border-transparent'
+                    }`}
+                  >
+                    <link.icon className="w-4.5 h-4.5" />
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 
@@ -403,7 +436,7 @@ export default function AdminDashboard() {
               {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
             <div className="text-sm text-fg-muted font-racing">
-              {sidebarLinks.find((l) => l.path === location.pathname)?.name || 'Dashboard'}
+              {allSidebarLinks.find((l) => l.path === location.pathname)?.name || 'Dashboard'}
             </div>
             <Link
               to="/"
