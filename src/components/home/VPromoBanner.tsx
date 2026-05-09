@@ -32,7 +32,7 @@ const PORTFOLIO_POINTS = [
  */
 export default function VPromoBanner() {
   return (
-    <section className="relative py-14 sm:py-20 overflow-hidden">
+    <section className="v-premium-section v-newsletter-showcase relative py-14 sm:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal>
           <div className="relative rounded-[2rem] overflow-hidden v-capsule px-6 sm:px-10 lg:px-14 py-12 sm:py-16 text-center">
@@ -74,14 +74,14 @@ export default function VPromoBanner() {
               </div>
 
               <h2 className="v-headline text-4xl sm:text-6xl md:text-7xl">
-                GAMING
+                STAY AHEAD
                 <br />
-                <em>SHOP ARENA</em>
+                <em>RIDE BEYOND</em>
               </h2>
 
               <p className="text-fg-muted font-ui text-base max-w-md mx-auto">
-                Premium ecommerce meets a rider portfolio: animated, neon,
-                fast, and ready to convert visitors into WhatsApp orders.
+                A luxury newsletter-style drop zone for exclusive rider offers,
+                product launches, and premium gear alerts.
               </p>
 
               {/* Oversized 40% OFF as the focal visual */}
@@ -112,7 +112,7 @@ export default function VPromoBanner() {
 
               <div className="flex justify-center pt-2">
                 <Link to="/products" className="v-pill-cta">
-                  Shop Collection
+                  Shop Premium Drops
                   <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/25 ml-1">
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>

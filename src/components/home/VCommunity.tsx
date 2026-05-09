@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Instagram, Music2, Facebook, MessageCircle, Star, Play, Heart, MessageSquare, Share2 } from 'lucide-react'
+import { Instagram, Music2, Facebook, Youtube, Star, Play, Heart, MessageSquare, Share2 } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
@@ -7,7 +7,7 @@ const FOLLOWER_COUNTS = [
   { icon: Instagram, label: 'Instagram Followers', count: '125K+' },
   { icon: Music2, label: 'TikTok Followers', count: '65K+' },
   { icon: Facebook, label: 'Facebook Fans', count: '45K+' },
-  { icon: MessageCircle, label: 'WhatsApp Members', count: '8K+' },
+  { icon: Youtube, label: 'YouTube Viewers', count: '18K+' },
 ]
 
 /**
@@ -30,18 +30,18 @@ export default function VCommunity() {
     'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80'
 
   return (
-    <section className="relative py-20 sm:py-24 overflow-hidden">
+    <section className="v-premium-section v-community-section relative py-20 sm:py-24 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-14">
-          <span className="v-eyebrow-long mb-4 sm:mb-5 mx-auto justify-center">Our Community</span>
+          <span className="v-eyebrow-long mb-4 sm:mb-5 mx-auto justify-center">Creator Community</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            Stay Connected <em>With Riders</em>
+            RIDER <em>SOCIAL FEED</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Join thousands of riders who live for performance, style, and the
-            open road. Follow us and be part of the community.
+            Instagram reels, TikTok motion, YouTube-style drops, and rider reviews
+            presented as a premium creator economy showcase.
           </p>
         </VReveal>
 
@@ -151,37 +151,29 @@ export default function VCommunity() {
             <p className="text-xs text-fg-soft text-center mt-3 font-ui">View More Reviews</p>
           </SocialCard>
 
-          {/* WhatsApp Direct */}
           <SocialCard
-            handle="+880 1518 934708"
-            platform="WhatsApp"
-            ctaLabel="Chat Now"
-            url={brandSettings.whatsapp}
-            iconBg="from-green-500 to-emerald-600"
-            Icon={MessageCircle}
+            handle="ShokherBikewala"
+            platform="YouTube"
+            ctaLabel="Watch"
+            url="https://www.youtube.com/results?search_query=ShokherBikewala"
+            iconBg="from-red-600 to-black"
+            Icon={Youtube}
           >
-            <div className="flex flex-col items-center justify-center text-center py-2 gap-3 h-full">
-              <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/30">
-                <MessageCircle className="w-9 h-9 text-green-500" />
-              </div>
-              <div>
-                <p className="text-fg font-headline font-bold text-base sm:text-lg mb-1">
-                  Need Quick Help?
-                </p>
-                <p className="text-fg-soft text-xs font-ui leading-relaxed">
-                  Talk to our gear experts for product advice, sizing, and exclusive
-                  deals — direct from the team.
-                </p>
-              </div>
-              <a
-                href={brandSettings.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="v-pill-cta text-xs"
-              >
-                Start Chat
-              </a>
+            <div className="relative aspect-video rounded-2xl overflow-hidden bg-bg-2 mb-3">
+              <img src={tiktokCover} alt="YouTube rider drop" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/20 to-primary/30" />
+              <span className="absolute inset-0 flex items-center justify-center">
+                <span className="w-14 h-14 rounded-full bg-white/90 text-red-600 flex items-center justify-center shadow-2xl">
+                  <Play className="w-6 h-6 fill-current ml-0.5" />
+                </span>
+              </span>
             </div>
+            <p className="text-fg font-headline font-bold text-base sm:text-lg mb-1">
+              Cinematic Gear Drops
+            </p>
+            <p className="text-fg-soft text-xs font-ui leading-relaxed">
+              Premium product films, setup previews, and future rider lifestyle stories.
+            </p>
           </SocialCard>
         </div>
 

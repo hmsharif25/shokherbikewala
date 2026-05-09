@@ -26,18 +26,18 @@ export default function ProductsPage() {
   }, [search, selectedCategory, products])
 
   return (
-    <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
+    <PageTransition className="v-shop-page min-h-screen pt-24 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-8 sm:mb-10">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4">
-            <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              All{' '}
+            <span className="bg-gradient-to-r from-slate-950 to-slate-600 bg-clip-text text-transparent">
+              Premium{' '}
             </span>
-            <span className="bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">
-              Products
+            <span className="bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent">
+              Loadouts
             </span>
           </h1>
-          <p className="text-gray-400 text-sm sm:text-base font-racing tracking-wide">Browse our complete collection of premium bike accessories</p>
+          <p className="text-fg-muted text-sm sm:text-base font-racing tracking-wide">Browse our complete cinematic collection of premium bike accessories</p>
         </AnimatedSection>
 
         <AnimatedSection delay={0.1} className="mb-8">
@@ -49,13 +49,13 @@ export default function ProductsPage() {
                 placeholder="Search products..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl glass text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-xl glass text-fg placeholder:text-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
               />
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
-                showFilters ? 'bg-primary text-white' : 'glass text-gray-300 hover:text-white'
+                showFilters ? 'bg-primary text-white' : 'glass text-fg-muted hover:text-primary'
               }`}
             >
               <SlidersHorizontal className="w-5 h-5" />
@@ -72,14 +72,14 @@ export default function ProductsPage() {
             className="mb-8"
           >
             <div className="p-6 rounded-xl glass">
-              <h3 className="text-white font-semibold mb-4">Categories</h3>
+              <h3 className="text-fg font-semibold mb-4">Categories</h3>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedCategory(null)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     !selectedCategory
                       ? 'bg-primary text-white'
-                      : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                      : 'bg-bg/70 text-fg-muted hover:text-primary hover:bg-primary/10'
                   }`}
                 >
                   All
@@ -91,7 +91,7 @@ export default function ProductsPage() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       selectedCategory === cat.id
                         ? 'bg-primary text-white'
-                        : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                        : 'bg-bg/70 text-fg-muted hover:text-primary hover:bg-primary/10'
                     }`}
                   >
                     {cat.name}
@@ -104,7 +104,7 @@ export default function ProductsPage() {
 
         {selectedCategory && (
           <div className="mb-6 flex items-center gap-2">
-            <span className="text-gray-400 text-sm">Filtered by:</span>
+            <span className="text-fg-muted text-sm">Filtered by:</span>
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
               {categories.find(c => c.id === selectedCategory)?.name}
               <button onClick={() => setSelectedCategory(null)}>
@@ -122,17 +122,17 @@ export default function ProductsPage() {
                 <Link to={`/products/${product.slug}`}>
                   <motion.div
                     whileHover={{ y: -5 }}
-                    className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/15"
+                    className="group v-product-card flex flex-col h-full"
                   >
-                    <div className="relative h-32 sm:h-48 overflow-hidden">
+                    <div className="relative h-36 sm:h-52 overflow-hidden bg-bg-2">
                       <img
                         src={product.images[0]}
                         alt={product.name}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-700 drop-shadow-[0_18px_30px_rgba(255,90,0,0.18)]"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent" />
                       {product.discount_price && (
                         <div className="absolute top-2 left-2 sm:top-3 sm:left-3 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-primary rounded-full text-[10px] sm:text-xs font-bold text-white flex items-center gap-0.5 sm:gap-1">
                           <Tag className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
@@ -140,7 +140,7 @@ export default function ProductsPage() {
                         </div>
                       )}
                       {category && (
-                        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2 py-0.5 sm:py-1 glass rounded-full text-[10px] sm:text-xs text-gray-300 hidden sm:block">
+                        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-1.5 sm:px-2 py-0.5 sm:py-1 glass rounded-full text-[10px] sm:text-xs text-fg-muted hidden sm:block">
                           {category.name}
                         </div>
                       )}
@@ -152,10 +152,10 @@ export default function ProductsPage() {
                           <Star key={star} className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-gold text-gold" />
                         ))}
                       </div>
-                      <h3 className="text-white font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1 font-racing">
+                      <h3 className="text-fg font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1 font-racing">
                         {product.name}
                       </h3>
-                      <p className="text-gray-400 text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
+                      <p className="text-fg-muted text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
                       <div className="flex items-center justify-between">
                         <div>
                           {product.discount_price ? (
@@ -163,7 +163,7 @@ export default function ProductsPage() {
                               <span className="text-sm sm:text-lg font-display font-bold text-primary">
                                 ৳{product.discount_price.toLocaleString()}
                               </span>
-                              <span className="text-[10px] sm:text-xs text-gray-500 line-through">
+                              <span className="text-[10px] sm:text-xs text-fg-soft line-through">
                                 ৳{product.price.toLocaleString()}
                               </span>
                             </div>

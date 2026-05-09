@@ -4,7 +4,7 @@ import {
   Facebook,
   Instagram,
   Music2,
-  MessageCircle,
+  Youtube,
   Mail,
   MapPin,
   Phone,
@@ -69,11 +69,11 @@ export default function Footer() {
     { Icon: Instagram, url: brandSettings.instagram, label: 'Instagram' },
     { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
     { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
-    { Icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp' },
+    { Icon: Youtube, url: 'https://www.youtube.com/results?search_query=ShokherBikewala', label: 'YouTube' },
   ]
 
   return (
-    <footer className="relative bg-bg-2/40 border-t border-line pt-12 sm:pt-16 pb-28 md:pb-12 overflow-hidden">
+    <footer className="v-premium-footer relative bg-bg-2/40 border-t border-line pt-12 sm:pt-16 pb-28 md:pb-12 overflow-hidden">
       <div className="absolute inset-0 v-dot-field opacity-20 pointer-events-none" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
@@ -264,10 +264,10 @@ export default function Footer() {
             </div>
             <div>
               <p className="font-headline font-bold text-fg text-base sm:text-lg uppercase tracking-wider">
-                Stay Ahead. Stay Inspired.
+                Stay Ahead. Ride Beyond.
               </p>
               <p className="text-fg-soft text-xs sm:text-sm font-ui">
-                Subscribe for exclusive offers, new arrivals, and rider-only updates.
+                Subscribe for exclusive offers, cinematic drops, and rider-only updates.
               </p>
             </div>
           </div>
