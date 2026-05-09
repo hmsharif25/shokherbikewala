@@ -5,8 +5,12 @@ import {
   Facebook,
   Music2,
   MessageCircle,
+  ShieldCheck,
+  Sparkles,
+  Zap,
 } from 'lucide-react'
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useStore } from '@/context/StoreContext'
 
 /**
@@ -90,6 +94,13 @@ export default function VHeroSection() {
     },
   ]
 
+  const heroMetrics = [
+    { value: '100+', label: 'Premium Drops', Icon: Sparkles },
+    { value: '24/7', label: 'Rider Support', Icon: MessageCircle },
+    { value: 'GT', label: 'Gaming Grade UI', Icon: Zap },
+    { value: 'COD', label: 'Safe Checkout', Icon: ShieldCheck },
+  ]
+
   return (
     <section
       ref={ref}
@@ -97,6 +108,8 @@ export default function VHeroSection() {
     >
       {/* Ambient backdrop layers */}
       <div className="absolute inset-0 v-hero-halo" />
+      <div className="absolute inset-0 v-gaming-hero-grid pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 v-gaming-floor pointer-events-none" />
 
       {/* Concentric orbital rings (no images) */}
       <motion.div
@@ -108,6 +121,20 @@ export default function VHeroSection() {
         <div className="v-orbital-ring v-orbital-ring--lg" />
         <div className="v-orbital-ring v-orbital-ring--md" />
       </motion.div>
+
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        {Array.from({ length: 10 }).map((_, i) => (
+          <span
+            key={i}
+            className="v-hero-particle"
+            style={{
+              left: `${8 + ((i * 13) % 86)}%`,
+              animationDelay: `${i * 0.48}s`,
+              animationDuration: `${4.2 + (i % 4) * 0.45}s`,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Soft animated orange glow drifting across the section */}
       <motion.div
@@ -173,6 +200,38 @@ export default function VHeroSection() {
               <span className="value">2025</span>
             </div>
           </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-7 flex flex-wrap justify-center gap-3"
+        >
+          <Link to="/products" className="v-pill-cta v-hero-cta-primary">
+            Enter Shop Arena
+            <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/25 ml-1">
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </span>
+          </Link>
+          <Link to="/categories" className="v-hero-cta-ghost">
+            View Gear Portfolio
+          </Link>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.62 }}
+          className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3"
+        >
+          {heroMetrics.map(({ value, label, Icon }) => (
+            <div key={label} className="v-hero-metric">
+              <Icon className="w-4 h-4 text-primary" />
+              <span className="value">{value}</span>
+              <span className="label">{label}</span>
+            </div>
+          ))}
         </motion.div>
 
         {/* Kinetic tagline strip with chrome dot separators */}
