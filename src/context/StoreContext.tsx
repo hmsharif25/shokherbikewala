@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode, useCallback 
 import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections } from '@/types'
 import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { loadRemotePublic } from '@/lib/db'
+import { loadRemotePublic, loadHomeSectionsRemote } from '@/lib/db'
 
 const defaultHomeSections: HomeSections = {
   hero: { visible: true, heading: 'SHOKHER BIKEWALA', subheading: '' },
@@ -99,7 +99,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isSupabaseConfigured()) return
     let cancelled = false
-    loadRemotePublic().then((remote) => {
+    Promise.all([loadRemotePublic(), loadHomeSectionsRemote()]).then(([remote, remoteSections]) => {
       if (cancelled) return
       setState((prev) => ({
         products: remote.products && remote.products.length > 0
@@ -113,7 +113,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           ? remote.testimonials
           : prev.testimonials,
         inquiries: prev.inquiries,
-        homeSections: prev.homeSections,
+        homeSections: remoteSections ?? prev.homeSections,
       }))
       setRemoteLoaded(true)
     })
