@@ -19,8 +19,6 @@ import BrandSettings from '@/pages/admin/BrandSettings'
 import TestimonialsManage from '@/pages/admin/TestimonialsManage'
 import HeroManage from '@/pages/admin/HeroManage'
 import OrdersManage from '@/pages/admin/OrdersManage'
-import HUDOverlay from '@/components/ui/HUDOverlay'
-import GamingCursor from '@/components/ui/GamingCursor'
 import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
 import { StoreProvider } from '@/context/StoreContext'
@@ -83,8 +81,6 @@ function App() {
           <ScrollToTop />
           <PageLoader />
           <GamingBackdrop />
-          <HUDOverlay />
-          <GamingCursor />
           <Routes>
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
