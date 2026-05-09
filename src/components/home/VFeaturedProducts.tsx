@@ -29,6 +29,12 @@ export default function VFeaturedProducts() {
     return pool.slice(0, 8)
   }, [products, categories, activeSlug, sortBy])
 
+  const arenaStats = [
+    { label: 'Live Inventory', value: `${products.filter((p) => p.in_stock).length}+` },
+    { label: 'Featured Builds', value: `${products.filter((p) => p.featured).length}+` },
+    { label: 'Rider Categories', value: `${categories.length}` },
+  ]
+
   return (
     <section className="relative py-20 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -104,6 +110,31 @@ export default function VFeaturedProducts() {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
+        </VReveal>
+
+        <VReveal delay={120} className="mb-8 sm:mb-10">
+          <div className="v-market-console">
+            <div className="min-w-0">
+              <p className="font-ui text-[10px] sm:text-xs font-bold uppercase tracking-[0.34em] text-primary">
+                Ecommerce Command Center
+              </p>
+              <h3 className="font-headline text-xl sm:text-2xl font-bold text-fg mt-1">
+                Shop gear like a high-score loadout.
+              </h3>
+              <p className="font-ui text-sm text-fg-muted mt-1 max-w-xl">
+                Filter categories, compare prices, and jump straight into
+                WhatsApp checkout from every product card.
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              {arenaStats.map((stat) => (
+                <div key={stat.label} className="v-market-stat">
+                  <span className="value">{stat.value}</span>
+                  <span className="label">{stat.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </VReveal>
 

@@ -2558,6 +2558,56 @@ html {
   filter: blur(40px);
 }
 
+.v-gaming-hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 122, 31, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 183, 229, 0.06) 1px, transparent 1px);
+  background-size: 78px 78px;
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 72%);
+  opacity: 0.42;
+  animation: v-grid-drift 18s linear infinite;
+}
+
+.v-gaming-floor {
+  background:
+    linear-gradient(to top, rgb(var(--c-bg)) 0%, transparent 60%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 46px,
+      rgba(255, 122, 31, 0.13) 47px 48px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 38px,
+      rgba(0, 183, 229, 0.08) 39px 40px
+    );
+  transform-origin: bottom center;
+  transform: perspective(700px) rotateX(58deg) scaleX(1.45);
+  opacity: 0.35;
+}
+
+.v-hero-particle {
+  position: absolute;
+  bottom: -1rem;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: rgb(var(--c-primary));
+  box-shadow: 0 0 16px 3px rgba(255, 122, 31, 0.65);
+  opacity: 0;
+  animation: v-particle-rise 4.8s ease-in-out infinite;
+}
+
+@keyframes v-grid-drift {
+  to { background-position: 78px 78px; }
+}
+
+@keyframes v-particle-rise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.65); opacity: 0; }
+  18%  { opacity: 0.85; }
+  100% { transform: translate3d(0, -88vh, 0) scale(1.2); opacity: 0; }
+}
+
 /* ---------- Speed motion lines (used in promo banner) ---------- */
 .v-motion-lines {
   background-image:
@@ -3404,6 +3454,88 @@ html {
   .v-hero-kinetic-dot { animation: none; }
 }
 
+.v-hero-cta-primary {
+  box-shadow:
+    0 20px 48px -16px rgba(255, 90, 0, 0.62),
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 0 36px rgba(255, 122, 31, 0.22);
+}
+
+.v-hero-cta-ghost {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  padding: 0.9rem 1.35rem;
+  border-radius: 999px;
+  border: 1px solid rgb(var(--c-line) / 0.75);
+  background: rgb(var(--c-bg) / 0.74);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  color: rgb(var(--c-fg));
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: transform 0.28s ease, border-color 0.28s ease, color 0.28s ease;
+}
+
+.v-hero-cta-ghost:hover {
+  transform: translateY(-2px);
+  border-color: rgb(var(--c-primary) / 0.5);
+  color: rgb(var(--c-primary));
+}
+
+.v-hero-metric {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  min-height: 5.75rem;
+  padding: 0.9rem 0.65rem;
+  border-radius: 1.15rem;
+  background: rgb(var(--c-bg) / 0.74);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgb(var(--c-line) / 0.65);
+  overflow: hidden;
+}
+
+.v-hero-metric::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255, 122, 31, 0.12), transparent);
+  transform: translateX(-120%);
+  animation: v-metric-sweep 4.6s ease-in-out infinite;
+}
+
+.v-hero-metric .value {
+  position: relative;
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: rgb(var(--c-fg));
+  text-shadow: 0 0 14px rgba(255, 122, 31, 0.25);
+}
+
+.v-hero-metric .label {
+  position: relative;
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg-soft));
+}
+
+@keyframes v-metric-sweep {
+  0%, 52% { transform: translateX(-120%); }
+  100%    { transform: translateX(120%); }
+}
+
 /* ──────────────────────────────────────────────────────────────────
  * Hero — premium social tiles
  * Replaces the row of plain circle icons. Each social link renders
@@ -3512,4 +3644,123 @@ html {
   color: rgb(var(--c-primary));
   flex-shrink: 0;
   margin-left: 0.15rem;
+}
+
+.v-market-console {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 1.6rem;
+  background:
+    linear-gradient(135deg, rgb(var(--c-bg) / 0.84), rgb(var(--c-bg-2) / 0.74)),
+    radial-gradient(circle at top left, rgba(255, 122, 31, 0.2), transparent 38%);
+  border: 1px solid rgb(var(--c-line) / 0.75);
+  box-shadow:
+    0 24px 60px -28px rgba(255, 90, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .v-market-console {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 1.15rem 1.25rem;
+  }
+}
+
+.v-market-console::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(115deg, transparent 0%, transparent 46%, rgba(255, 122, 31, 0.11) 48%, transparent 50%),
+    linear-gradient(115deg, transparent 0%, transparent 70%, rgba(0, 183, 229, 0.09) 72%, transparent 74%);
+  pointer-events: none;
+}
+
+.v-market-console > * {
+  position: relative;
+}
+
+.v-market-stat {
+  min-width: 5.25rem;
+  padding: 0.7rem 0.55rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(var(--c-primary) / 0.22);
+  background: rgb(var(--c-bg) / 0.6);
+  text-align: center;
+}
+
+.v-market-stat .value {
+  display: block;
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: rgb(var(--c-primary));
+  text-shadow: 0 0 12px rgba(255, 122, 31, 0.35);
+}
+
+.v-market-stat .label {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg-soft));
+}
+
+.v-portfolio-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.48rem 0.72rem;
+  border-radius: 999px;
+  background: rgb(var(--c-bg) / 0.62);
+  border: 1px solid rgb(var(--c-line) / 0.65);
+  color: rgb(var(--c-fg-muted));
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.v-portfolio-chip svg {
+  color: rgb(var(--c-primary));
+}
+
+.v-whatsapp-boost {
+  background:
+    linear-gradient(135deg, #25d366, #128c7e),
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.42), transparent 44%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 24px 54px -18px rgba(34, 197, 94, 0.66),
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 0 32px rgba(34, 197, 94, 0.26);
+}
+
+.v-whatsapp-boost::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  background: radial-gradient(closest-side, rgba(34, 197, 94, 0.42), transparent 72%);
+  filter: blur(10px);
+  z-index: -1;
+  animation: vFabPulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-gaming-hero-grid,
+  .v-hero-particle,
+  .v-hero-metric::before,
+  .v-whatsapp-boost::before {
+    animation: none;
+  }
 }

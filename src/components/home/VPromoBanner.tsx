@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Truck, Shield, Award } from 'lucide-react'
+import { ArrowRight, Truck, Shield, Award, Gauge, Gamepad2, Trophy } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 
 const TRUST_BADGES = [
@@ -12,6 +12,12 @@ const PILLARS = [
   { label: 'Premium\nQuality' },
   { label: 'Performance\nFocused' },
   { label: 'Secure\nPayment' },
+]
+
+const PORTFOLIO_POINTS = [
+  { icon: Gamepad2, label: 'Arcade-grade motion UI' },
+  { icon: Gauge, label: 'Motorbike performance mood' },
+  { icon: Trophy, label: 'Premium portfolio presentation' },
 ]
 
 /**
@@ -58,14 +64,24 @@ export default function VPromoBanner() {
             </div>
 
             <div className="relative space-y-7 max-w-3xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-2.5">
+                {PORTFOLIO_POINTS.map((point) => (
+                  <span key={point.label} className="v-portfolio-chip">
+                    <point.icon className="w-3.5 h-3.5" />
+                    {point.label}
+                  </span>
+                ))}
+              </div>
+
               <h2 className="v-headline text-4xl sm:text-6xl md:text-7xl">
-                PREMIUM
+                GAMING
                 <br />
-                <em>RIDING GEAR</em>
+                <em>SHOP ARENA</em>
               </h2>
 
               <p className="text-fg-muted font-ui text-base max-w-md mx-auto">
-                Top performance accessories for riders who demand more.
+                Premium ecommerce meets a rider portfolio: animated, neon,
+                fast, and ready to convert visitors into WhatsApp orders.
               </p>
 
               {/* Oversized 40% OFF as the focal visual */}
