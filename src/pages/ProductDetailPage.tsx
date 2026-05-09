@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   ShoppingBag,
@@ -22,6 +22,7 @@ import { useStore } from '@/context/StoreContext'
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
+  const navigate = useNavigate()
   const { products, categories, brandSettings } = useStore()
   const [selectedImage, setSelectedImage] = useState(0)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -267,17 +268,16 @@ export default function ProductDetailPage() {
                 <MessageCircle className="w-5 h-5" />
                 Order via WhatsApp
               </motion.a>
-              <motion.a
-                href={`${brandSettings.whatsapp}?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.button
+                type="button"
+                onClick={() => navigate(`/checkout?product=${product.slug}`)}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-shadow animate-pulse-glow font-racing tracking-wide"
               >
                 <ShoppingBag className="w-5 h-5" />
                 Buy Now
-              </motion.a>
+              </motion.button>
             </div>
           </AnimatedSection>
         </div>
