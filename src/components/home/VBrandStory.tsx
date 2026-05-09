@@ -54,11 +54,11 @@ export default function VBrandStory() {
           {FEATURES.map((feat, i) => (
             <motion.div
               key={feat.title}
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 40, scale: 0.87, rotateX: 10 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
               viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6, scale: 1.03, transition: { duration: 0.25 } }}
+              transition={{ type: 'spring', stiffness: 160, damping: 18, delay: i * 0.08 }}
+              whileHover={{ y: -8, scale: 1.05, transition: { type: 'spring', stiffness: 350, damping: 15 } }}
               className="sb-trust-cell sb-neon-card sb-card-glow flex-row gap-3 sm:flex-col sm:gap-2 p-4 sm:p-5"
             >
               <span className="sb-pillar-ico flex-shrink-0">

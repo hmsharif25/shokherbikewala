@@ -2663,13 +2663,13 @@ html {
 /* ---------- Velocity scroll-reveal helpers ---------- */
 .v-reveal {
   opacity: 0;
-  transform: translateY(28px) scale(0.97);
-  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(36px) scale(0.94) perspective(800px) rotateX(4deg);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .v-reveal.in {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0) scale(1) perspective(800px) rotateX(0deg);
 }
 
 /* ---------- Marquee ticker for promo banner ---------- */
@@ -3169,13 +3169,13 @@ html {
 :root[data-theme='dark'] .v-watermark { color: rgb(255 255 255 / 0.05); }
 
 /* ---------- Premium reveal variants ---------- */
-.v-reveal-up { transform: translateY(28px); }
-.v-reveal-left { transform: translateX(-28px); }
-.v-reveal-right { transform: translateX(28px); }
-.v-reveal-zoom { transform: scale(0.96); }
+.v-reveal-up { transform: translateY(36px) scale(0.94); }
+.v-reveal-left { transform: translateX(-36px) scale(0.94); }
+.v-reveal-right { transform: translateX(36px) scale(0.94); }
+.v-reveal-zoom { transform: scale(0.9); }
 .v-reveal.in.v-reveal-up,
 .v-reveal.in.v-reveal-left,
-.v-reveal.in.v-reveal-right { transform: translate(0, 0); }
+.v-reveal.in.v-reveal-right { transform: translate(0, 0) scale(1); }
 .v-reveal.in.v-reveal-zoom { transform: scale(1); }
 
 /* ---------- Mobile bottom tab bar (5-up reference style) ----------
@@ -6807,6 +6807,33 @@ html {
     0 20px 40px -15px rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 106, 26, 0.3) !important;
   transform: translateY(-4px);
+}
+
+/* ── Hero social card shine sweep ── */
+.sb-social-card {
+  perspective: 800px;
+}
+.sb-social-shine {
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 65%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sb-social-card:hover .sb-social-shine {
+  opacity: 1;
+  animation: sb-shine-sweep 1.2s ease forwards;
+}
+@keyframes sb-shine-sweep {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -50% 0; }
 }
 
 /* ── Scanline overlay for sections ── */

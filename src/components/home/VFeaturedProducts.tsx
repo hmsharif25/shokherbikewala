@@ -74,11 +74,11 @@ export default function VFeaturedProducts() {
               return (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 45, scale: 0.9, rotateY: -6 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1, rotateY: 0 }}
                   viewport={{ once: true, margin: '-30px' }}
-                  transition={{ duration: 0.55, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                  transition={{ type: 'spring', stiffness: 140, damping: 18, delay: i * 0.07 }}
+                  whileHover={{ y: -10, scale: 1.03, transition: { type: 'spring', stiffness: 300, damping: 15 } }}
                   className="sb-product-card sb-neon-card flex flex-col flex-shrink-0 w-[70vw] sm:w-[45vw] md:w-[30vw] lg:w-[22vw] snap-start"
                 >
                   <div className="relative aspect-square overflow-hidden rounded-t-[1.45rem]">

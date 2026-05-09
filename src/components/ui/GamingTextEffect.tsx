@@ -106,13 +106,14 @@ export function LetterReveal({
       {text.split('').map((char, i) => (
         <motion.span
           key={`${char}-${i}`}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 25, scale: 0.8, rotateX: 40 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
           viewport={{ once: true }}
           transition={{
-            duration: 0.4,
-            delay: delay + i * 0.03,
-            ease: [0.22, 1, 0.36, 1],
+            type: 'spring',
+            stiffness: 200,
+            damping: 15,
+            delay: delay + i * 0.025,
           }}
           className={char === ' ' ? 'w-[0.3em]' : ''}
         >
