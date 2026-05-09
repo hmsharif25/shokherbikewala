@@ -4,19 +4,13 @@ import {
   Instagram,
   MessageCircle,
   Music2,
-  Star,
+  Bike,
 } from 'lucide-react'
-import { useMemo, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useRef } from 'react'
 import { useStore } from '@/context/StoreContext'
 
-/**
- * Cinematic hero — full-width centered layout with gaming atmosphere.
- * Headline + CTA centered, with floating product cards orbiting as
- * glass panels on desktop. Mobile shows a horizontal scroll strip.
- */
 export default function VHeroSection() {
-  const { products, categories, brandSettings } = useStore()
+  const { brandSettings } = useStore()
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -24,26 +18,6 @@ export default function VHeroSection() {
   })
   const y = useTransform(scrollYProgress, [0, 1], [0, -40])
   const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.25])
-
-  const orbitals = useMemo(() => {
-    const preferredOrder = ['helmet', 'exhaust', 'glove', 'phone', 'jacket', 'light']
-    const picks: typeof products = []
-    for (const key of preferredOrder) {
-      const cat = categories.find((c) => c.slug.toLowerCase().includes(key))
-      if (!cat) continue
-      const match = products.find(
-        (p) => p.category_id === cat.id && !picks.some((q) => q.id === p.id)
-      )
-      if (match) picks.push(match)
-      if (picks.length === 4) break
-    }
-    while (picks.length < 4 && products.length > picks.length) {
-      const next = products.find((p) => !picks.some((q) => q.id === p.id))
-      if (!next) break
-      picks.push(next)
-    }
-    return picks.slice(0, 4)
-  }, [products, categories])
 
   const stats = [
     { value: '500+', label: 'Products' },
@@ -73,10 +47,89 @@ export default function VHeroSection() {
         style={{ y, opacity }}
         className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[calc(100dvh-8rem)]"
       >
+        {/* Premium brand icon */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6, filter: 'blur(12px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mb-6 sm:mb-8"
+        >
+          {/* Outer rotating ring */}
+          <motion.div
+            className="absolute inset-[-18px] sm:inset-[-24px] rounded-full border border-primary/20"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          >
+            <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(255,106,26,0.6)]" />
+            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,183,229,0.6)]" />
+          </motion.div>
+
+          {/* Counter-rotating inner ring */}
+          <motion.div
+            className="absolute inset-[-8px] sm:inset-[-12px] rounded-full border border-white/[0.06]"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+          >
+            <span className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/60" />
+          </motion.div>
+
+          {/* Pulsing glow behind */}
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            animate={{
+              boxShadow: [
+                '0 0 30px rgba(255,106,26,0.15), 0 0 60px rgba(255,106,26,0.08)',
+                '0 0 50px rgba(255,106,26,0.25), 0 0 100px rgba(255,106,26,0.12)',
+                '0 0 30px rgba(255,106,26,0.15), 0 0 60px rgba(255,106,26,0.08)',
+              ],
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          />
+
+          {/* Main icon container */}
+          <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden">
+            {/* Glass background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl border border-white/10 rounded-full" />
+
+            {/* Gradient accent ring */}
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: 'conic-gradient(from 0deg, rgba(255,106,26,0.3), transparent 25%, rgba(0,183,229,0.2) 50%, transparent 75%, rgba(255,106,26,0.3))',
+                mask: 'radial-gradient(circle, transparent 60%, black 62%, black 100%)',
+                WebkitMask: 'radial-gradient(circle, transparent 60%, black 62%, black 100%)',
+              }}
+            />
+
+            {/* Logo or fallback icon */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {brandSettings.logo_url ? (
+                <img
+                  src={brandSettings.logo_url}
+                  alt={brandSettings.brand_name}
+                  className="w-14 h-14 sm:w-20 sm:h-20 object-contain drop-shadow-[0_0_12px_rgba(255,106,26,0.3)]"
+                />
+              ) : (
+                <Bike className="w-10 h-10 sm:w-14 sm:h-14 text-primary drop-shadow-[0_0_12px_rgba(255,106,26,0.4)]" />
+              )}
+            </div>
+
+            {/* Shine sweep */}
+            <motion.div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{
+                background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.05) 50%, transparent 55%)',
+              }}
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
+            />
+          </div>
+        </motion.div>
+
         <motion.h1
           initial={{ opacity: 0, y: 22, filter: 'blur(10px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           className="sb-cinematic-title items-center"
         >
           <span className="sb-cinematic-line">SHOKHER</span>
@@ -186,82 +239,7 @@ export default function VHeroSection() {
           ))}
         </motion.div>
 
-        {/* Floating product cards — desktop only */}
-        <div className="hidden lg:block">
-          {orbitals.map((p, i) => {
-            const cat = categories.find((c) => c.id === p.category_id)
-            const price = p.discount_price ?? p.price
-            const positions = [
-              { top: '12%', left: '0%' },
-              { top: '18%', right: '0%' },
-              { bottom: '20%', left: '2%' },
-              { bottom: '24%', right: '2%' },
-            ]
-            const pos = positions[i]
-            if (!pos) return null
-            return (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 18, scale: 0.92 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  duration: 0.7,
-                  delay: 0.5 + i * 0.12,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="sb-orbital"
-                style={{ position: 'absolute', ...pos, animation: `sb-orbital-hover 7s ease-in-out infinite`, animationDelay: `${-i * 1.5}s` }}
-              >
-                <Link to={`/products/${p.slug}`} className="sb-orbital-card">
-                  <div className="sb-orbital-thumb">
-                    <img src={p.images[0]} alt={p.name} loading="lazy" decoding="async" />
-                  </div>
-                  <div className="sb-orbital-meta">
-                    <p className="sb-orbital-cat">{cat?.name ?? 'Gear'}</p>
-                    <p className="sb-orbital-price">৳{price.toLocaleString()}</p>
-                    <div className="sb-orbital-rating">
-                      <Star className="w-3 h-3" />
-                      <span>{(4.5 + ((i * 7) % 5) / 10).toFixed(1)}</span>
-                    </div>
-                  </div>
-                  <span className="sb-orbital-plus" aria-hidden="true">+</span>
-                </Link>
-              </motion.div>
-            )
-          })}
-        </div>
 
-        {/* Mobile product strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.75 }}
-          className="sb-orbital-strip lg:hidden mt-8"
-        >
-          {orbitals.map((p, i) => {
-            const cat = categories.find((c) => c.id === p.category_id)
-            const price = p.discount_price ?? p.price
-            return (
-              <Link
-                key={p.id}
-                to={`/products/${p.slug}`}
-                className="sb-orbital-card sb-orbital-card-strip"
-              >
-                <div className="sb-orbital-thumb">
-                  <img src={p.images[0]} alt={p.name} loading="lazy" decoding="async" />
-                </div>
-                <div className="sb-orbital-meta">
-                  <p className="sb-orbital-cat">{cat?.name ?? 'Gear'}</p>
-                  <p className="sb-orbital-price">৳{price.toLocaleString()}</p>
-                  <div className="sb-orbital-rating">
-                    <Star className="w-3 h-3" />
-                    <span>{(4.5 + ((i * 7) % 5) / 10).toFixed(1)}</span>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
-        </motion.div>
       </motion.div>
     </section>
   )
