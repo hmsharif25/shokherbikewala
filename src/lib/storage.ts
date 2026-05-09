@@ -50,11 +50,38 @@ export async function uploadImage(
   })
 
   if (error) {
-    throw new Error(error.message || 'Upload failed')
+    throw new Error(friendlyUploadError(error.message))
   }
 
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(path)
   return { url: data.publicUrl, path }
+}
+
+/**
+ * Translate raw Supabase Storage errors into actionable hints. The most
+ * common cause of failure for this project is the storage migration
+ * (`supabase/migrations/0002_storage.sql`) not having been run yet.
+ */
+export function friendlyUploadError(raw: string | undefined): string {
+  const msg = (raw || '').toLowerCase()
+  if (msg.includes('bucket not found')) {
+    return 'Storage bucket "assets" not found. Run supabase/migrations/0002_storage.sql in the Supabase SQL editor, then try again.'
+  }
+  if (
+    msg.includes('row-level security') ||
+    msg.includes('rls') ||
+    msg.includes('not authorized') ||
+    msg.includes('permission')
+  ) {
+    return 'Upload was blocked by storage permissions. Make sure you are signed in as an admin and that 0002_storage.sql has been run.'
+  }
+  if (msg.includes('payload too large') || msg.includes('exceeded the maximum')) {
+    return 'File is too large. Please use an image under 8 MB.'
+  }
+  if (msg.includes('jwt') || msg.includes('not authenticated')) {
+    return 'Your admin session expired. Please sign in again and retry the upload.'
+  }
+  return raw || 'Upload failed'
 }
 
 /** Try to extract the storage path from a public URL we previously returned. */
