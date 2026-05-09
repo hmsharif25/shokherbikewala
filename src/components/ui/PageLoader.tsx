@@ -21,7 +21,7 @@ export default function PageLoader() {
       return
     }
     const start = Date.now()
-    const target = 1400
+    const target = 760
     const id = setInterval(() => {
       const t = Math.min(1, (Date.now() - start) / target)
       const eased = 1 - Math.pow(1 - t, 3)
@@ -29,7 +29,7 @@ export default function PageLoader() {
       if (t >= 1) {
         clearInterval(id)
         sessionStorage.setItem(SESSION_KEY, '1')
-        setTimeout(() => setDone(true), 280)
+        setTimeout(() => setDone(true), 140)
       }
     }, 30)
     return () => clearInterval(id)
@@ -54,18 +54,18 @@ export default function PageLoader() {
             }`}
           />
 
-          <div className="relative flex flex-col items-center gap-7 px-6 max-w-sm w-full">
+          <div className="sb-loader-shell relative flex flex-col items-center gap-6 px-6 max-w-sm w-full">
             <motion.div
               initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="relative w-24 h-24 sm:w-28 sm:h-28"
+              className="relative w-20 h-20 sm:w-24 sm:h-24"
             >
               <motion.div
                 aria-hidden
                 animate={{ rotate: 360 }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-                className={`absolute inset-0 rounded-full border-2 border-dashed ${
+                className={`absolute inset-0 rounded-full border ${
                   isDark ? 'border-primary/30' : 'border-primary/25'
                 }`}
               />
@@ -73,7 +73,7 @@ export default function PageLoader() {
                 <img
                   src="/logo.png"
                   alt="Shokher Bike Wala"
-                  className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                  className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
                 />
               </div>
             </motion.div>
@@ -87,7 +87,7 @@ export default function PageLoader() {
                 Shokher Bike Wala
               </div>
               <div className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-fg-soft'}`}>
-                Premium bike accessories
+                Loading premium ride gear
               </div>
             </div>
 

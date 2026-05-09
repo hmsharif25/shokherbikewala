@@ -36,7 +36,7 @@ export default function VFeaturedProducts() {
   ]
 
   return (
-    <section className="v-premium-section v-premium-products relative py-20 sm:py-24 overflow-hidden">
+    <section className="sb-clean-section sb-clean-products relative py-16 sm:py-20 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 right-0 w-[28rem] h-[28rem] bg-primary/[0.05] rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-[28rem] h-[28rem] bg-primary/[0.04] rounded-full blur-3xl" />
@@ -44,12 +44,12 @@ export default function VFeaturedProducts() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-12">
-          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Product Showcase</span>
+          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Featured Products</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            PREMIUM <em>LOADOUTS</em>
+            Best <em>Rider Picks</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Ultra-clean ecommerce cards with live ratings, pricing, wishlist actions, and fast checkout motion.
+            Clean product cards, smooth animation, rider-focused pricing, and quick WhatsApp checkout.
           </p>
         </VReveal>
 
@@ -120,11 +120,11 @@ export default function VFeaturedProducts() {
                 Ecommerce Command Center
               </p>
               <h3 className="font-headline text-xl sm:text-2xl font-bold text-fg mt-1">
-                Shop gear like a cinematic rider loadout.
+                Shop gear without visual clutter.
               </h3>
               <p className="font-ui text-sm text-fg-muted mt-1 max-w-xl">
                 Filter categories, compare prices, save wishlist picks, and jump
-                straight into premium checkout from every product card.
+                straight into checkout from every product card.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -156,7 +156,7 @@ export default function VFeaturedProducts() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.45, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                  className="v-product-card flex flex-col"
+                  className="sb-product-card flex flex-col"
                 >
                   <div className="relative aspect-square overflow-hidden rounded-t-[1.45rem]">
                     {discountPct > 0 && (
@@ -166,7 +166,7 @@ export default function VFeaturedProducts() {
                     )}
                     <button
                       aria-label={`Add ${product.name} to wishlist`}
-                      className="absolute top-3 right-3 z-10 v-product-wishlist"
+                      className="absolute top-3 right-3 z-10 sb-wishlist-btn"
                     >
                       <Heart className="w-4 h-4" />
                     </button>
