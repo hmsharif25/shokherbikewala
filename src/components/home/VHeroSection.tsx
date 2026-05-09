@@ -59,6 +59,15 @@ export default function VHeroSection() {
 
   const brandName = brandSettings.brand_name || 'Shokher Bike Wala'
 
+  // Defined once so the desktop bottom row and the mobile column
+  // render the exact same set of social icons.
+  const socialItems = [
+    { icon: Instagram, url: brandSettings.instagram, label: 'Instagram' },
+    { icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
+    { icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
+    { icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp' },
+  ]
+
   return (
     <section
       ref={ref}
@@ -83,7 +92,7 @@ export default function VHeroSection() {
         style={{ y: yShift, opacity: fade }}
         className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
       >
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-4 items-center">
           {/* Left column: copy */}
           <div className="lg:col-span-5 relative z-20 space-y-5 sm:space-y-7 text-center lg:text-left">
             <motion.div
@@ -134,19 +143,15 @@ export default function VHeroSection() {
               </span>
             </motion.div>
 
-            {/* Social row */}
+            {/* Social row — mobile only; desktop variant lives in the
+                bottom row alongside the feature chips so they align. */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.55 }}
-              className="flex items-center gap-3 justify-center lg:justify-start pt-1"
+              className="lg:hidden flex items-center gap-3 justify-center pt-1"
             >
-              {[
-                { icon: Instagram, url: brandSettings.instagram, label: 'Instagram' },
-                { icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
-                { icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
-                { icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp' },
-              ].map((s) => (
+              {socialItems.map((s) => (
                 <a
                   key={s.label}
                   href={s.url}
@@ -167,17 +172,17 @@ export default function VHeroSection() {
               initial={{ opacity: 0, scale: 0.96, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-              className="relative aspect-[1.05] sm:aspect-[1.15] lg:aspect-[1.05] w-full"
+              className="relative aspect-[1.0] sm:aspect-[1.05] lg:aspect-[0.95] w-full lg:-mr-4 xl:-mr-6"
             >
               {/* Curved orange neon showroom ring */}
               <motion.div className="v-show-ring" style={{ scale: ringScale }} />
 
-              {/* Bike */}
+              {/* Bike — pulled larger; allowed to slightly overflow the box */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
                   src={heroImage}
                   alt={`${brandName} — premium sportbike`}
-                  className="relative z-[1] w-full h-full object-contain object-center scale-105 sm:scale-100 drop-shadow-[0_30px_60px_rgba(255,90,0,0.35)]"
+                  className="relative z-[1] w-full h-full object-contain object-center scale-110 sm:scale-115 lg:scale-125 xl:scale-130 drop-shadow-[0_30px_60px_rgba(255,90,0,0.35)]"
                   loading="eager"
                 />
               </div>
@@ -219,30 +224,49 @@ export default function VHeroSection() {
                 )}
               </div>
             </motion.div>
-
-            {/* Feature chips capsule (desktop only) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.65 }}
-              className="hidden md:flex absolute -bottom-10 right-0 v-capsule rounded-2xl px-3 py-3 gap-2 z-[3]"
-            >
-              {FEATURE_CHIPS.map((c) => (
-                <div
-                  key={c.label}
-                  className="flex flex-col items-center text-center w-20 px-1"
-                >
-                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center mb-1.5 border border-primary/20">
-                    <c.icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <span className="text-[10px] font-ui font-bold tracking-wider uppercase whitespace-pre-line leading-tight text-fg-muted">
-                    {c.label}
-                  </span>
-                </div>
-              ))}
-            </motion.div>
           </div>
         </div>
+
+        {/* Desktop bottom row — social icons (left) and the compact
+            feature-chip capsule (right) sit on the same line so they
+            visually align with each other. */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.6 }}
+          className="hidden lg:flex items-center justify-between mt-6"
+        >
+          <div className="flex items-center gap-3">
+            {socialItems.map((s) => (
+              <a
+                key={s.label}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className="w-9 h-9 rounded-full flex items-center justify-center text-fg-soft hover:text-primary transition-colors border border-line/60 hover:border-primary/40 bg-bg/40"
+              >
+                <s.icon className="w-4 h-4" />
+              </a>
+            ))}
+          </div>
+
+          <div className="v-capsule rounded-2xl px-2.5 py-2 flex items-center gap-1">
+            {FEATURE_CHIPS.map((c) => (
+              <div
+                key={c.label}
+                className="flex flex-col items-center text-center w-[3.75rem] px-1"
+              >
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center mb-1 border border-primary/20">
+                  <c.icon className="w-3 h-3 text-primary" />
+                </div>
+                <span className="text-[9px] font-ui font-bold tracking-wider uppercase whitespace-pre-line leading-tight text-fg-muted">
+                  {c.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Mobile feature chips — single clean row, no duplicate cards */}
         <motion.div
