@@ -1,7 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import {
-  ArrowRight,
   Instagram,
   Facebook,
   Music2,
@@ -13,13 +11,11 @@ import { useStore } from '@/context/StoreContext'
 /**
  * Brand-led hero — image-less, headline-less.
  *
- * The previous "RIDE / WITH / POWER" oversized headline has been
- * removed entirely so the brand identity is the unambiguous focal
- * point of the hero. Layout is a centered single column,
- * vertically balanced inside the viewport:
+ * The hero now contains pure brand identity only. The eyebrow,
+ * sub-copy and "Shop Collection" CTA were removed at the user's
+ * request so the hero reads as a clean brand stamp:
  *
- *   logo glyph (oversized) -> wordmark (oversized) ->
- *   tagline pill -> eyebrow -> sub copy -> CTA -> social row
+ *   logo glyph -> wordmark -> tagline pill -> social row
  *
  * Visual anchors (no imagery): three slowly-rotating concentric
  * orange orbital rings + drifting radial glow.
@@ -136,50 +132,12 @@ export default function VHeroSection() {
           </span>
         </motion.div>
 
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.42 }}
-          className="inline-flex mt-7"
-        >
-          <span className="v-eyebrow">Premium Motorcycle Accessories</span>
-        </motion.div>
-
-        {/* Sub copy */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-fg-muted text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-ui mt-5"
-        >
-          High performance accessories for those who live to ride. Built for
-          speed, designed for dominance.
-        </motion.p>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex items-center justify-center mt-8"
-        >
-          <span className="v-cta-wrap">
-            <Link to="/products" className="v-pill-cta">
-              Shop Collection
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/25 ml-1">
-                <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </Link>
-          </span>
-        </motion.div>
-
         {/* Social row */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="flex items-center gap-3 justify-center mt-7"
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="flex items-center gap-3 justify-center mt-8"
         >
           {socialItems.map((s) => (
             <a
