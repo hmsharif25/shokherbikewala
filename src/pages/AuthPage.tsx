@@ -67,7 +67,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-dark relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-bg relative overflow-hidden">
       <ParticleBackground />
       <div className="absolute inset-0 z-[1]">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -96,11 +96,11 @@ export default function AuthPage() {
               transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
               className="w-16 h-16 mx-auto mb-4 rounded-2xl speedometer-ring flex items-center justify-center overflow-hidden relative p-0.5"
             >
-              <div className="w-full h-full bg-dark rounded-xl flex items-center justify-center">
+              <div className="w-full h-full bg-bg rounded-xl flex items-center justify-center">
                 <img
                   src="/logo.png"
                   alt="Shokher Bike Wala"
-                  className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,69,0,0.6)]"
+                  className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,106,26,0.55)]"
                 />
               </div>
             </motion.div>
@@ -156,10 +156,10 @@ export default function AuthPage() {
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10" />
+              <div className="w-full border-t border-line" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-4 bg-dark-50 text-gray-500 font-racing">or continue with email</span>
+              <span className="px-4 bg-bg-2 text-fg-soft font-racing">or continue with email</span>
             </div>
           </div>
 

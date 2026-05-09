@@ -34,7 +34,8 @@ export default function MobileBottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-      <div className="absolute inset-0 bg-dark-50/95 backdrop-blur-xl border-t border-white/10" />
+      <div className="absolute inset-0 bg-bg-2/95 backdrop-blur-xl border-t border-line shadow-[0_-8px_32px_-12px_rgba(255,106,26,0.18)]" />
+      <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
       <div className="relative flex items-center justify-around px-2 py-1.5 safe-area-bottom">
         {navItems.map((item) => {
           const isActive = !item.external && location.pathname === item.path

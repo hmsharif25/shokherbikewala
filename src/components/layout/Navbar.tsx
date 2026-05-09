@@ -173,7 +173,7 @@ export default function Navbar() {
             className="fixed inset-0 z-40 md:hidden"
           >
             <div
-              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+              className="absolute inset-0 bg-bg/70 backdrop-blur-sm"
               onClick={() => setMobileOpen(false)}
             />
             <motion.div
@@ -181,7 +181,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-[75vw] max-w-xs bg-dark-50/95 backdrop-blur-xl border-l border-primary/10 p-6 pt-20"
+              className="absolute right-0 top-0 bottom-0 w-[75vw] max-w-xs bg-bg-2/95 backdrop-blur-xl border-l border-primary/15 p-6 pt-20 shadow-[-12px_0_40px_-16px_rgba(255,106,26,0.25)]"
             >
               <div className="absolute top-6 left-6 right-6 flex items-center gap-3">
                 <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
