@@ -22,12 +22,11 @@ function iconFor(slug: string) {
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.92, filter: 'blur(6px)' },
+  hidden: { opacity: 0, y: 40, scale: 0.92 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: 'blur(0px)',
     transition: { delay: 0.1 * i, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 }

@@ -51,8 +51,8 @@ export default function VHeroSection() {
       >
         {/* Premium brand icon */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.6, filter: 'blur(12px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
           className="relative mb-6 sm:mb-8"
         >
@@ -125,8 +125,8 @@ export default function VHeroSection() {
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 22, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           className="sb-cinematic-title items-center"
         >

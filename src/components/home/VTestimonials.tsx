@@ -45,9 +45,9 @@ export default function VTestimonials() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: 80, scale: 0.95, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, x: -80, scale: 0.95, filter: 'blur(8px)' }}
+                initial={{ opacity: 0, x: 80, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -80, scale: 0.95 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="v-capsule sb-electricity rounded-3xl p-6 sm:p-12 text-center relative"
               >
