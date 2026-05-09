@@ -3155,3 +3155,361 @@ html {
     padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────
+ * Hero — premium brand lockup
+ * Used in <VHeroSection /> to wrap the logo + brand name in a glass
+ * card with chrome corner accents and a soft animated orange glow.
+ * Designed to feel cohesive with the rest of the site (uses the same
+ * eyebrow + headline tokens as Categories / Featured Products) but
+ * gives the brand identity a premium "showroom plaque" treatment.
+ * ────────────────────────────────────────────────────────────────── */
+.v-brand-lockup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.6rem 1.1rem 1.1rem;
+  border-radius: 1.4rem;
+  background: rgb(var(--c-bg) / 0.85);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgb(var(--c-line) / 0.8);
+  box-shadow:
+    0 24px 60px -24px rgba(255, 90, 0, 0.30),
+    0 8px 18px -8px rgba(17, 24, 39, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  isolation: isolate;
+  overflow: visible;
+}
+:root[data-theme='dark'] .v-brand-lockup {
+  background: rgba(18, 18, 28, 0.78);
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 30px 80px -28px rgba(255, 90, 0, 0.45),
+    0 10px 24px -10px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+/* Soft orange halo behind the lockup */
+.v-brand-lockup::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at center, rgba(255, 122, 31, 0.22), transparent 65%);
+  filter: blur(28px);
+  z-index: -2;
+  pointer-events: none;
+}
+/* Animated gradient ring around the lockup */
+.v-brand-lockup::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 122, 31, 0.7),
+    rgba(255, 122, 31, 0) 35%,
+    rgba(255, 122, 31, 0) 65%,
+    rgba(255, 122, 31, 0.5)
+  );
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* Chrome corner accents — bracket-style dashes at each corner */
+.v-brand-lockup-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: rgb(var(--c-primary));
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+}
+.v-brand-lockup-corner.tl { top: -4px; left: -4px; border-top-width: 2px; border-left-width: 2px; border-top-left-radius: 6px; }
+.v-brand-lockup-corner.tr { top: -4px; right: -4px; border-top-width: 2px; border-right-width: 2px; border-top-right-radius: 6px; }
+.v-brand-lockup-corner.bl { bottom: -4px; left: -4px; border-bottom-width: 2px; border-left-width: 2px; border-bottom-left-radius: 6px; }
+.v-brand-lockup-corner.br { bottom: -4px; right: -4px; border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: 6px; }
+
+/* Logo glyph cell inside the lockup */
+.v-brand-lockup-logo {
+  position: relative;
+  flex-shrink: 0;
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255, 122, 31, 0.22), rgba(255, 122, 31, 0.06));
+  border: 1px solid rgba(255, 122, 31, 0.32);
+  padding: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.v-brand-lockup-logo::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 1.4rem;
+  background: radial-gradient(circle at center, rgba(255, 122, 31, 0.55), transparent 70%);
+  filter: blur(10px);
+  z-index: -1;
+}
+@media (min-width: 640px) {
+  .v-brand-lockup-logo {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+/* Brand name typography inside the lockup — matches site headline scale
+   but more compact than the big standalone wordmark we used to render. */
+.v-brand-lockup-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+.v-brand-lockup-name .top {
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  color: rgb(var(--c-fg));
+}
+.v-brand-lockup-name .bottom {
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  color: rgb(var(--c-primary));
+  margin-top: 0.4rem;
+  text-shadow: 0 0 12px rgba(255, 122, 31, 0.4);
+}
+@media (min-width: 640px) {
+  .v-brand-lockup-name .top {
+    font-size: 2.1rem;
+  }
+  .v-brand-lockup-name .bottom {
+    font-size: 0.78rem;
+    letter-spacing: 0.5em;
+  }
+}
+@media (min-width: 1024px) {
+  .v-brand-lockup-name .top {
+    font-size: 2.6rem;
+  }
+}
+
+/* Vertical separator + EST badge inside the lockup */
+.v-brand-lockup-sep {
+  display: none;
+  width: 1px;
+  align-self: stretch;
+  background: linear-gradient(to bottom, transparent, rgb(var(--c-line)) 30%, rgb(var(--c-line)) 70%, transparent);
+}
+.v-brand-lockup-est {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+@media (min-width: 768px) {
+  .v-brand-lockup-sep,
+  .v-brand-lockup-est {
+    display: flex;
+  }
+  .v-brand-lockup {
+    padding-right: 1.6rem;
+  }
+}
+.v-brand-lockup-est .label {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg-soft));
+}
+.v-brand-lockup-est .value {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: rgb(var(--c-primary));
+  text-shadow: 0 0 10px rgba(255, 122, 31, 0.45);
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ * Hero — kinetic tagline strip
+ * Italic Orbitron with chrome divider dots between segments. Reads
+ * like an aviation / showroom call-out. Matches the brand palette
+ * but is visually distinct from the previous "tagline pill" so it
+ * feels premium and intentional.
+ * ────────────────────────────────────────────────────────────────── */
+.v-hero-kinetic {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem 0.85rem;
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg-muted));
+}
+@media (min-width: 640px) {
+  .v-hero-kinetic {
+    font-size: 0.88rem;
+    letter-spacing: 0.28em;
+  }
+}
+.v-hero-kinetic em {
+  font-style: italic;
+  color: rgb(var(--c-primary));
+  text-shadow: 0 0 12px rgba(255, 122, 31, 0.45);
+  background: linear-gradient(180deg, rgb(var(--c-primary)), #ff5a00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.v-hero-kinetic-dot {
+  display: inline-flex;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: rgb(var(--c-primary));
+  box-shadow: 0 0 8px 1px rgba(255, 122, 31, 0.7);
+  vertical-align: middle;
+  flex-shrink: 0;
+  animation: v-kinetic-dot-pulse 2.6s ease-in-out infinite;
+}
+.v-hero-kinetic-dot:nth-child(2) { animation-delay: 0.4s; }
+.v-hero-kinetic-dot:nth-child(4) { animation-delay: 0.8s; }
+.v-hero-kinetic-dot:nth-child(6) { animation-delay: 1.2s; }
+
+@keyframes v-kinetic-dot-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-hero-kinetic-dot { animation: none; }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ * Hero — premium social tiles
+ * Replaces the row of plain circle icons. Each social link renders
+ * as a glass capsule containing the platform glyph (gradient-filled),
+ * platform name, the brand handle, and a chevron — so it reads as a
+ * premium "follow" card instead of a bare icon.
+ * ────────────────────────────────────────────────────────────────── */
+.v-social-tile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.95rem 0.55rem 0.55rem;
+  border-radius: 999px;
+  background: rgb(var(--c-bg) / 0.85);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgb(var(--c-line) / 0.7);
+  color: rgb(var(--c-fg));
+  text-decoration: none;
+  transition:
+    transform 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+  isolation: isolate;
+  overflow: hidden;
+}
+.v-social-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.18) 50%, transparent 70%);
+  transform: translateX(-150%);
+  transition: transform 0.7s ease;
+  z-index: -1;
+}
+.v-social-tile:hover {
+  transform: translateY(-2px);
+  border-color: rgb(var(--c-primary) / 0.5);
+  box-shadow:
+    0 14px 28px -10px rgba(255, 90, 0, 0.30),
+    0 6px 12px -4px rgba(17, 24, 39, 0.18);
+}
+.v-social-tile:hover::before {
+  transform: translateX(150%);
+}
+:root[data-theme='dark'] .v-social-tile {
+  background: rgba(18, 18, 28, 0.78);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+.v-social-tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px -2px rgba(17, 24, 39, 0.25);
+}
+.v-social-tile-icon.is-instagram {
+  background: linear-gradient(135deg, #f58529, #dd2a7b 50%, #8134af 80%, #515bd4);
+}
+.v-social-tile-icon.is-tiktok {
+  background: linear-gradient(135deg, #25f4ee, #000000 60%, #fe2c55);
+}
+.v-social-tile-icon.is-facebook {
+  background: linear-gradient(135deg, #1877f2, #0a4cb3);
+}
+.v-social-tile-icon.is-whatsapp {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
+.v-social-tile-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.05;
+  text-align: left;
+}
+.v-social-tile-meta .platform {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg));
+}
+.v-social-tile-meta .handle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.7rem;
+  color: rgb(var(--c-fg-soft));
+  margin-top: 0.15rem;
+}
+.v-social-tile-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: rgb(var(--c-primary) / 0.12);
+  color: rgb(var(--c-primary));
+  flex-shrink: 0;
+  margin-left: 0.15rem;
+}
