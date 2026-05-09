@@ -1,4 +1,4 @@
-# Shokher Bike Wala
+# Shokher Bikewala
 
 Premium gaming-themed e-commerce site for bike accessories.
 Built with **React + Vite + TailwindCSS + Framer Motion + Supabase**.

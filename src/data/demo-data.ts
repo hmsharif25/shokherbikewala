@@ -5,7 +5,7 @@ const img = (id: string, w = 800) =>
 
 export const demoBrandSettings: BrandSettings = {
   id: '1',
-  brand_name: 'Shokher Bike Wala',
+  brand_name: 'Shokher Bikewala',
   tagline: 'Your Ultimate Bike Accessories Destination',
   logo_url: '',
   hero_image_url: '',
@@ -180,7 +180,7 @@ export const demoTestimonials: Testimonial[] = [
     id: 1,
     name: 'Rafiq Ahmed',
     rating: 5,
-    text: 'Amazing quality helmet! The finish is premium and feels very safe. Delivery was super fast too. Will definitely order again from Shokher Bike Wala.',
+    text: 'Amazing quality helmet! The finish is premium and feels very safe. Delivery was super fast too. Will definitely order again from Shokher Bikewala.',
     product: 'Steelbird SBA-21 GT',
   },
   {

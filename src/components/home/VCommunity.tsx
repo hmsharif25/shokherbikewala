@@ -106,7 +106,7 @@ export default function VCommunity() {
 
           {/* Facebook reviews */}
           <SocialCard
-            handle="Shokher Bike Wala"
+            handle="Shokher Bikewala"
             platform="Facebook"
             ctaLabel="Like Page"
             url={brandSettings.facebook}
@@ -152,10 +152,10 @@ export default function VCommunity() {
           </SocialCard>
 
           <SocialCard
-            handle="ShokherBikewala"
+            handle="Shokher Bikewala"
             platform="YouTube"
             ctaLabel="Watch"
-            url="https://www.youtube.com/results?search_query=ShokherBikewala"
+            url="https://www.youtube.com/results?search_query=Shokher%20Bikewala"
             iconBg="from-red-600 to-black"
             Icon={Youtube}
           >

@@ -130,7 +130,7 @@ export default function AdminLoginPage() {
               <div className="w-full h-full bg-[#0a0d14] rounded-xl flex items-center justify-center relative">
                 <img
                   src="/logo.png"
-                  alt="Shokher Bike Wala"
+                  alt="Shokher Bikewala"
                   className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(220,38,38,0.6)]"
                 />
                 <ShieldCheck className="w-3.5 h-3.5 text-cyan absolute -bottom-0.5 -right-0.5 bg-[#0a0d14] rounded-full p-0.5 border border-cyan/40" />
