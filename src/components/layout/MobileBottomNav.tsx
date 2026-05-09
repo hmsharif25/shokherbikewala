@@ -1,104 +1,218 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { Home, ShoppingBag, Grid3X3, User, MessageCircle, ShieldCheck, Search } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import {
+  Menu,
+  X,
+  Home,
+  ShoppingBag,
+  Grid3X3,
+  Search,
+  User,
+  ShieldCheck,
+  ShoppingCart,
+  Heart,
+  MessageCircle,
+} from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 
-type NavItem = {
-  name: string
-  path: string
-  icon: typeof Home
-  external?: boolean
-  primary?: boolean
-}
-
-const baseNavItems: NavItem[] = [
-  { name: 'Home', path: '/', icon: Home },
-  { name: 'Shop', path: '/products', icon: ShoppingBag },
-  { name: 'Search', path: '/products', icon: Search, primary: true },
-  { name: 'Browse', path: '/categories', icon: Grid3X3 },
-]
-
 /**
- * Velocity floating mobile dock — pill-shaped glass bar that floats
- * above the safe area with an emphasised primary action in the middle.
+ * Velocity mobile floating action button — replaces the multi-icon
+ * dock with a single circular FAB that auto-hides on scroll-down,
+ * reveals on scroll-up, and stays out of the way by default.
+ *
+ * Tapping the FAB opens a glass action sheet that hosts the full
+ * navigation grid + a primary WhatsApp action.
  */
 export default function MobileBottomNav() {
   const location = useLocation()
   const { user, isAdmin } = useAuth()
 
-  const accountItem: NavItem = isAdmin
+  const [open, setOpen] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const lastY = useRef(0)
+  const idleTimer = useRef<number | null>(null)
+
+  // Hide-on-scroll-down + reveal-on-scroll-up. Default hidden until
+  // the user scrolls; auto-hide again after a short idle window.
+  useEffect(() => {
+    const armIdleHide = () => {
+      if (idleTimer.current) window.clearTimeout(idleTimer.current)
+      idleTimer.current = window.setTimeout(() => setVisible(false), 2400)
+    }
+
+    const onScroll = () => {
+      const y = window.scrollY
+      const delta = y - lastY.current
+
+      if (y < 80) {
+        // Near the top of the page: keep clutter to a minimum.
+        setVisible(false)
+      } else if (delta < -6) {
+        // Scrolling up — show.
+        setVisible(true)
+        armIdleHide()
+      } else if (delta > 6) {
+        // Scrolling down — hide.
+        setVisible(false)
+        if (idleTimer.current) window.clearTimeout(idleTimer.current)
+      }
+
+      lastY.current = y
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (idleTimer.current) window.clearTimeout(idleTimer.current)
+    }
+  }, [])
+
+  // Close the sheet on route change so it doesn't linger.
+  useEffect(() => {
+    setOpen(false)
+  }, [location.pathname])
+
+  // Lock body scroll while the sheet is open.
+  useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [open])
+
+  const accountTile = isAdmin
     ? { name: 'Admin', path: '/admin', icon: ShieldCheck }
     : { name: user ? 'Account' : 'Sign In', path: '/auth', icon: User }
 
-  const items: NavItem[] = [...baseNavItems, accountItem]
-
   return (
     <div className="md:hidden">
-      <div className="v-mobile-dock">
-        <ul className="relative flex items-center justify-around px-2 py-2">
-          {items.map((item) => {
-            const isActive = location.pathname === item.path && !item.primary
-            const Icon = item.icon
-
-            if (item.primary) {
-              return (
-                <li key={item.name}>
-                  <Link
-                    to={item.path}
-                    aria-label={item.name}
-                    className="relative -mt-7 inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-[#ff7a1f] to-[#ff5a00] text-white shadow-[0_18px_40px_-12px_rgba(255,90,0,0.55)] border-4 border-bg"
-                  >
-                    <Icon className="w-5 h-5" />
-                  </Link>
-                </li>
-              )
-            }
-
-            return (
-              <li key={item.name}>
-                <Link to={item.path} aria-label={item.name}>
-                  <motion.div
-                    whileTap={{ scale: 0.9 }}
-                    className="flex flex-col items-center gap-0.5 px-2 py-1.5 relative"
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId="v-mobile-dot"
-                        className="absolute -top-1 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-[#ff7a1f] to-[#ff5a00]"
-                        transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-                      />
-                    )}
-                    <Icon
-                      className={`w-5 h-5 transition-colors ${
-                        isActive ? 'text-primary' : 'text-fg-soft'
-                      }`}
-                    />
-                    <span
-                      className={`text-[9px] font-ui font-bold tracking-wider uppercase transition-colors ${
-                        isActive ? 'text-primary' : 'text-fg-soft'
-                      }`}
-                    >
-                      {item.name}
-                    </span>
-                  </motion.div>
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-
-      {/* Floating WhatsApp action above the dock for one-tap chat. */}
-      <a
-        href="https://wa.me/8801518934708"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed right-4 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-[55] w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center shadow-[0_18px_40px_-12px_rgba(34,197,94,0.55)] active:scale-95 transition-transform"
+      {/* Floating menu FAB */}
+      <button
+        type="button"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        onClick={() => setOpen((v) => !v)}
+        className={`v-fab ${visible || open ? 'show' : ''}`}
       >
-        <MessageCircle className="w-5 h-5" />
-        <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full animate-ping" />
-      </a>
+        <AnimatePresence mode="wait" initial={false}>
+          {open ? (
+            <motion.span
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="inline-flex"
+            >
+              <X className="w-6 h-6" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="menu"
+              initial={{ rotate: 90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="inline-flex"
+            >
+              <Menu className="w-6 h-6" />
+            </motion.span>
+          )}
+        </AnimatePresence>
+
+      </button>
+
+      {/* Action sheet */}
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="v-sheet-backdrop md:hidden"
+              onClick={() => setOpen(false)}
+            />
+            <motion.nav
+              key="sheet"
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="v-sheet md:hidden"
+              aria-label="Mobile navigation"
+            >
+              <div className="px-4 pt-5 pb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-headline font-bold tracking-wider uppercase text-fg text-sm">
+                    Quick Menu
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    aria-label="Close"
+                    className="w-8 h-8 rounded-full bg-bg-2 flex items-center justify-center text-fg-muted hover:text-primary"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2.5">
+                  {[
+                    { name: 'Home', path: '/', icon: Home },
+                    { name: 'Shop', path: '/products', icon: ShoppingBag },
+                    { name: 'Categories', path: '/categories', icon: Grid3X3 },
+                    { name: 'Search', path: '/products', icon: Search },
+                    { name: 'Wishlist', path: '/products?fav=1', icon: Heart },
+                    { name: 'Cart', path: '/checkout', icon: ShoppingCart },
+                  ].map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.path}
+                      className="v-sheet-tile"
+                      onClick={() => setOpen(false)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      <span className="text-[10px] font-ui font-bold uppercase tracking-wider">
+                        {item.name}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5 mt-2.5">
+                  <Link
+                    to={accountTile.path}
+                    className="v-sheet-tile"
+                    onClick={() => setOpen(false)}
+                  >
+                    <accountTile.icon className="w-5 h-5" />
+                    <span className="text-[10px] font-ui font-bold uppercase tracking-wider">
+                      {accountTile.name}
+                    </span>
+                  </Link>
+                  <a
+                    href="https://wa.me/8801518934708"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="v-sheet-tile primary"
+                    onClick={() => setOpen(false)}
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    <span className="text-[10px] font-ui font-bold uppercase tracking-wider">
+                      WhatsApp
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
