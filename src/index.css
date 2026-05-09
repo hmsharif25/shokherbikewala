@@ -2261,16 +2261,26 @@ html {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* ---------- Velocity headline gradient (orange + black) ---------- */
+/* ---------- Velocity headline gradient (orange + black) ----------
+ * Italic Orbitron at huge sizes (xl headlines) needs a slightly looser
+ * line-height; otherwise the bottom of the glyphs gets cut by the
+ * line box. We use line-height: 1.05 and give every line its own
+ * padding-bottom so the gradient `<em>` lines have room to paint
+ * the full glyph (especially the italic descender slants).
+ */
 .v-headline {
   font-family: 'Orbitron', 'Inter', system-ui, sans-serif;
   font-weight: 800;
   letter-spacing: -0.02em;
-  line-height: 0.95;
+  line-height: 1.05;
   font-style: italic;
+  padding-bottom: 0.08em;
 }
 .v-headline em {
   font-style: italic;
+  display: inline-block;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
   background: linear-gradient(135deg, #ff7a1f 0%, #ff5a00 50%, #ff8a3a 100%);
   -webkit-background-clip: text;
   background-clip: text;
