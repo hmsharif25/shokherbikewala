@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
+  ArrowUpRight,
   Instagram,
   Facebook,
   Music2,
@@ -9,16 +10,22 @@ import { useRef } from 'react'
 import { useStore } from '@/context/StoreContext'
 
 /**
- * Brand-led hero — image-less, headline-less.
+ * Hero — premium brand identity moment.
  *
- * The hero now contains pure brand identity only. The eyebrow,
- * sub-copy and "Shop Collection" CTA were removed at the user's
- * request so the hero reads as a clean brand stamp:
+ * Built around three blocks that match the rest of the site's
+ * design system but give the brand its own "showroom plaque" feel:
  *
- *   logo glyph -> wordmark -> tagline pill -> social row
- *
- * Visual anchors (no imagery): three slowly-rotating concentric
- * orange orbital rings + drifting radial glow.
+ *   1. Chrome-arrow eyebrow ("v-eyebrow-long") — same primitive as
+ *      the Categories / Featured Products section headers.
+ *   2. A glass brand lockup card with chrome corner brackets,
+ *      animated gradient border, soft orange halo, and the logo
+ *      glyph + Orbitron wordmark + EST badge inside.
+ *   3. A kinetic Orbitron tagline strip with pulsing chrome dot
+ *      separators (replaces the old "tagline pill").
+ *   4. Premium social tiles — each platform is a glass capsule
+ *      with a gradient platform glyph + name + handle + chevron,
+ *      so social reads as four "follow cards", not four bare
+ *      circular icons.
  */
 export default function VHeroSection() {
   const { brandSettings } = useStore()
@@ -31,13 +38,6 @@ export default function VHeroSection() {
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0.15])
   const ringScale = useTransform(scrollYProgress, [0, 1], [1, 1.05])
 
-  const socialItems = [
-    { icon: Instagram, url: brandSettings.instagram, label: 'Instagram' },
-    { icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
-    { icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
-    { icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp' },
-  ]
-
   // Two-line wordmark — first word large, rest tracked-out below.
   // Falls back gracefully if a single-word brand name is configured.
   const brandTokens = (brandSettings.brand_name || 'Shokher Bike Wala').split(' ')
@@ -46,6 +46,49 @@ export default function VHeroSection() {
   const tagline =
     brandSettings.tagline || 'Your Ultimate Bike Accessories Destination'
   const logoSrc = brandSettings.logo_url || '/logo.png'
+
+  // Kinetic tagline — split on spaces and reinsert dot dividers between
+  // every 2-3 words so the tagline reads as a chrome call-out instead
+  // of a flat sentence. Keeps original brand tagline intact.
+  const taglineSegments = (() => {
+    const words = tagline.split(/\s+/).filter(Boolean)
+    const segs: string[] = []
+    for (let i = 0; i < words.length; i += 2) {
+      segs.push(words.slice(i, i + 2).join(' '))
+    }
+    return segs.length ? segs : [tagline]
+  })()
+
+  const socialTiles = [
+    {
+      Icon: Instagram,
+      url: brandSettings.instagram,
+      platform: 'Instagram',
+      handle: '@shokherbikewala',
+      tone: 'is-instagram',
+    },
+    {
+      Icon: Music2,
+      url: brandSettings.tiktok,
+      platform: 'TikTok',
+      handle: '@shokherbikewala',
+      tone: 'is-tiktok',
+    },
+    {
+      Icon: Facebook,
+      url: brandSettings.facebook,
+      platform: 'Facebook',
+      handle: 'Shokher Bike Wala',
+      tone: 'is-facebook',
+    },
+    {
+      Icon: MessageCircle,
+      url: brandSettings.whatsapp,
+      platform: 'WhatsApp',
+      handle: 'Chat with us',
+      tone: 'is-whatsapp',
+    },
+  ]
 
   return (
     <section
@@ -82,77 +125,107 @@ export default function VHeroSection() {
         style={{ y: yShift, opacity: fade }}
         className="relative z-10 max-w-4xl mx-auto px-5 sm:px-6 lg:px-8 w-full text-center"
       >
-        {/* Oversized logo glyph */}
+        {/* Eyebrow — same chrome-arrow primitive as other sections */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto relative w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 p-3 flex items-center justify-center"
-        >
-          <span
-            aria-hidden
-            className="absolute -inset-2 rounded-[2rem] opacity-70 blur-lg"
-            style={{
-              background:
-                'radial-gradient(circle at center, rgba(255,122,31,0.55), transparent 70%)',
-            }}
-          />
-          <img
-            src={logoSrc}
-            alt={brandSettings.brand_name || 'Shokher Bike Wala'}
-            width={144}
-            height={144}
-            decoding="async"
-            fetchPriority="high"
-            className="relative w-full h-full object-contain drop-shadow-[0_0_22px_rgba(255,90,0,0.55)]"
-          />
-        </motion.div>
-
-        {/* Wordmark — large, headline-sized */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="mt-6 sm:mt-8 flex flex-col items-center leading-none"
+          transition={{ duration: 0.55, delay: 0.05 }}
+          className="inline-flex"
         >
-          <span className="font-headline text-[2.5rem] xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-fg uppercase tracking-tight">
-            {wordmarkTop}
-          </span>
-          <span className="font-headline text-[0.78rem] sm:text-base md:text-lg font-extrabold text-primary tracking-[0.5em] uppercase mt-3">
-            {wordmarkBottom}
+          <span className="v-eyebrow-long mx-auto justify-center">
+            Premium Motorcycle Accessories
           </span>
         </motion.div>
 
-        {/* Tagline pill */}
+        {/* Brand lockup — glass card with chrome corners */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 18, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.75, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-7 sm:mt-9 inline-flex"
+        >
+          <div className="v-brand-lockup">
+            <span className="v-brand-lockup-corner tl" aria-hidden />
+            <span className="v-brand-lockup-corner tr" aria-hidden />
+            <span className="v-brand-lockup-corner bl" aria-hidden />
+            <span className="v-brand-lockup-corner br" aria-hidden />
+
+            <div className="v-brand-lockup-logo">
+              <img
+                src={logoSrc}
+                alt={brandSettings.brand_name || 'Shokher Bike Wala'}
+                width={80}
+                height={80}
+                decoding="async"
+                fetchPriority="high"
+                className="relative w-full h-full object-contain drop-shadow-[0_0_18px_rgba(255,90,0,0.55)]"
+              />
+            </div>
+
+            <div className="v-brand-lockup-name">
+              <span className="top">{wordmarkTop}</span>
+              <span className="bottom">{wordmarkBottom}</span>
+            </div>
+
+            <div className="v-brand-lockup-sep" aria-hidden />
+            <div className="v-brand-lockup-est">
+              <span className="label">Est.</span>
+              <span className="value">2025</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Kinetic tagline strip with chrome dot separators */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-6 flex justify-center"
+          transition={{ duration: 0.6, delay: 0.42 }}
+          className="mt-7 sm:mt-9 flex justify-center"
         >
-          <span className="v-tagline-pill" aria-label={tagline}>
-            <span className="v-tagline-pill-dot" />
-            {tagline}
-          </span>
+          <div
+            className="v-hero-kinetic"
+            role="text"
+            aria-label={tagline}
+          >
+            {taglineSegments.map((seg, i, arr) => (
+              <span key={i} className="contents">
+                <span className={i === Math.floor(arr.length / 2) ? '' : ''}>
+                  {seg}
+                </span>
+                {i < arr.length - 1 && (
+                  <span className="v-hero-kinetic-dot" aria-hidden />
+                )}
+              </span>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Social row */}
+        {/* Premium social tiles — replaces the row of plain icons */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="flex items-center gap-3 justify-center mt-8"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.55 }}
+          className="mt-9 sm:mt-12 flex flex-wrap items-center gap-2.5 sm:gap-3 justify-center"
         >
-          {socialItems.map((s) => (
+          {socialTiles.map(({ Icon, url, platform, handle, tone }) => (
             <a
-              key={s.label}
-              href={s.url}
+              key={platform}
+              href={url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={s.label}
-              className="w-10 h-10 rounded-full flex items-center justify-center text-fg-soft hover:text-primary transition-colors border border-line/60 hover:border-primary/40 bg-bg/40"
+              aria-label={`${platform} — ${handle}`}
+              className="v-social-tile"
             >
-              <s.icon className="w-4 h-4" />
+              <span className={`v-social-tile-icon ${tone}`}>
+                <Icon className="w-4 h-4" />
+              </span>
+              <span className="v-social-tile-meta">
+                <span className="platform">{platform}</span>
+                <span className="handle">{handle}</span>
+              </span>
+              <span className="v-social-tile-arrow" aria-hidden>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </span>
             </a>
           ))}
         </motion.div>
