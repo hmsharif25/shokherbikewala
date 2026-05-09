@@ -1043,11 +1043,13 @@
 }
 
 /* =====================================================================
- * Light theme overrides for existing dark utility classes.
- * The site historically used `bg-dark*`, `text-white`, `text-gray-*`,
- * `bg-white/X`, `border-white/X` etc. to draw a dark UI. On light theme
- * we remap those to the corresponding light surfaces so we don't have
- * to refactor every component.
+ * Light theme premium overrides — gaming-styled luxury experience.
+ *
+ * The site historically used dark utility classes (`bg-dark*`, `text-white`,
+ * `text-gray-*`, `bg-white/X`, `border-white/X`, `from-white`, `to-gray-300`)
+ * to draw a dark gaming UI. On light theme we remap those to crisp light
+ * surfaces and a layered orange/cyan/gold accent system so the brand feel
+ * stays cinematic without being hard to read.
  * ===================================================================== */
 
 :root[data-theme='light'] .bg-dark,
@@ -1076,13 +1078,31 @@
   color: rgb(var(--c-fg-soft));
 }
 
+/* Hover variants on grayscale text */
+:root[data-theme='light'] .hover\:text-white:hover {
+  color: rgb(var(--c-fg));
+}
+:root[data-theme='light'] .hover\:text-gray-300:hover {
+  color: rgb(var(--c-fg-muted));
+}
+:root[data-theme='light'] .group:hover .group-hover\:text-white,
+:root[data-theme='light'] .peer:hover ~ .peer-hover\:text-white {
+  color: rgb(var(--c-fg));
+}
+
+/* Borders */
 :root[data-theme='light'] .border-white\/5,
 :root[data-theme='light'] .border-white\/10,
 :root[data-theme='light'] .border-white\/20,
 :root[data-theme='light'] .border-white\/30 {
   border-color: rgb(var(--c-line));
 }
+:root[data-theme='light'] .border-t-white\/5,
+:root[data-theme='light'] .border-t-white\/10 {
+  border-top-color: rgb(var(--c-line));
+}
 
+/* White surface tints — translate to soft dark-on-light tints */
 :root[data-theme='light'] .bg-white\/5 {
   background-color: rgb(17 24 39 / 0.04);
 }
@@ -1092,12 +1112,44 @@
 :root[data-theme='light'] .bg-white\/20 {
   background-color: rgb(17 24 39 / 0.08);
 }
-
-:root[data-theme='light'] .hover\:bg-white\/5:hover {
+:root[data-theme='light'] .hover\:bg-white\/5:hover,
+:root[data-theme='light'] .group:hover .group-hover\:bg-white\/5 {
   background-color: rgb(17 24 39 / 0.05);
 }
-:root[data-theme='light'] .hover\:bg-white\/10:hover {
+:root[data-theme='light'] .hover\:bg-white\/10:hover,
+:root[data-theme='light'] .group:hover .group-hover\:bg-white\/10 {
   background-color: rgb(17 24 39 / 0.07);
+}
+
+/* ============ Gradient text fixes ============
+ * Most section headings use `bg-gradient-to-r from-white to-gray-300
+ * bg-clip-text text-transparent` for the lead-in word. On light theme
+ * this makes the title invisible. Remap the gradient stops to dark text
+ * with a subtle warm accent so headings keep a premium feel.
+ */
+:root[data-theme='light'] .from-white {
+  --tw-gradient-from: rgb(20 24 38) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(20 24 38 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .via-white {
+  --tw-gradient-stops:
+    var(--tw-gradient-from),
+    rgb(20 24 38) var(--tw-gradient-via-position),
+    var(--tw-gradient-to);
+}
+:root[data-theme='light'] .to-white {
+  --tw-gradient-to: rgb(20 24 38) var(--tw-gradient-to-position);
+}
+:root[data-theme='light'] .to-gray-300,
+:root[data-theme='light'] .to-gray-400 {
+  --tw-gradient-to: rgb(60 70 90) var(--tw-gradient-to-position);
+}
+:root[data-theme='light'] .from-gray-300,
+:root[data-theme='light'] .from-gray-400 {
+  --tw-gradient-from: rgb(60 70 90) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(60 70 90 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
 /* Soft gradient overlays anchored on dark colors look muddy on light theme */
@@ -1128,69 +1180,302 @@
   --tw-gradient-to: rgb(var(--c-bg) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
+:root[data-theme='light'] .via-dark\/40,
 :root[data-theme='light'] .via-dark\/50,
 :root[data-theme='light'] .via-dark\/60 {
   --tw-gradient-stops: var(--tw-gradient-from), rgb(var(--c-bg) / 0.4) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .from-dark-50\/50 {
+  --tw-gradient-from: rgb(var(--c-bg) / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--c-bg) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 :root[data-theme='light'] .to-dark\/0 {
   --tw-gradient-to: rgb(var(--c-bg) / 0) var(--tw-gradient-to-position);
 }
 
-/* Gold/cyan/primary glows are too aggressive on white. Tone them down. */
-:root[data-theme='light'] .text-glow,
-:root[data-theme='light'] .text-glow-cyan,
+/* `surface` is the dark navy used in mid-section gradient backgrounds
+ * (e.g. `from-dark via-surface/30 to-dark`). On light theme remap to a
+ * subtle warm tint so the section gets a faint glow instead of mud.
+ */
+:root[data-theme='light'] .from-surface,
+:root[data-theme='light'] .to-surface {
+  --tw-gradient-from: rgb(var(--c-bg-2)) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--c-bg-2) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .via-surface\/30,
+:root[data-theme='light'] .via-surface\/40,
+:root[data-theme='light'] .via-surface\/50 {
+  --tw-gradient-stops:
+    var(--tw-gradient-from),
+    rgb(255 240 230 / 0.6) var(--tw-gradient-via-position),
+    var(--tw-gradient-to);
+}
+
+/* ============ Premium gaming glow on light theme ============
+ * Instead of nuking the glow entirely, use a subtle warm halo that
+ * keeps the cinematic feel while staying readable on bright surfaces.
+ */
+:root[data-theme='light'] .text-glow {
+  text-shadow:
+    0 0 1px rgba(255, 106, 26, 0.45),
+    0 1px 16px rgba(255, 106, 26, 0.18);
+}
+:root[data-theme='light'] .text-glow-cyan {
+  text-shadow:
+    0 0 1px rgba(0, 145, 180, 0.55),
+    0 1px 16px rgba(0, 145, 180, 0.18);
+}
 :root[data-theme='light'] .text-glow-gold {
-  text-shadow: none;
+  text-shadow:
+    0 0 1px rgba(200, 145, 0, 0.55),
+    0 1px 16px rgba(224, 165, 0, 0.18);
 }
 
-:root[data-theme='light'] .box-glow,
+:root[data-theme='light'] .box-glow {
+  box-shadow:
+    0 0 0 1px rgba(255, 106, 26, 0.18),
+    0 4px 28px -6px rgba(255, 106, 26, 0.22),
+    0 12px 40px -16px rgba(17, 24, 39, 0.12);
+}
 :root[data-theme='light'] .box-glow-cyan {
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    0 0 0 1px rgba(0, 145, 180, 0.22),
+    0 4px 28px -6px rgba(0, 145, 180, 0.22),
+    0 12px 40px -16px rgba(17, 24, 39, 0.12);
 }
 
-/* Hide the heaviest gaming-only effects on light theme */
-:root[data-theme='light'] .hud-scanlines,
-:root[data-theme='light'] .carbon-fiber,
-:root[data-theme='light'] .speed-lines-bg,
-:root[data-theme='light'] .checkered-accent,
-:root[data-theme='light'] .perspective-grid-lines,
+/* ============ Premium glass surfaces (light) ============
+ * Crisper frosted glass with a delicate ring + colored shadow halo.
+ */
+:root[data-theme='light'] .glass {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 1px 2px rgba(17, 24, 39, 0.04),
+    0 10px 32px -16px rgba(255, 106, 26, 0.18),
+    0 18px 48px -24px rgba(17, 24, 39, 0.18);
+}
+:root[data-theme='light'] .glass-premium {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 248, 240, 0.86) 100%
+  );
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 1px 3px rgba(17, 24, 39, 0.05),
+    0 18px 50px -20px rgba(255, 106, 26, 0.22),
+    0 30px 60px -24px rgba(17, 24, 39, 0.15);
+}
+
+/* ============ Premium hover lift for cards on light ============ */
+:root[data-theme='light'] .racing-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(255, 106, 26, 0.22),
+    0 16px 40px -16px rgba(255, 106, 26, 0.28),
+    0 24px 48px -20px rgba(17, 24, 39, 0.18);
+}
+:root[data-theme='light'] .racing-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 106, 26, 0.12),
+    transparent
+  );
+}
+
+/* ============ Speed lines & checkered patterns (light) ============ */
+:root[data-theme='light'] .speed-lines-bg {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 98%,
+      rgba(255, 106, 26, 0.05) 98%,
+      rgba(255, 106, 26, 0.05) 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 98%,
+      rgba(0, 145, 180, 0.04) 98%,
+      rgba(0, 145, 180, 0.04) 100%
+    );
+}
+:root[data-theme='light'] .checkered-accent {
+  background-image:
+    linear-gradient(45deg, rgba(17, 24, 39, 0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(17, 24, 39, 0.04) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(17, 24, 39, 0.04) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(17, 24, 39, 0.04) 75%);
+  opacity: 0.5;
+}
+:root[data-theme='light'] .carbon-fiber {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(17, 24, 39, 0.025) 2px,
+      rgba(17, 24, 39, 0.025) 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 2px,
+      rgba(17, 24, 39, 0.015) 2px,
+      rgba(17, 24, 39, 0.015) 4px
+    );
+}
+
+/* ============ HUD scanlines on light — ultra-subtle ============ */
+:root[data-theme='light'] .hud-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(17, 24, 39, 0.03) 0px,
+    rgba(17, 24, 39, 0.03) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+:root[data-theme='light'] .hud-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(17, 24, 39, 0.08) 100%
+  );
+}
+:root[data-theme='light'] .hud-corner {
+  border-color: rgba(255, 106, 26, 0.55);
+  filter: drop-shadow(0 0 4px rgba(255, 106, 26, 0.25));
+}
+:root[data-theme='light'] .hud-status-strip,
+:root[data-theme='light'] .hud-telemetry {
+  color: rgba(0, 130, 165, 0.85);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 145, 180, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 6px 18px -8px rgba(17, 24, 39, 0.18);
+}
+:root[data-theme='light'] .hud-sep {
+  color: rgba(17, 24, 39, 0.25);
+}
+
+/* ============ Perspective grid + ambient sparks on light ============
+ * Re-enable the gaming layers on light theme but with a much lighter
+ * touch — orange + cyan grid at very low alpha so it doesn't overwhelm
+ * the page background.
+ */
+:root[data-theme='light'] .perspective-grid-lines {
+  background-image:
+    linear-gradient(rgba(0, 145, 180, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 106, 26, 0.08) 1px, transparent 1px);
+  opacity: 0.45;
+}
 :root[data-theme='light'] .ambient-spark {
-  display: none !important;
+  background: rgba(0, 145, 180, 0.55);
+  box-shadow: 0 0 6px rgba(0, 145, 180, 0.55);
+  opacity: 0.6;
+}
+:root[data-theme='light'] .ambient-spark:nth-child(odd) {
+  background: rgba(255, 106, 26, 0.6);
+  box-shadow: 0 0 6px rgba(255, 106, 26, 0.55);
 }
 
-/* HUD bracket reveals: keep on light but in neutral grey */
+/* HUD bracket reveals: keep on light with primary accent */
 :root[data-theme='light'] .section-reveal-bracket {
-  border-color: rgb(17 24 39 / 0.18);
-  filter: none;
+  border-color: rgba(255, 106, 26, 0.45);
+  filter: drop-shadow(0 0 3px rgba(255, 106, 26, 0.25));
 }
 
-/* Cyan/gold accents in light mode pick up the toned-down vars */
+/* ============ Cyan / gold / primary accent tweaks (light) ============ */
 :root[data-theme='light'] .text-cyan {
   color: rgb(var(--c-cyan));
 }
 :root[data-theme='light'] .text-gold {
   color: rgb(var(--c-gold));
 }
-:root[data-theme='light'] .border-cyan\/30 {
-  border-color: rgb(var(--c-cyan) / 0.4);
+:root[data-theme='light'] .border-cyan\/30,
+:root[data-theme='light'] .border-cyan\/20 {
+  border-color: rgb(var(--c-cyan) / 0.45);
 }
 :root[data-theme='light'] .bg-cyan\/10 {
-  background-color: rgb(var(--c-cyan) / 0.1);
+  background-color: rgb(var(--c-cyan) / 0.10);
+}
+:root[data-theme='light'] .bg-gold\/10 {
+  background-color: rgb(var(--c-gold) / 0.10);
+}
+:root[data-theme='light'] .border-gold\/20 {
+  border-color: rgb(var(--c-gold) / 0.45);
 }
 
-/* HUD-style border corner brackets are noisy on light; soften them */
+/* ============ HUD-style border corner brackets on light ============ */
 :root[data-theme='light'] .hud-border::before,
 :root[data-theme='light'] .hud-border::after {
-  border-color: rgb(var(--c-primary) / 0.45);
+  border-color: rgb(var(--c-primary) / 0.55);
 }
 :root[data-theme='light'] .hud-border {
   border-color: rgb(var(--c-line));
 }
 
-/* Better default focus ring */
+/* ============ Tachometer halo (light) ============ */
+:root[data-theme='light'] .tachometer-glow {
+  box-shadow:
+    inset 0 0 32px rgba(255, 106, 26, 0.06),
+    0 0 0 1px rgba(255, 106, 26, 0.10),
+    0 12px 36px -12px rgba(255, 106, 26, 0.20),
+    0 22px 48px -18px rgba(17, 24, 39, 0.12);
+}
+
+/* ============ Better default focus ring ============ */
 :root[data-theme='light'] *:focus-visible {
   outline: 2px solid rgb(var(--c-primary) / 0.55);
   outline-offset: 2px;
+}
+
+/* ============ Premium scrollbar (light) ============ */
+:root[data-theme='light'] *::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgb(var(--c-primary)),
+    rgb(220, 90, 20)
+  );
+}
+
+/* ============ Premium card glints — orange sweep on hover ============ */
+@keyframes lightCardGlint {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============ Boot grid on light = more orange/cyan accents ============ */
+:root[data-theme='light'] .boot-grid {
+  background-image:
+    linear-gradient(rgba(0, 145, 180, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 106, 26, 0.10) 1px, transparent 1px);
+}
+
+/* ============ Premium heading "from-fg-fg-muted" alias ============ */
+.headline-light {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--c-fg)) 0%,
+    rgb(var(--c-fg-muted)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* =====================================================================
