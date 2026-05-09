@@ -2,8 +2,11 @@ import { motion } from 'framer-motion'
 import { Bike, Heart, Shield, Target, Users, Zap } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
+import { useStore } from '@/context/StoreContext'
 
 export default function AboutPage() {
+  const { siteConfig } = useStore()
+  const pages = siteConfig.pages
   return (
     <PageTransition className="v-shop-page min-h-screen pt-24 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,7 +23,7 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-lg leading-relaxed">
-            Your trusted destination for premium bike accessories in Bangladesh. We bring the best quality products for every rider.
+            {pages.aboutDescription}
           </p>
         </AnimatedSection>
 
@@ -46,10 +49,10 @@ export default function AboutPage() {
                 Our Story
               </h2>
               <p className="text-gray-400 leading-relaxed">
-                Shokher Bikewala started with a simple passion - making quality bike accessories accessible to every rider in Bangladesh. We understand the thrill of the ride and the importance of having the right gear.
+                {pages.aboutMission}
               </p>
               <p className="text-gray-400 leading-relaxed">
-                From helmets to exhaust systems, from LED lights to riding gloves, we carefully curate products that meet our high standards of quality, safety, and style. Every product in our collection is tested and approved by real riders.
+                {pages.aboutVision}
               </p>
               <div className="grid grid-cols-2 gap-4 pt-4">
                 {[

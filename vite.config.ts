@@ -4,6 +4,9 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    __APP_VERSION__: JSON.stringify(Date.now().toString(36)),
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

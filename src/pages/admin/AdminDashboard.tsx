@@ -23,6 +23,10 @@ import {
   Phone,
   RefreshCw,
   LayoutList,
+  Search,
+  HelpCircle,
+  PanelBottom,
+  FileText,
 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
@@ -38,6 +42,10 @@ const sidebarLinks = [
   { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
   { name: 'Home Sections', path: '/admin/sections', icon: LayoutList },
   { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
+  { name: 'SEO Settings', path: '/admin/seo', icon: Search },
+  { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
+  { name: 'Footer', path: '/admin/footer', icon: PanelBottom },
+  { name: 'Pages', path: '/admin/pages', icon: FileText },
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ]
 

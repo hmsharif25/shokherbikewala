@@ -1,8 +1,79 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
-import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections } from '@/types'
+import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent } from '@/types'
 import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { loadRemotePublic, loadHomeSectionsRemote } from '@/lib/db'
+
+const defaultFAQItems: FAQItem[] = [
+  { id: '1', question: 'How long does delivery take?', answer: 'We deliver across Bangladesh within 2\u20134 business days. For Dhaka city, same-day or next-day delivery is available on selected items. International orders typically arrive in 7\u201314 days.' },
+  { id: '2', question: 'Are all products original and authentic?', answer: '100%. We source only from authorised brand distributors and verify every item before dispatch. Each premium product ships with a manufacturer warranty card and authenticity sticker.' },
+  { id: '3', question: 'What payment methods do you accept?', answer: 'Cash on Delivery, bKash, Nagad, Rocket, all major credit/debit cards, and bank transfer. International riders can also pay via PayPal \u2014 just contact us on WhatsApp.' },
+  { id: '4', question: 'Do you offer warranty on helmets and exhausts?', answer: 'Yes \u2014 every premium helmet ships with a 2-year manufacturer warranty, and our exhaust systems carry a 1-year warranty against defects. Full coverage details are listed on each product page.' },
+  { id: '5', question: 'How do I choose the right helmet size?', answer: 'Measure the circumference of your head 1 inch above your eyebrows. Match the result to the size chart on the helmet page. Still unsure? Ping us on WhatsApp with your measurement and we\'ll recommend the right fit.' },
+  { id: '6', question: 'How can I contact customer support?', answer: 'WhatsApp is fastest \u2014 we reply within minutes during business hours (10am\u201310pm BD time). You can also DM us on Instagram, Facebook, or TikTok. All links are at the bottom of the page.' },
+]
+
+const defaultFooter: FooterConfig = {
+  trustBadges: [
+    { title: 'Premium Quality', sub: 'Engineered for performance & safety' },
+    { title: 'Free Shipping', sub: 'Free shipping on orders over \u09F35000' },
+    { title: '2 Year Warranty', sub: 'Quality guaranteed with extended care' },
+    { title: 'Easy Returns', sub: 'Hassle-free returns within 7 days' },
+  ],
+  shopLinks: [
+    { name: 'Helmets', path: '/products?category=helmets' },
+    { name: 'Gloves', path: '/products?category=gloves' },
+    { name: 'Riding Jackets', path: '/products?category=jackets' },
+    { name: 'LED Lights', path: '/products?category=led-lights' },
+    { name: 'Exhaust Systems', path: '/products?category=exhaust-systems' },
+    { name: 'All Accessories', path: '/products' },
+  ],
+  companyLinks: [
+    { name: 'About Us', path: '/about' },
+    { name: 'Our Story', path: '/about' },
+    { name: 'Brands', path: '/categories' },
+    { name: 'Blog', path: '/about' },
+    { name: 'Contact Us', path: '/contact' },
+  ],
+  supportLinks: [
+    { name: 'Shipping Information', path: '/contact' },
+    { name: 'Returns & Exchanges', path: '/contact' },
+    { name: 'Warranty Policy', path: '/contact' },
+    { name: 'FAQ', path: '/' },
+    { name: 'Track Your Order', path: '/track' },
+    { name: 'Size Guide', path: '/contact' },
+  ],
+  newsletterEnabled: true,
+  copyrightText: '\u00A9 {year} Shokher Bikewala. All rights reserved.',
+}
+
+const defaultSEO: SEOSettings = {
+  siteTitle: 'Shokher Bikewala | Premium Bike Accessories in Bangladesh',
+  siteDescription: 'Shop premium bike accessories in Bangladesh: helmets, gloves, jackets, LED lights, phone mounts, exhaust systems, and rider gear from Shokher Bikewala.',
+  siteKeywords: ['bike accessories Bangladesh', 'motorcycle accessories Bangladesh', 'helmet shop Bangladesh', 'riding gloves Bangladesh', 'bike LED lights', 'motorcycle gear Dhaka', 'Shokher Bikewala'],
+  ogImage: 'https://www.shokherbikewala.com/logo-512.png',
+  googleVerification: '',
+  bingVerification: '',
+}
+
+const defaultPages: PageContent = {
+  aboutHeading: 'We Are Shokher Bikewala',
+  aboutDescription: 'Your trusted destination for premium bike accessories in Bangladesh. We bring the best quality products for every rider.',
+  aboutMission: 'Shokher Bikewala started with a simple passion - making quality bike accessories accessible to every rider in Bangladesh. We understand the thrill of the ride and the importance of having the right gear.',
+  aboutVision: 'From helmets to exhaust systems, from LED lights to riding gloves, we carefully curate products that meet our high standards of quality, safety, and style. Every product in our collection is tested and approved by real riders.',
+  contactHeading: 'Contact Us',
+  contactDescription: 'Have a question? Need help choosing the right accessory? We\'re here to help!',
+  contactEmail: 'support@shokherbikewala.com',
+  contactPhone: '+880 1518 934708',
+  contactAddress: 'Dhaka, Bangladesh',
+}
+
+const defaultSiteConfig: SiteConfig = {
+  faqItems: defaultFAQItems,
+  footer: defaultFooter,
+  seo: defaultSEO,
+  pages: defaultPages,
+}
 
 const defaultHomeSections: HomeSections = {
   hero: { visible: true, heading: 'SHOKHER BIKEWALA', subheading: '' },
@@ -22,6 +93,7 @@ interface StoreState {
   testimonials: Testimonial[]
   inquiries: Inquiry[]
   homeSections: HomeSections
+  siteConfig: SiteConfig
 }
 
 interface StoreContextType extends StoreState {
@@ -36,6 +108,8 @@ interface StoreContextType extends StoreState {
   setBrandSettings: (settings: BrandSettings) => void
   homeSections: HomeSections
   setHomeSections: (sections: HomeSections) => void
+  siteConfig: SiteConfig
+  setSiteConfig: (config: SiteConfig) => void
   setTestimonials: (testimonials: Testimonial[]) => void
   addTestimonial: (testimonial: Testimonial) => void
   updateTestimonial: (id: number, testimonial: Testimonial) => void
@@ -77,6 +151,7 @@ const defaultState: StoreState = {
   testimonials: demoTestimonials,
   inquiries: demoInquiries,
   homeSections: defaultHomeSections,
+  siteConfig: defaultSiteConfig,
 }
 
 const StoreContext = createContext<StoreContextType | null>(null)
@@ -85,7 +160,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoreState>(() => {
     const stored = loadFromStorage()
     if (stored) {
-      return { ...stored, homeSections: stored.homeSections ?? defaultHomeSections }
+      return {
+        ...stored,
+        homeSections: stored.homeSections ?? defaultHomeSections,
+        siteConfig: stored.siteConfig ?? defaultSiteConfig,
+      }
     }
     return defaultState
   })
@@ -114,6 +193,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           : prev.testimonials,
         inquiries: prev.inquiries,
         homeSections: remoteSections ?? prev.homeSections,
+        siteConfig: prev.siteConfig,
       }))
       setRemoteLoaded(true)
     })
@@ -172,6 +252,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const setHomeSections = useCallback((homeSections: HomeSections) => {
     setState(prev => ({ ...prev, homeSections }))
+  }, [])
+
+  const setSiteConfig = useCallback((siteConfig: SiteConfig) => {
+    setState(prev => ({ ...prev, siteConfig }))
   }, [])
 
   const setTestimonials = useCallback((testimonials: Testimonial[]) => {
@@ -236,6 +320,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       deleteCategory,
       setBrandSettings,
       setHomeSections,
+      siteConfig: state.siteConfig,
+      setSiteConfig,
       setTestimonials,
       addTestimonial,
       updateTestimonial,
