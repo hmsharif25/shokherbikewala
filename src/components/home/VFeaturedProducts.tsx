@@ -1,18 +1,25 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, ArrowRight, Star, Heart } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ShoppingCart, ArrowRight, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
 export default function VFeaturedProducts() {
   const { products, categories, brandSettings } = useStore()
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const filtered = useMemo(() => {
     const pool = [...products.filter((p) => p.featured || p.in_stock)]
       .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
     return pool.slice(0, 8)
   }, [products])
+
+  const scroll = (dir: 'left' | 'right') => {
+    if (!scrollRef.current) return
+    const amount = scrollRef.current.clientWidth * 0.7
+    scrollRef.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' })
+  }
 
   return (
     <section className="sb-clean-section sb-clean-products relative py-16 sm:py-20 overflow-hidden">
@@ -32,8 +39,29 @@ export default function VFeaturedProducts() {
           </p>
         </VReveal>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-          <AnimatePresence mode="popLayout">
+        {/* Carousel navigation buttons */}
+        <div className="hidden sm:flex justify-end gap-2 mb-4">
+          <button
+            onClick={() => scroll('left')}
+            className="w-10 h-10 rounded-full border border-line bg-bg/60 text-fg-muted hover:text-primary hover:border-primary/40 hover:shadow-[0_0_14px_rgba(255,106,26,0.3)] flex items-center justify-center transition-all"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scroll('right')}
+            className="w-10 h-10 rounded-full border border-line bg-bg/60 text-fg-muted hover:text-primary hover:border-primary/40 hover:shadow-[0_0_14px_rgba(255,106,26,0.3)] flex items-center justify-center transition-all"
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div
+          ref={scrollRef}
+          className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
             {filtered.map((product, i) => {
               const cat = categories.find((c) => c.id === product.category_id)
               const price = product.discount_price ?? product.price
@@ -45,12 +73,10 @@ export default function VFeaturedProducts() {
               return (
                 <motion.div
                   key={product.id}
-                  layout
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.45, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                  className="sb-product-card flex flex-col"
+                  className="sb-product-card flex flex-col flex-shrink-0 w-[70vw] sm:w-[45vw] md:w-[30vw] lg:w-[22vw] snap-start"
                 >
                   <div className="relative aspect-square overflow-hidden rounded-t-[1.45rem]">
                     {discountPct > 0 && (
@@ -133,7 +159,6 @@ Add to Cart
                 </motion.div>
               )
             })}
-          </AnimatePresence>
         </div>
 
         <VReveal delay={300} className="text-center mt-10 sm:mt-14">
