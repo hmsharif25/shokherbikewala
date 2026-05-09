@@ -18,6 +18,7 @@ import {
 import { useStore } from '@/context/StoreContext'
 import { HomeSections, SectionConfig } from '@/types'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import { saveHomeSectionsRemote } from '@/lib/db'
 
 type SectionKey = keyof HomeSections
 
@@ -44,6 +45,8 @@ export default function HomeSectionsManage() {
   const { homeSections, setHomeSections } = useStore()
   const [sections, setSections] = useState<HomeSections>(homeSections)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
   const [editing, setEditing] = useState<SectionKey | null>(null)
 
   const handleToggle = (key: SectionKey) => {
@@ -60,10 +63,19 @@ export default function HomeSectionsManage() {
     }))
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true)
+    setSaveError(null)
     setHomeSections(sections)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    const { error } = await saveHomeSectionsRemote(sections)
+    setSaving(false)
+    if (error) {
+      setSaveError(error)
+      setTimeout(() => setSaveError(null), 5000)
+    } else {
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    }
   }
 
   const visibleCount = Object.values(sections).filter(s => s.visible).length
@@ -89,9 +101,15 @@ export default function HomeSectionsManage() {
           }`}
         >
           <Save className="w-4 h-4" />
-          {saved ? 'Saved!' : 'Save Changes'}
+          {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}
         </motion.button>
       </div>
+
+      {saveError && (
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          Save failed: {saveError}
+        </div>
+      )}
 
       {SECTION_META.map((meta, i) => {
         const config = sections[meta.key]

@@ -2,6 +2,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type {
   BrandSettings,
   Category,
+  HomeSections,
   Inquiry,
   Product,
   Testimonial,
@@ -216,5 +217,32 @@ export async function deleteInquiryRemote(
 ): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured()) return { error: null }
   const { error } = await supabase.from('inquiries').delete().eq('id', id)
+  return { error: error?.message ?? null }
+}
+
+/* ── Site Config (home sections etc.) ── */
+
+export async function loadHomeSectionsRemote(): Promise<HomeSections | null> {
+  if (!isSupabaseConfigured()) return null
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('value')
+      .eq('key', 'home_sections')
+      .maybeSingle()
+    if (error || !data) return null
+    return data.value as HomeSections
+  } catch {
+    return null
+  }
+}
+
+export async function saveHomeSectionsRemote(
+  sections: HomeSections,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('site_config')
+    .upsert({ key: 'home_sections', value: sections as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
   return { error: error?.message ?? null }
 }
