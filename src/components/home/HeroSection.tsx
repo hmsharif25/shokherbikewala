@@ -2,7 +2,6 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ChevronDown, Zap, Shield, Truck, Gauge, Flame } from 'lucide-react'
 import ParticleBackground from '@/components/ui/ParticleBackground'
-import RPMGauge from '@/components/ui/RPMGauge'
 import GlitchText from '@/components/ui/GlitchText'
 import { useEffect, useState } from 'react'
 
@@ -68,24 +67,6 @@ export default function HeroSection() {
       <div className="absolute bottom-0 left-0 right-0 h-20 z-[1] checkered-accent opacity-20" />
 
       <div className="absolute inset-0 z-[1] opacity-[0.07] carbon-fiber" />
-
-      {/* Decorative RPM gauges floating in the corners (desktop only) */}
-      <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        animate={{ opacity: 0.55, x: 0 }}
-        transition={{ delay: 0.6, duration: 0.8 }}
-        className="hidden xl:block absolute left-8 top-1/2 -translate-y-1/2 w-44 h-44 z-[2] pointer-events-none"
-      >
-        <RPMGauge />
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 0.55, x: 0 }}
-        transition={{ delay: 0.7, duration: 0.8 }}
-        className="hidden xl:block absolute right-8 top-1/2 -translate-y-1/2 w-44 h-44 z-[2] pointer-events-none"
-      >
-        <RPMGauge />
-      </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16 text-center">
         <motion.div

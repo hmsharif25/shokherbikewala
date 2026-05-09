@@ -3,40 +3,62 @@ import { motion } from 'framer-motion'
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth, ADMIN_EMAIL_LIST } from '@/context/AuthContext'
 import ParticleBackground from '@/components/ui/ParticleBackground'
 
+const PRIMARY_ADMIN_EMAIL = ADMIN_EMAIL_LIST[0]
+
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(PRIMARY_ADMIN_EMAIL)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [submitted, setSubmitted] = useState(false)
   const navigate = useNavigate()
-  const { signInWithEmail, isAdmin } = useAuth()
+  const { signInWithEmail, signOut, isAdmin, user } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const { error: authError } = await signInWithEmail(email, password)
+    const cleanEmail = email.trim().toLowerCase()
+    const isAllowedAdmin = ADMIN_EMAIL_LIST.map((a) => a.toLowerCase()).includes(
+      cleanEmail,
+    )
+    if (!isAllowedAdmin) {
+      setError('This email is not authorized for admin access.')
+      setLoading(false)
+      return
+    }
+
+    const { error: authError } = await signInWithEmail(cleanEmail, password)
     if (authError) {
       setError(authError)
       setLoading(false)
       return
     }
-    // Wait a tick for context to flush; navigate after.
-    setTimeout(() => {
-      navigate('/admin')
-      setLoading(false)
-    }, 50)
+    // Mark as submitted; the effect below will navigate once isAdmin flips true.
+    setSubmitted(true)
   }
 
   // Already authenticated as admin? Skip the form.
   useEffect(() => {
     if (isAdmin) navigate('/admin', { replace: true })
   }, [isAdmin, navigate])
+
+  // Defensive: if Supabase login succeeds for a non-admin email, sign out and surface error.
+  useEffect(() => {
+    if (!submitted) return
+    if (user && !isAdmin) {
+      signOut().finally(() => {
+        setError('Signed-in account is not authorized for admin access.')
+        setLoading(false)
+        setSubmitted(false)
+      })
+    }
+  }, [submitted, user, isAdmin, signOut])
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-dark relative overflow-hidden">
