@@ -11,16 +11,15 @@ import { useRef } from 'react'
 import { useStore } from '@/context/StoreContext'
 
 /**
- * Cinematic hero — image-less variant with proper branding.
+ * Brand-led hero — image-less, headline-less.
  *
- * Hero now opens with a full brand lockup (logo glyph + SHOKHER /
- * BIKE WALA wordmark + tagline pill) so the brand identity reads
- * immediately. The original 4-feature chip capsule has been
- * removed entirely; trust signals live elsewhere on the page.
+ * The previous "RIDE / WITH / POWER" oversized headline has been
+ * removed entirely so the brand identity is the unambiguous focal
+ * point of the hero. Layout is a centered single column,
+ * vertically balanced inside the viewport:
  *
- * Layout (all breakpoints): centered single column.
- *   brand lockup -> eyebrow -> oversized headline -> body ->
- *   CTA -> social row.
+ *   logo glyph (oversized) -> wordmark (oversized) ->
+ *   tagline pill -> eyebrow -> sub copy -> CTA -> social row
  *
  * Visual anchors (no imagery): three slowly-rotating concentric
  * orange orbital rings + drifting radial glow.
@@ -32,7 +31,7 @@ export default function VHeroSection() {
     target: ref,
     offset: ['start start', 'end start'],
   })
-  const yShift = useTransform(scrollYProgress, [0, 1], [0, -80])
+  const yShift = useTransform(scrollYProgress, [0, 1], [0, -60])
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0.15])
   const ringScale = useTransform(scrollYProgress, [0, 1], [1, 1.05])
 
@@ -55,7 +54,7 @@ export default function VHeroSection() {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] flex items-center overflow-hidden pt-24 pb-20 md:pt-28 md:pb-24"
+      className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-32 lg:pb-24"
     >
       {/* Ambient backdrop layers */}
       <div className="absolute inset-0 v-hero-halo" />
@@ -85,84 +84,84 @@ export default function VHeroSection() {
 
       <motion.div
         style={{ y: yShift, opacity: fade }}
-        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center"
+        className="relative z-10 max-w-4xl mx-auto px-5 sm:px-6 lg:px-8 w-full text-center"
       >
-        {/* Brand lockup — logo + name + tagline pill */}
+        {/* Oversized logo glyph */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto relative w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 p-3 flex items-center justify-center"
+        >
+          <span
+            aria-hidden
+            className="absolute -inset-2 rounded-[2rem] opacity-70 blur-lg"
+            style={{
+              background:
+                'radial-gradient(circle at center, rgba(255,122,31,0.55), transparent 70%)',
+            }}
+          />
+          <img
+            src={logoSrc}
+            alt={brandSettings.brand_name || 'Shokher Bike Wala'}
+            className="relative w-full h-full object-contain drop-shadow-[0_0_22px_rgba(255,90,0,0.55)]"
+          />
+        </motion.div>
+
+        {/* Wordmark — large, headline-sized */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="flex flex-col items-center gap-4"
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="mt-6 sm:mt-8 flex flex-col items-center leading-none"
         >
-          <div className="flex items-center gap-3">
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 p-1.5 flex items-center justify-center">
-              <span
-                aria-hidden
-                className="absolute -inset-1 rounded-2xl opacity-70 blur-md"
-                style={{
-                  background:
-                    'radial-gradient(circle at center, rgba(255,122,31,0.45), transparent 70%)',
-                }}
-              />
-              <img
-                src={logoSrc}
-                alt={brandSettings.brand_name || 'Shokher Bike Wala'}
-                className="relative w-full h-full object-contain drop-shadow-[0_0_14px_rgba(255,90,0,0.55)]"
-              />
-            </div>
+          <span className="font-headline text-[2.5rem] xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-fg uppercase tracking-tight">
+            {wordmarkTop}
+          </span>
+          <span className="font-headline text-[0.78rem] sm:text-base md:text-lg font-extrabold text-primary tracking-[0.5em] uppercase mt-3">
+            {wordmarkBottom}
+          </span>
+        </motion.div>
 
-            <div className="flex flex-col leading-none text-left">
-              <span className="font-headline text-lg sm:text-xl font-extrabold text-fg tracking-wide uppercase">
-                {wordmarkTop}
-              </span>
-              <span className="font-headline text-[10px] sm:text-xs font-extrabold text-primary tracking-[0.42em] uppercase mt-1">
-                {wordmarkBottom}
-              </span>
-            </div>
-          </div>
-
+        {/* Tagline pill */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-6 flex justify-center"
+        >
           <span className="v-tagline-pill" aria-label={tagline}>
             <span className="v-tagline-pill-dot" />
             {tagline}
           </span>
         </motion.div>
 
+        {/* Eyebrow */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.15 }}
+          transition={{ duration: 0.55, delay: 0.42 }}
           className="inline-flex mt-7"
         >
           <span className="v-eyebrow">Premium Motorcycle Accessories</span>
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="v-headline mt-5 sm:mt-7 text-[3.75rem] xs:text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[11.5rem]"
-        >
-          RIDE
-          <br />
-          WITH
-          <br />
-          <em>POWER</em>
-        </motion.h1>
-
+        {/* Sub copy */}
         <motion.p
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-fg-muted text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-ui mt-7"
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="text-fg-muted text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-ui mt-5"
         >
           High performance accessories for those who live to ride. Built for
           speed, designed for dominance.
         </motion.p>
 
+        {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.52 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
           className="flex items-center justify-center mt-8"
         >
           <span className="v-cta-wrap">
@@ -175,11 +174,12 @@ export default function VHeroSection() {
           </span>
         </motion.div>
 
+        {/* Social row */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.65 }}
-          className="flex items-center gap-3 justify-center mt-8"
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="flex items-center gap-3 justify-center mt-7"
         >
           {socialItems.map((s) => (
             <a
