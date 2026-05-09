@@ -5,40 +5,127 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* ===================== Theme tokens =====================
+   * Light theme is the default. Dark theme activates via
+   * <html data-theme="dark"> (managed by ThemeContext).
+   *
+   * Colors are stored as raw "r g b" triplets so they can be used
+   * with Tailwind's `<alpha-value>` syntax (e.g. `bg-bg/80`).
+   */
+  :root,
+  :root[data-theme='light'] {
     --radius: 0.5rem;
+
+    /* surfaces */
+    --c-bg: 255 255 255;          /* page background */
+    --c-bg-2: 250 250 252;        /* subtle alt surface */
+    --c-surface-soft: 245 245 248;/* card / nav background */
+    --c-surface-hover: 240 240 245;
+    --c-line: 226 226 230;        /* hairline borders */
+
+    /* text */
+    --c-fg: 17 24 39;             /* primary text */
+    --c-fg-muted: 75 85 99;       /* secondary text */
+    --c-fg-soft: 107 114 128;     /* tertiary / labels */
+
+    /* brand accent (orange) */
+    --c-primary: 255 106 26;
+    --c-primary-soft: 255 226 204;
+
+    /* misc accents tuned for light */
+    --c-cyan: 0 145 180;
+    --c-gold: 200 145 0;
+
+    /* glass surfaces */
+    --glass-bg: 255 255 255;
+    --glass-bg-alpha: 0.78;
+    --glass-border: 17 24 39;
+    --glass-border-alpha: 0.06;
+
+    /* scrollbar */
+    --scroll-track: 248 248 250;
+    --scroll-thumb: 255 106 26;
+
+    /* selection */
+    --selection-bg: 255 106 26;
+    --selection-fg: 255 255 255;
+
+    /* shadows */
+    --shadow-soft: 0 6px 24px -8px rgba(17, 24, 39, 0.10),
+                   0 2px 6px -2px rgba(17, 24, 39, 0.05);
+    --shadow-card: 0 1px 2px rgba(17, 24, 39, 0.04),
+                   0 4px 16px -4px rgba(17, 24, 39, 0.06);
   }
-  
+
+  :root[data-theme='dark'],
+  .dark {
+    --c-bg: 10 10 14;
+    --c-bg-2: 18 18 28;
+    --c-surface-soft: 22 22 36;
+    --c-surface-hover: 30 30 46;
+    --c-line: 255 255 255;        /* used at low alpha */
+
+    --c-fg: 244 244 248;
+    --c-fg-muted: 200 200 215;
+    --c-fg-soft: 150 150 170;
+
+    --c-primary: 255 106 26;
+    --c-primary-soft: 60 30 10;
+
+    --c-cyan: 0 212 255;
+    --c-gold: 255 215 0;
+
+    --glass-bg: 18 18 28;
+    --glass-bg-alpha: 0.72;
+    --glass-border: 255 255 255;
+    --glass-border-alpha: 0.08;
+
+    --scroll-track: 10 10 14;
+    --scroll-thumb: 255 106 26;
+
+    --selection-bg: 255 106 26;
+    --selection-fg: 255 255 255;
+
+    --shadow-soft: 0 8px 32px -10px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 4px 24px -8px rgba(0, 0, 0, 0.45);
+  }
+
   * {
     scrollbar-width: thin;
-    scrollbar-color: #ff4500 #0a0a0a;
+    scrollbar-color: rgb(var(--scroll-thumb)) rgb(var(--scroll-track));
   }
 
   *::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
 
   *::-webkit-scrollbar-track {
-    background: #0a0a0a;
+    background: rgb(var(--scroll-track));
   }
 
   *::-webkit-scrollbar-thumb {
-    background: #ff4500;
+    background: rgb(var(--scroll-thumb));
     border-radius: 3px;
   }
 
+  html,
   body {
-    background: #0a0a0a;
-    color: #ffffff;
+    background: rgb(var(--c-bg));
+    color: rgb(var(--c-fg));
+  }
+
+  body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   ::selection {
-    background: rgba(255, 69, 0, 0.4);
-    color: #fff;
+    background: rgb(var(--selection-bg) / 0.35);
+    color: rgb(var(--selection-fg));
   }
 }
 
@@ -64,21 +151,32 @@
   }
 
   .glass {
-    background: rgba(26, 26, 46, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+    box-shadow: var(--shadow-card);
   }
 
   .glass-premium {
-    background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+    background: rgb(var(--glass-bg) / calc(var(--glass-bg-alpha) + 0.05));
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgb(var(--glass-border) / calc(var(--glass-border-alpha) + 0.02));
+    box-shadow: var(--shadow-soft);
   }
 
   .glass-dark {
-    background: rgba(10, 10, 10, 0.9);
+    background: rgb(var(--glass-bg) / 0.92);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+  }
+
+  .surface-card {
+    background: rgb(var(--c-surface-soft));
+    border: 1px solid rgb(var(--c-line));
+    box-shadow: var(--shadow-card);
   }
 
   .premium-border {
@@ -942,5 +1040,189 @@
   .gaming-cursor-trail {
     animation: none !important;
   }
+}
+
+/* =====================================================================
+ * Light theme overrides for existing dark utility classes.
+ * The site historically used `bg-dark*`, `text-white`, `text-gray-*`,
+ * `bg-white/X`, `border-white/X` etc. to draw a dark UI. On light theme
+ * we remap those to the corresponding light surfaces so we don't have
+ * to refactor every component.
+ * ===================================================================== */
+
+:root[data-theme='light'] .bg-dark,
+:root[data-theme='light'] .bg-dark-50,
+:root[data-theme='light'] .bg-dark-100,
+:root[data-theme='light'] .bg-dark-200,
+:root[data-theme='light'] .bg-dark-300,
+:root[data-theme='light'] .bg-dark-400,
+:root[data-theme='light'] .bg-dark-500,
+:root[data-theme='light'] .bg-surface {
+  background-color: rgb(var(--c-surface-soft));
+}
+
+:root[data-theme='light'] .text-white {
+  color: rgb(var(--c-fg));
+}
+
+:root[data-theme='light'] .text-gray-200,
+:root[data-theme='light'] .text-gray-300 {
+  color: rgb(var(--c-fg-muted));
+}
+
+:root[data-theme='light'] .text-gray-400,
+:root[data-theme='light'] .text-gray-500,
+:root[data-theme='light'] .text-gray-600 {
+  color: rgb(var(--c-fg-soft));
+}
+
+:root[data-theme='light'] .border-white\/5,
+:root[data-theme='light'] .border-white\/10,
+:root[data-theme='light'] .border-white\/20,
+:root[data-theme='light'] .border-white\/30 {
+  border-color: rgb(var(--c-line));
+}
+
+:root[data-theme='light'] .bg-white\/5 {
+  background-color: rgb(17 24 39 / 0.04);
+}
+:root[data-theme='light'] .bg-white\/10 {
+  background-color: rgb(17 24 39 / 0.06);
+}
+:root[data-theme='light'] .bg-white\/20 {
+  background-color: rgb(17 24 39 / 0.08);
+}
+
+:root[data-theme='light'] .hover\:bg-white\/5:hover {
+  background-color: rgb(17 24 39 / 0.05);
+}
+:root[data-theme='light'] .hover\:bg-white\/10:hover {
+  background-color: rgb(17 24 39 / 0.07);
+}
+
+/* Soft gradient overlays anchored on dark colors look muddy on light theme */
+:root[data-theme='light'] .from-dark,
+:root[data-theme='light'] .from-dark-50,
+:root[data-theme='light'] .from-dark-100 {
+  --tw-gradient-from: rgb(var(--c-bg)) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--c-bg) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .via-dark,
+:root[data-theme='light'] .via-dark-50 {
+  --tw-gradient-to: rgb(var(--c-bg) / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), rgb(var(--c-bg) / 0.55) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .to-dark,
+:root[data-theme='light'] .to-dark-50 {
+  --tw-gradient-to: rgb(var(--c-bg)) var(--tw-gradient-to-position);
+}
+
+/* The dark theme uses a from/to/dark gradient on the navbar. On light
+ * theme, just go from a translucent white to transparent so the page
+ * shows through cleanly.
+ */
+:root[data-theme='light'] .from-dark\/80,
+:root[data-theme='light'] .from-dark\/90 {
+  --tw-gradient-from: rgb(var(--c-bg) / 0.85) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(var(--c-bg) / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .via-dark\/50,
+:root[data-theme='light'] .via-dark\/60 {
+  --tw-gradient-stops: var(--tw-gradient-from), rgb(var(--c-bg) / 0.4) var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+:root[data-theme='light'] .to-dark\/0 {
+  --tw-gradient-to: rgb(var(--c-bg) / 0) var(--tw-gradient-to-position);
+}
+
+/* Gold/cyan/primary glows are too aggressive on white. Tone them down. */
+:root[data-theme='light'] .text-glow,
+:root[data-theme='light'] .text-glow-cyan,
+:root[data-theme='light'] .text-glow-gold {
+  text-shadow: none;
+}
+
+:root[data-theme='light'] .box-glow,
+:root[data-theme='light'] .box-glow-cyan {
+  box-shadow: var(--shadow-card);
+}
+
+/* Hide the heaviest gaming-only effects on light theme */
+:root[data-theme='light'] .hud-scanlines,
+:root[data-theme='light'] .carbon-fiber,
+:root[data-theme='light'] .speed-lines-bg,
+:root[data-theme='light'] .checkered-accent,
+:root[data-theme='light'] .perspective-grid-lines,
+:root[data-theme='light'] .ambient-spark {
+  display: none !important;
+}
+
+/* HUD bracket reveals: keep on light but in neutral grey */
+:root[data-theme='light'] .section-reveal-bracket {
+  border-color: rgb(17 24 39 / 0.18);
+  filter: none;
+}
+
+/* Cyan/gold accents in light mode pick up the toned-down vars */
+:root[data-theme='light'] .text-cyan {
+  color: rgb(var(--c-cyan));
+}
+:root[data-theme='light'] .text-gold {
+  color: rgb(var(--c-gold));
+}
+:root[data-theme='light'] .border-cyan\/30 {
+  border-color: rgb(var(--c-cyan) / 0.4);
+}
+:root[data-theme='light'] .bg-cyan\/10 {
+  background-color: rgb(var(--c-cyan) / 0.1);
+}
+
+/* HUD-style border corner brackets are noisy on light; soften them */
+:root[data-theme='light'] .hud-border::before,
+:root[data-theme='light'] .hud-border::after {
+  border-color: rgb(var(--c-primary) / 0.45);
+}
+:root[data-theme='light'] .hud-border {
+  border-color: rgb(var(--c-line));
+}
+
+/* Better default focus ring */
+:root[data-theme='light'] *:focus-visible {
+  outline: 2px solid rgb(var(--c-primary) / 0.55);
+  outline-offset: 2px;
+}
+
+/* =====================================================================
+ * Premium scroll & image animations (work on both themes)
+ * ===================================================================== */
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom > img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.4s ease;
+  will-change: transform;
+}
+.img-zoom:hover > img {
+  transform: scale(1.06);
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeUpIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes fadeUpIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth, premium scroll behavior */
+html {
+  scroll-behavior: smooth;
 }
 

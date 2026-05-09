@@ -23,6 +23,7 @@ import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
+import { ThemeProvider } from '@/context/ThemeContext'
 import { useEffect } from 'react'
 
 function ScrollToTop() {
@@ -38,7 +39,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-bg flex items-center justify-center">
         <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     )
@@ -75,35 +76,43 @@ function PublicLayout() {
 
 function App() {
   return (
-    <AuthProvider>
-      <StoreProvider>
-        <Router>
-          <ScrollToTop />
-          <PageLoader />
-          <GamingBackdrop />
-          <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/admin/login" element={<AdminLoginPage />} />
-            <Route
-              path="/admin"
-              element={
-                <AdminGuard>
-                  <AdminDashboard />
-                </AdminGuard>
-              }
-            >
-              <Route path="products" element={<ProductsManage />} />
-              <Route path="categories" element={<CategoriesManage />} />
-              <Route path="testimonials" element={<TestimonialsManage />} />
-              <Route path="hero" element={<HeroManage />} />
-              <Route path="orders" element={<OrdersManage />} />
-              <Route path="settings" element={<BrandSettings />} />
-            </Route>
-            <Route path="/*" element={<PublicLayout />} />
-          </Routes>
-        </Router>
-      </StoreProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <StoreProvider>
+          <Router>
+            <ScrollToTop />
+            <PageLoader />
+            <GamingBackdrop />
+            <AppRoutes />
+          </Router>
+        </StoreProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  )
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route
+        path="/admin"
+        element={
+          <AdminGuard>
+            <AdminDashboard />
+          </AdminGuard>
+        }
+      >
+        <Route path="products" element={<ProductsManage />} />
+        <Route path="categories" element={<CategoriesManage />} />
+        <Route path="testimonials" element={<TestimonialsManage />} />
+        <Route path="hero" element={<HeroManage />} />
+        <Route path="orders" element={<OrdersManage />} />
+        <Route path="settings" element={<BrandSettings />} />
+      </Route>
+      <Route path="/*" element={<PublicLayout />} />
+    </Routes>
   )
 }
 

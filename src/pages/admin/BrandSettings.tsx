@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Save, Bike, RotateCcw } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import ImageUpload from '@/components/ui/ImageUpload'
 
 export default function BrandSettings() {
   const store = useStore()
@@ -59,24 +60,18 @@ export default function BrandSettings() {
                 className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Logo URL</label>
-              <input
-                value={settings.logo_url}
-                onChange={e => setSettings({ ...settings, logo_url: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Hero Image URL</label>
-              <input
-                value={settings.hero_image_url}
-                onChange={e => setSettings({ ...settings, hero_image_url: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
+            <ImageUpload
+              label="Logo"
+              folder="brand"
+              value={settings.logo_url}
+              onChange={(v) => setSettings({ ...settings, logo_url: typeof v === 'string' ? v : v[0] || '' })}
+            />
+            <ImageUpload
+              label="Hero image"
+              folder="brand"
+              value={settings.hero_image_url}
+              onChange={(v) => setSettings({ ...settings, hero_image_url: typeof v === 'string' ? v : v[0] || '' })}
+            />
           </div>
 
           <div className="pt-4 border-t border-white/5">

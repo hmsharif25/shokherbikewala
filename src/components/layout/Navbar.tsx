@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ShoppingBag, Zap, User, LogOut, ShieldCheck } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -102,7 +103,9 @@ export default function Navbar() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <ThemeToggle className="hidden sm:inline-flex" />
+
               <Link
                 to="/products"
                 className="relative p-2.5 text-gray-300 hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-lg group"
@@ -142,8 +145,11 @@ export default function Navbar() {
                 </Link>
               )}
 
+              <ThemeToggle className="sm:hidden" size="sm" />
+
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
                 className="md:hidden p-2 text-gray-300 hover:text-primary transition-colors rounded-lg hover:bg-white/5"
               >
                 {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Save, Eye, Image, Type } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import ImageUpload from '@/components/ui/ImageUpload'
 
 export default function HeroManage() {
   const { brandSettings, setBrandSettings } = useStore()
@@ -68,46 +69,19 @@ export default function HeroManage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Logo URL</label>
-              <input
-                value={settings.logo_url}
-                onChange={e => setSettings({ ...settings, logo_url: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Hero Image URL</label>
-              <input
-                value={settings.hero_image_url}
-                onChange={e => setSettings({ ...settings, hero_image_url: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
+            <ImageUpload
+              label="Logo"
+              folder="brand"
+              value={settings.logo_url}
+              onChange={(v) => setSettings({ ...settings, logo_url: typeof v === 'string' ? v : v[0] || '' })}
+            />
+            <ImageUpload
+              label="Hero image"
+              folder="brand"
+              value={settings.hero_image_url}
+              onChange={(v) => setSettings({ ...settings, hero_image_url: typeof v === 'string' ? v : v[0] || '' })}
+            />
           </div>
-
-          {(settings.logo_url || settings.hero_image_url) && (
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              {settings.logo_url && (
-                <div>
-                  <p className="text-xs text-gray-500 mb-2">Logo Preview</p>
-                  <div className="h-24 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center p-3">
-                    <img src={settings.logo_url} alt="Logo" className="max-h-full max-w-full object-contain" />
-                  </div>
-                </div>
-              )}
-              {settings.hero_image_url && (
-                <div>
-                  <p className="text-xs text-gray-500 mb-2">Hero Preview</p>
-                  <div className="h-24 rounded-lg bg-white/5 border border-white/10 overflow-hidden">
-                    <img src={settings.hero_image_url} alt="Hero" className="w-full h-full object-cover" />
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </AnimatedSection>
 

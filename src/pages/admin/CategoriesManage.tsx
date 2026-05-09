@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Pencil, Trash2, X, Save, Grid3X3 } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Category } from '@/types'
+import ImageUpload from '@/components/ui/ImageUpload'
 
 export default function CategoriesManage() {
   const { categories, addCategory, updateCategory, deleteCategory } = useStore()
@@ -82,7 +83,7 @@ export default function CategoriesManage() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm text-gray-300 mb-1">Category Name</label>
                   <input
@@ -92,15 +93,12 @@ export default function CategoriesManage() {
                     className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm text-gray-300 mb-1">Image URL</label>
-                  <input
-                    value={form.image_url}
-                    onChange={e => setForm({ ...form, image_url: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  />
-                </div>
+                <ImageUpload
+                  label="Category image"
+                  folder="categories"
+                  value={form.image_url}
+                  onChange={(v) => setForm({ ...form, image_url: typeof v === 'string' ? v : v[0] || '' })}
+                />
               </div>
 
               <div className="flex gap-3 mt-6">
