@@ -30,7 +30,7 @@ export default function VPromoBanner() {
 
   return (
     <section className="v-premium-section v-newsletter-showcase relative py-14 sm:py-20 overflow-x-clip overflow-y-visible">
-      <div className="sb-scanline-overlay" />
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal>
           <div className="relative rounded-[2rem] overflow-hidden v-capsule px-6 sm:px-10 lg:px-14 py-12 sm:py-16 text-center">

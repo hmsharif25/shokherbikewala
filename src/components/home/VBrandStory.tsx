@@ -30,7 +30,7 @@ export default function VBrandStory() {
     <section className="sb-clean-section sb-showroom-section relative py-20 sm:py-28 overflow-x-clip overflow-y-visible">
       <div className="sb-showroom-grid pointer-events-none" aria-hidden="true" />
       <div className="sb-hex-pattern" />
-      <div className="sb-scanline-overlay" />
+
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Centered headline */}
