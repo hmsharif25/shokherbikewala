@@ -21,7 +21,7 @@ export default function BrandProfile() {
       url: brandSettings.facebook,
       grad: 'linear-gradient(135deg,#1877F2,#0E5FCF)',
       iconBg: 'from-blue-500 to-blue-700',
-      handle: 'Shokher Bike Wala',
+      handle: 'Shokher Bikewala',
     },
     {
       name: 'TikTok',
@@ -56,7 +56,7 @@ export default function BrandProfile() {
           </span>
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mt-3 mb-3 sm:mb-4">
             <span className="text-gradient-headline">Follow </span>
-            <span className="text-gradient-fire">Shokher Bike Wala</span>
+            <span className="text-gradient-fire">Shokher Bikewala</span>
           </h2>
           <p className="text-fg-muted max-w-2xl mx-auto text-sm sm:text-base font-racing tracking-wide">
             Latest products, deals, and bike accessory reviews — straight to your feed.

@@ -15,7 +15,7 @@ export default function VBrandStory() {
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-12 items-center">
           <VReveal className="text-center lg:text-left">
-            <span className="v-eyebrow">Why ShokherBikewala</span>
+            <span className="v-eyebrow">Why Shokher Bikewala</span>
             <h2 className="v-headline text-4xl sm:text-5xl md:text-6xl mt-4 mb-5">
               Premium, <em>not noisy</em>
             </h2>

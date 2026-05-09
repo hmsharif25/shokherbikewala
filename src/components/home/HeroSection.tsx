@@ -108,7 +108,7 @@ export default function HeroSection() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-bg-2/50 to-cyan/15 rounded-2xl" />
               <img
                 src="/logo.png"
-                alt="Shokher Bike Wala"
+                alt="Shokher Bikewala"
                 className="w-full h-full object-contain p-3 relative z-10 drop-shadow-[0_0_18px_rgba(255,106,26,0.45)]"
               />
             </div>

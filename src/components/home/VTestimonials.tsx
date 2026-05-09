@@ -35,7 +35,7 @@ export default function VTestimonials() {
             What <em>Riders Say</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Real stories from the riders rolling with Shokher Bike Wala.
+            Real stories from the riders rolling with Shokher Bikewala.
           </p>
         </VReveal>
 

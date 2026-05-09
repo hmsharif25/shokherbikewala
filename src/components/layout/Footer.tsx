@@ -69,7 +69,7 @@ export default function Footer() {
     { Icon: Instagram, url: brandSettings.instagram, label: 'Instagram' },
     { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
     { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
-    { Icon: Youtube, url: 'https://www.youtube.com/results?search_query=ShokherBikewala', label: 'YouTube' },
+    { Icon: Youtube, url: 'https://www.youtube.com/results?search_query=Shokher%20Bikewala', label: 'YouTube' },
   ]
 
   return (
@@ -111,7 +111,7 @@ export default function Footer() {
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1.5 flex items-center justify-center">
                 <img
                   src="/logo.png"
-                  alt="Shokher Bike Wala"
+                  alt="Shokher Bikewala"
                   width={48}
                   height={48}
                   loading="lazy"
@@ -304,7 +304,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs font-ui">
           <p className="text-fg-soft">
-            © {new Date().getFullYear()} Shokher Bike Wala. All rights reserved.
+            © {new Date().getFullYear()} Shokher Bikewala. All rights reserved.
           </p>
           <div className="flex items-center gap-3 flex-wrap">
             {['VISA', 'Mastercard', 'bKash', 'Nagad', 'COD'].map((p) => (

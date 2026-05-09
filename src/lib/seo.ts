@@ -1,10 +1,10 @@
 import { Category, Product } from '@/types'
 
 export const SITE_URL = 'https://www.shokherbikewala.com'
-export const SITE_NAME = 'Shokher Bike Wala'
+export const SITE_NAME = 'Shokher Bikewala'
 export const SITE_PHONE = '+8801518934708'
 export const SITE_DESCRIPTION =
-  'Shop premium bike accessories in Bangladesh: helmets, gloves, jackets, LED lights, phone mounts, exhaust systems, and rider gear from Shokher Bike Wala.'
+  'Shop premium bike accessories in Bangladesh: helmets, gloves, jackets, LED lights, phone mounts, exhaust systems, and rider gear from Shokher Bikewala.'
 export const SITE_KEYWORDS = [
   'bike accessories Bangladesh',
   'motorcycle accessories Bangladesh',
@@ -12,7 +12,7 @@ export const SITE_KEYWORDS = [
   'riding gloves Bangladesh',
   'bike LED lights',
   'motorcycle gear Dhaka',
-  'Shokher Bike Wala',
+  'Shokher Bikewala',
 ]
 
 export interface SeoConfig {
@@ -59,36 +59,36 @@ export const ROUTE_SEO: Record<string, RouteSeoConfig> = {
   '/about': {
     title: `About ${SITE_NAME} | Premium Rider Gear Bangladesh`,
     description:
-      'Learn about Shokher Bike Wala, a Bangladesh motorcycle accessories brand focused on quality, safety, style, and rider community.',
-    keywords: ['about Shokher Bike Wala', 'motorcycle accessories brand Bangladesh', ...SITE_KEYWORDS],
+      'Learn about Shokher Bikewala, a Bangladesh motorcycle accessories brand focused on quality, safety, style, and rider community.',
+    keywords: ['about Shokher Bikewala', 'motorcycle accessories brand Bangladesh', ...SITE_KEYWORDS],
   },
   '/contact': {
     title: `Contact ${SITE_NAME} | WhatsApp Bike Gear Support`,
     description:
-      'Contact Shokher Bike Wala by WhatsApp, Facebook, TikTok, or Instagram for motorcycle accessory advice, orders, and support.',
+      'Contact Shokher Bikewala by WhatsApp, Facebook, TikTok, or Instagram for motorcycle accessory advice, orders, and support.',
     keywords: ['contact bike accessories Bangladesh', 'WhatsApp motorcycle gear', ...SITE_KEYWORDS],
   },
   '/checkout': {
     title: `Checkout | ${SITE_NAME}`,
     description:
-      'Confirm your Shokher Bike Wala motorcycle accessory order with cash on delivery and WhatsApp support.',
+      'Confirm your Shokher Bikewala motorcycle accessory order with cash on delivery and WhatsApp support.',
     noindex: true,
   },
   '/track': {
     title: `Track Order | ${SITE_NAME}`,
     description:
-      'Track your Shokher Bike Wala order status using the phone number submitted during checkout.',
+      'Track your Shokher Bikewala order status using the phone number submitted during checkout.',
     noindex: true,
   },
   '/auth': {
     title: `Customer Sign In | ${SITE_NAME}`,
     description:
-      'Sign in to your Shokher Bike Wala customer account for motorcycle accessory orders and rider gear support.',
+      'Sign in to your Shokher Bikewala customer account for motorcycle accessory orders and rider gear support.',
     noindex: true,
   },
   '/admin/login': {
     title: `Admin Login | ${SITE_NAME}`,
-    description: 'Private Shokher Bike Wala admin login.',
+    description: 'Private Shokher Bikewala admin login.',
     noindex: true,
   },
 }

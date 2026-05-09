@@ -26,7 +26,7 @@ export default function VHeroSection() {
     { Icon: Instagram, url: brandSettings.instagram, label: 'Instagram' },
     { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
     { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
-    { Icon: Youtube, url: 'https://www.youtube.com/results?search_query=ShokherBikewala', label: 'YouTube' },
+    { Icon: Youtube, url: 'https://www.youtube.com/results?search_query=Shokher%20Bikewala', label: 'YouTube' },
   ]
 
   return (
@@ -42,8 +42,8 @@ export default function VHeroSection() {
             transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             className="sb-brand-card mx-auto"
           >
-            <div className="sb-logo-ring mx-auto" aria-label="ShokherBikewala logo">
-              <img src="/logo.png" alt="Shokher Bike Wala" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
+            <div className="sb-logo-ring mx-auto" aria-label="Shokher Bikewala logo">
+              <img src="/logo.png" alt="Shokher Bikewala" className="w-20 h-20 sm:w-24 sm:h-24 object-contain" />
             </div>
 
             <motion.p
@@ -61,7 +61,7 @@ export default function VHeroSection() {
               transition={{ duration: 0.72, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
               className="sb-hero-title"
             >
-              ShokherBikewala
+              Shokher Bikewala
             </motion.h1>
 
             <motion.p

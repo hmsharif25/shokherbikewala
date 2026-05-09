@@ -78,7 +78,7 @@ export default function Navbar() {
               <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1 flex items-center justify-center">
                 <img
                   src="/logo.png"
-                  alt="Shokher Bike Wala"
+                  alt="Shokher Bikewala"
                   width={40}
                   height={40}
                   decoding="async"

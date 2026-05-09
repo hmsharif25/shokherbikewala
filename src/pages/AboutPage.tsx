@@ -16,7 +16,7 @@ export default function AboutPage() {
               We Are{' '}
             </span>
             <span className="bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent text-glow">
-              Shokher Bike Wala
+              Shokher Bikewala
             </span>
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-lg leading-relaxed">
@@ -46,7 +46,7 @@ export default function AboutPage() {
                 Our Story
               </h2>
               <p className="text-gray-400 leading-relaxed">
-                Shokher Bike Wala started with a simple passion - making quality bike accessories accessible to every rider in Bangladesh. We understand the thrill of the ride and the importance of having the right gear.
+                Shokher Bikewala started with a simple passion - making quality bike accessories accessible to every rider in Bangladesh. We understand the thrill of the ride and the importance of having the right gear.
               </p>
               <p className="text-gray-400 leading-relaxed">
                 From helmets to exhaust systems, from LED lights to riding gloves, we carefully curate products that meet our high standards of quality, safety, and style. Every product in our collection is tested and approved by real riders.

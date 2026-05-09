@@ -130,7 +130,7 @@ export default function AuthPage() {
               <div className="w-full h-full bg-bg rounded-xl flex items-center justify-center">
                 <img
                   src="/logo.png"
-                  alt="Shokher Bike Wala"
+                  alt="Shokher Bikewala"
                   className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,106,26,0.55)]"
                 />
               </div>

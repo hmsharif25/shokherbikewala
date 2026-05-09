@@ -72,7 +72,7 @@ export default function PageLoader() {
               <div className="absolute inset-2 rounded-full bg-primary/5 flex items-center justify-center">
                 <img
                   src="/logo.png"
-                  alt="Shokher Bike Wala"
+                  alt="Shokher Bikewala"
                   className="w-12 h-12 sm:w-14 sm:h-14 object-contain"
                 />
               </div>
@@ -84,7 +84,7 @@ export default function PageLoader() {
                   isDark ? 'text-white' : 'text-fg'
                 }`}
               >
-                Shokher Bike Wala
+                Shokher Bikewala
               </div>
               <div className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-fg-soft'}`}>
                 Loading premium ride gear

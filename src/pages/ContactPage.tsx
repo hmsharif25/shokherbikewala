@@ -20,7 +20,7 @@ const contactMethods = [
     icon: Facebook,
     title: 'Facebook',
     description: 'Follow our page',
-    value: 'Shokher Bike Wala',
+    value: 'Shokher Bikewala',
     url: 'https://www.facebook.com/share/1CvH4aQ5kU/?mibextid=wwXIfr',
     color: 'from-blue-500 to-blue-600',
     hoverGlow: 'hover:shadow-blue-500/30',
