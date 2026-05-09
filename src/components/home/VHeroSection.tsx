@@ -155,16 +155,16 @@ export default function VHeroSection() {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              className="group relative flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-bg/40 backdrop-blur-md border border-line overflow-hidden transition-all duration-300"
-              style={{ '--social-color': color } as React.CSSProperties}
+              initial={{ opacity: 0, y: 30, scale: 0.85, rotateX: 15 }}
+              animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.5 + i * 0.12 }}
+              whileHover={{ scale: 1.08, y: -5, transition: { type: 'spring', stiffness: 400, damping: 15 } }}
+              whileTap={{ scale: 0.95 }}
+              className="sb-social-card group relative flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-bg/40 backdrop-blur-md border border-line overflow-hidden transition-all duration-300"
+              style={{ '--social-color': color, '--social-gradient-start': color + '20', '--social-gradient-end': color + '05' } as React.CSSProperties}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = color
-                e.currentTarget.style.boxShadow = `0 0 24px ${color}30, 0 0 48px ${color}15`
+                e.currentTarget.style.boxShadow = `0 0 24px ${color}35, 0 8px 32px ${color}20, 0 0 60px ${color}10`
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = ''
@@ -175,27 +175,35 @@ export default function VHeroSection() {
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                 style={{
-                  background: `linear-gradient(135deg, ${color}10, transparent 60%)`,
+                  background: `linear-gradient(135deg, ${color}15, ${color}08 40%, transparent 70%)`,
                 }}
               />
 
-              {/* Icon circle with gradient */}
-              <div className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-shadow duration-300`}
-                style={{ boxShadow: `0 4px 12px ${color}30` }}
+              {/* Shine sweep animation */}
+              <div className="sb-social-shine absolute inset-0 pointer-events-none" />
+
+              {/* Icon circle with gradient + pulse */}
+              <div className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-all duration-300 group-hover:shadow-xl`}
+                style={{ boxShadow: `0 4px 16px ${color}35` }}
               >
-                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                {/* Shine effect */}
                 <motion.div
                   className="absolute inset-0 rounded-xl"
+                  style={{ background: `${color}`, opacity: 0 }}
+                  animate={{ opacity: [0, 0.3, 0], scale: [1, 1.4, 1] }}
+                  transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
+                />
+                <Icon className="relative z-10 w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                <motion.div
+                  className="absolute inset-0 rounded-xl pointer-events-none"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.25), transparent 50%)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.3), transparent 50%)',
                   }}
                 />
               </div>
 
               {/* Label + tag */}
               <div className="relative flex flex-col">
-                <span className="text-[9px] sm:text-[10px] font-ui uppercase tracking-[0.18em] text-fg-soft/60">
+                <span className="text-[9px] sm:text-[10px] font-ui uppercase tracking-[0.18em] text-fg-soft/60 group-hover:text-fg-soft transition-colors duration-300">
                   {tag}
                 </span>
                 <span className="text-xs sm:text-sm font-bold text-fg tracking-wide group-hover:text-white transition-colors duration-300">

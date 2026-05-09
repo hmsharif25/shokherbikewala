@@ -45,10 +45,10 @@ export default function VTestimonials() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: 80, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -80, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, x: 100, scale: 0.92, rotateY: -8 }}
+                animate={{ opacity: 1, x: 0, scale: 1, rotateY: 0 }}
+                exit={{ opacity: 0, x: -100, scale: 0.92, rotateY: 8 }}
+                transition={{ type: 'spring', stiffness: 180, damping: 22 }}
                 className="v-capsule sb-electricity rounded-3xl p-6 sm:p-12 text-center relative"
               >
                 <Quote className="absolute top-6 left-6 w-10 h-10 text-primary/20" />
