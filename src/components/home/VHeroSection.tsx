@@ -58,8 +58,6 @@ export default function VHeroSection() {
   const heroImage = brandSettings.hero_image_url || '/brand/hero-bike.png'
 
   const brandName = brandSettings.brand_name || 'Shokher Bike Wala'
-  const brandTagline =
-    brandSettings.tagline || 'Your Ultimate Bike Accessories Destination'
 
   return (
     <section
@@ -68,10 +66,6 @@ export default function VHeroSection() {
     >
       {/* Ambient backdrop layers */}
       <div className="absolute inset-0 v-hero-halo" />
-      <div className="absolute inset-0 v-dot-field opacity-40 pointer-events-none" />
-
-      {/* Stylised brand watermark (desktop only) */}
-      <span className="hidden lg:block v-watermark">{brandName}</span>
 
       {/* Soft animated orange glow behind the bike */}
       <motion.div
@@ -99,20 +93,6 @@ export default function VHeroSection() {
               className="inline-flex"
             >
               <span className="v-eyebrow">Premium Motorcycle Accessories</span>
-            </motion.div>
-
-            {/* Brand wordmark + tagline */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05 }}
-              className="flex flex-col items-center lg:items-start"
-            >
-              <span className="v-brand-wordmark">
-                <span className="accent" />
-                {brandName}
-              </span>
-              <span className="v-brand-tagline">{brandTagline}</span>
             </motion.div>
 
             <motion.h1
