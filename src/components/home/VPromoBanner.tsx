@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Truck, Shield, Award, Gauge, Gamepad2, Trophy } from 'lucide-react'
+import { ArrowRight, Truck, Shield, Award } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 
 const TRUST_BADGES = [
@@ -12,12 +12,6 @@ const PILLARS = [
   { label: 'Premium\nQuality' },
   { label: 'Performance\nFocused' },
   { label: 'Secure\nPayment' },
-]
-
-const PORTFOLIO_POINTS = [
-  { icon: Gamepad2, label: 'Arcade-grade motion UI' },
-  { icon: Gauge, label: 'Motorbike performance mood' },
-  { icon: Trophy, label: 'Premium portfolio presentation' },
 ]
 
 /**
@@ -64,24 +58,20 @@ export default function VPromoBanner() {
             </div>
 
             <div className="relative space-y-7 max-w-3xl mx-auto">
-              <div className="flex flex-wrap justify-center gap-2.5">
-                {PORTFOLIO_POINTS.map((point) => (
-                  <span key={point.label} className="v-portfolio-chip">
-                    <point.icon className="w-3.5 h-3.5" />
-                    {point.label}
-                  </span>
-                ))}
-              </div>
+              <span className="sb-eyebrow-bar mx-auto justify-center">
+                <span className="sb-eyebrow-bar-line" />
+                Limited Time Offer
+              </span>
 
-              <h2 className="v-headline text-4xl sm:text-6xl md:text-7xl">
-                STAY AHEAD
-                <br />
-                <em>RIDE BEYOND</em>
+              <h2 className="sb-cinematic-title sb-cinematic-title-md">
+                <span className="sb-cinematic-line">PREMIUM</span>
+                <span className="sb-cinematic-line sb-cinematic-line-mid">RIDING</span>
+                <span className="sb-cinematic-line sb-cinematic-line-accent">GEAR</span>
               </h2>
 
               <p className="text-fg-muted font-ui text-base max-w-md mx-auto">
-                A luxury newsletter-style drop zone for exclusive rider offers,
-                product launches, and premium gear alerts.
+                Exclusive deals on premium motorcycle accessories.
+                Limited stock — get yours before they ride away.
               </p>
 
               {/* Oversized 40% OFF as the focal visual */}
@@ -111,9 +101,9 @@ export default function VPromoBanner() {
               </div>
 
               <div className="flex justify-center pt-2">
-                <Link to="/products" className="v-pill-cta">
-                  Shop Premium Drops
-                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white/25 ml-1">
+                <Link to="/products" className="sb-cta-primary group">
+                  Shop Collection
+                  <span className="sb-cta-pin">
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </Link>

@@ -5497,3 +5497,788 @@ html {
     animation: none !important;
   }
 }
+
+/* =====================================================================
+ * CINEMATIC HERO — "Ride With Power"
+ *
+ * Split composition (copy left, bike stage right) with floating
+ * orbital product cards. The stage uses an ambient orange halo + a
+ * neon ring on the floor so the bike feels like it's lit on a
+ * showroom turntable. Mobile collapses to a single column and the
+ * orbital cards become a horizontal scroll strip below the bike.
+ * ===================================================================== */
+
+.sb-cinematic-hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 80% 30%, rgba(255, 106, 26, 0.14), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(255, 106, 26, 0.08), transparent 60%),
+    rgb(var(--c-bg));
+  isolation: isolate;
+}
+
+.sb-hero-floor {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 35%;
+  background:
+    linear-gradient(180deg, transparent, rgba(255, 106, 26, 0.04) 60%, rgba(255, 106, 26, 0.08)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 96px,
+      rgba(17, 24, 39, 0.04) 96px 97px
+    );
+  mask-image: linear-gradient(180deg, transparent, black 30%, black);
+  pointer-events: none;
+  z-index: 0;
+}
+
+:root[data-theme='dark'] .sb-hero-floor {
+  background:
+    linear-gradient(180deg, transparent, rgba(255, 106, 26, 0.06) 60%, rgba(255, 106, 26, 0.12)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 96px,
+      rgba(255, 255, 255, 0.05) 96px 97px
+    );
+}
+
+.sb-eyebrow-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgb(var(--c-primary));
+  padding: 0.35rem 0;
+}
+
+.sb-eyebrow-bar-line {
+  width: 2.25rem;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgb(var(--c-primary)));
+  border-radius: 2px;
+}
+
+.sb-cinematic-title {
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  font-size: clamp(3.25rem, 9vw, 6.75rem);
+  margin: 1.1rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .sb-cinematic-title { align-items: flex-start; }
+}
+
+.sb-cinematic-line {
+  display: inline-block;
+  color: rgb(var(--c-fg));
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.sb-cinematic-line-mid {
+  font-size: 0.62em;
+  letter-spacing: 0.04em;
+  font-style: normal;
+  margin-top: 0.05em;
+  margin-bottom: 0.05em;
+  opacity: 0.95;
+}
+
+.sb-cinematic-line-accent {
+  background: linear-gradient(95deg, #ff8a3d 0%, #ff5a00 55%, #ff3d00 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 14px 28px rgba(255, 90, 0, 0.25));
+  letter-spacing: -0.01em;
+}
+
+:root[data-theme='dark'] .sb-cinematic-line-accent {
+  filter: drop-shadow(0 14px 32px rgba(255, 90, 0, 0.45));
+}
+
+.sb-cinematic-copy {
+  margin-top: 1.4rem;
+  max-width: 28rem;
+  font-family: 'Sora', sans-serif;
+  color: rgb(var(--c-fg-muted));
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+@media (min-width: 1024px) {
+  .sb-cinematic-copy { margin-left: 0; margin-right: auto; }
+}
+
+.sb-cta-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.95rem 1.25rem 0.95rem 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(95deg, #ff7a1f, #ff5a00 60%, #ff3d00);
+  color: white !important;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  box-shadow:
+    0 18px 40px -16px rgba(255, 90, 0, 0.6),
+    0 6px 18px -8px rgba(255, 90, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.sb-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 24px 48px -14px rgba(255, 90, 0, 0.7),
+    0 10px 22px -6px rgba(255, 90, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.sb-cta-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  margin-left: 0.35rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.sb-cta-primary:hover .sb-cta-pin {
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.32);
+}
+
+.sb-trust-cluster {
+  margin-top: 2.25rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  max-width: 36rem;
+}
+
+@media (max-width: 640px) {
+  .sb-trust-cluster {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-inline: auto;
+  }
+}
+
+.sb-trust-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 1rem;
+  background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+  border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+}
+
+.sb-trust-ico {
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 999px;
+  background: rgba(255, 106, 26, 0.12);
+  border: 1px solid rgba(255, 106, 26, 0.28);
+  color: rgb(var(--c-primary));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sb-trust-label {
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg));
+  white-space: pre-line;
+  line-height: 1.2;
+}
+
+/* === Bike stage === */
+.sb-bike-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1023px) {
+  .sb-bike-stage { aspect-ratio: 16 / 11; }
+}
+
+.sb-stage-glow {
+  position: absolute;
+  inset: 8% 6% 4% 6%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 70% 65% at 50% 55%, rgba(255, 122, 31, 0.55), transparent 65%),
+    radial-gradient(ellipse 90% 80% at 50% 65%, rgba(255, 90, 0, 0.22), transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+  animation: sb-stage-pulse 7s ease-in-out infinite;
+  z-index: 0;
+}
+
+.sb-stage-ring {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  width: 92%;
+  height: 18%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid transparent;
+  background-image:
+    radial-gradient(ellipse, rgba(255, 122, 31, 0.55), transparent 65%),
+    linear-gradient(90deg, transparent, rgba(255, 122, 31, 0.85), transparent);
+  background-clip: padding-box, content-box;
+  filter: blur(2px);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sb-bike-stage::after {
+  content: '';
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  width: 60%;
+  height: 4%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(255, 90, 0, 0.55), transparent 70%);
+  filter: blur(8px);
+  z-index: 0;
+}
+
+.sb-bike-img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 760px;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(255, 90, 0, 0.3))
+          drop-shadow(0 60px 80px rgba(0, 0, 0, 0.18));
+  animation: sb-bike-hover 6s ease-in-out infinite;
+}
+
+:root[data-theme='dark'] .sb-bike-img {
+  filter: drop-shadow(0 30px 70px rgba(255, 90, 0, 0.45))
+          drop-shadow(0 60px 100px rgba(0, 0, 0, 0.6));
+}
+
+/* === Orbital product cards === */
+.sb-orbital {
+  position: absolute;
+  z-index: 3;
+  animation: sb-orbital-hover 7s ease-in-out infinite;
+}
+
+.sb-orbital-tl { top: 12%; left: 2%; animation-delay: -1s; }
+.sb-orbital-tr { top: 14%; right: 2%; animation-delay: -3s; }
+.sb-orbital-bl { bottom: 14%; left: 6%; animation-delay: -5s; }
+.sb-orbital-br { bottom: 18%; right: 4%; animation-delay: -2s; }
+
+@media (max-width: 1023px) {
+  .sb-orbital { display: none; }
+}
+
+.sb-orbital-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.85rem 0.6rem 0.6rem;
+  border-radius: 1.15rem;
+  background: rgb(var(--glass-bg) / 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgb(var(--glass-border) / 0.08);
+  box-shadow:
+    0 18px 40px -14px rgba(17, 24, 39, 0.18),
+    0 4px 12px -4px rgba(17, 24, 39, 0.08);
+  min-width: 200px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.sb-orbital-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 26px 52px -12px rgba(255, 90, 0, 0.28),
+    0 8px 16px -4px rgba(17, 24, 39, 0.12);
+}
+
+:root[data-theme='dark'] .sb-orbital-card {
+  background: rgba(22, 22, 36, 0.85);
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 22px 48px -16px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.sb-orbital-thumb {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgb(var(--c-bg-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sb-orbital-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sb-orbital-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sb-orbital-cat {
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg));
+  line-height: 1.3;
+  white-space: nowrap;
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-orbital-price {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: rgb(var(--c-primary));
+  margin-top: 0.1rem;
+  line-height: 1;
+}
+
+.sb-orbital-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.25rem;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.7rem;
+  color: rgb(var(--c-fg-soft));
+}
+
+.sb-orbital-rating svg {
+  color: #ff7a1f;
+  fill: #ff7a1f;
+}
+
+.sb-orbital-plus {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7a1f, #ff5a00);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px -4px rgba(255, 90, 0, 0.55);
+}
+
+/* Mobile horizontal strip variant */
+.sb-orbital-strip {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.25rem 0.25rem 0.75rem;
+  margin: 0 -1rem;
+  padding-inline: 1rem;
+  scrollbar-width: none;
+}
+
+.sb-orbital-strip::-webkit-scrollbar { display: none; }
+
+.sb-orbital-card-strip {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  min-width: 220px;
+  position: relative;
+}
+
+@keyframes sb-stage-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.78; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes sb-bike-hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes sb-orbital-hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-bike-img,
+  .sb-orbital,
+  .sb-stage-glow {
+    animation: none !important;
+  }
+}
+
+/* =====================================================================
+ * SHOWROOM SECTION — "Engineered For Riders"
+ *
+ * Big oversized headline + bike on a glowing showroom plate. The
+ * plate uses neon LED bars on the top and bottom edges, a subtle
+ * floor reflection, and a soft orange podium ring beneath the bike.
+ * ===================================================================== */
+
+.sb-showroom-section {
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 40%, rgba(255, 106, 26, 0.06), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(255, 106, 26, 0.04), transparent 60%),
+    rgb(var(--c-bg));
+}
+
+.sb-showroom-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(17, 24, 39, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 24, 39, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent 75%);
+}
+
+:root[data-theme='dark'] .sb-showroom-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.sb-cinematic-title-md {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+}
+
+.sb-pillar-capsule {
+  margin-top: 2.5rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 1.4rem;
+  background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+  border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-card);
+}
+
+.sb-pillar-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 1rem;
+  min-width: 5rem;
+}
+
+.sb-pillar-ico {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  background: rgba(255, 106, 26, 0.12);
+  border: 1px solid rgba(255, 106, 26, 0.28);
+  color: rgb(var(--c-primary));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sb-pillar-label {
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg));
+  white-space: pre-line;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.sb-showroom-plate {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  border-radius: 2.25rem;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 60%, rgba(255, 106, 26, 0.18), transparent 65%),
+    linear-gradient(180deg, rgb(var(--c-bg-2)) 0%, rgba(255, 106, 26, 0.08) 50%, rgb(var(--c-bg-2)) 100%);
+  border: 1px solid rgb(var(--glass-border) / 0.08);
+  box-shadow:
+    0 30px 80px -30px rgba(255, 90, 0, 0.32),
+    0 12px 36px -12px rgba(17, 24, 39, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:root[data-theme='dark'] .sb-showroom-plate {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 60%, rgba(255, 106, 26, 0.28), transparent 65%),
+    linear-gradient(180deg, #11111a 0%, #1a1015 50%, #0e0e15 100%);
+}
+
+.sb-showroom-led {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #ff7a1f 35%, #ff7a1f 65%, transparent);
+  filter: blur(1px);
+  box-shadow: 0 0 24px rgba(255, 122, 31, 0.6);
+  opacity: 0.85;
+}
+
+.sb-led-top { top: 4%; }
+.sb-led-bottom { bottom: 4%; }
+
+.sb-showroom-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38%;
+  background:
+    linear-gradient(180deg, transparent, rgba(255, 122, 31, 0.06) 60%, rgba(255, 122, 31, 0.16)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 80px,
+      rgba(17, 24, 39, 0.04) 80px 81px
+    );
+  pointer-events: none;
+}
+
+:root[data-theme='dark'] .sb-showroom-floor {
+  background:
+    linear-gradient(180deg, transparent, rgba(255, 122, 31, 0.1) 60%, rgba(255, 122, 31, 0.22)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 80px,
+      rgba(255, 255, 255, 0.05) 80px 81px
+    );
+}
+
+.sb-showroom-podium {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  width: 78%;
+  height: 12%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(255, 122, 31, 0.6), transparent 70%);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.sb-showroom-bike {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 720px;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(255, 90, 0, 0.35))
+          drop-shadow(0 60px 80px rgba(0, 0, 0, 0.18));
+  animation: sb-bike-hover 7s ease-in-out infinite;
+}
+
+.sb-showroom-chip {
+  position: absolute;
+  top: 5%;
+  right: 6%;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  background: rgb(var(--glass-bg) / 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgb(var(--glass-border) / 0.08);
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg));
+  box-shadow: 0 10px 24px -8px rgba(17, 24, 39, 0.18);
+}
+
+.sb-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #ff5a00;
+  box-shadow: 0 0 8px rgba(255, 90, 0, 0.6);
+  animation: sb-pulse-dot 2.5s ease-in-out infinite;
+}
+
+@keyframes sb-pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+/* =====================================================================
+ * Featured-products tweaks: cleaner card, bigger discount chip
+ * ===================================================================== */
+
+.sb-product-card {
+  background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+  border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+  border-radius: 1.5rem;
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  box-shadow: var(--shadow-card);
+}
+
+.sb-product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 122, 31, 0.32);
+  box-shadow:
+    0 22px 50px -16px rgba(255, 90, 0, 0.22),
+    var(--shadow-card);
+}
+
+.sb-wishlist-btn {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgb(var(--glass-bg) / 0.85);
+  border: 1px solid rgb(var(--glass-border) / 0.08);
+  color: rgb(var(--c-fg-muted));
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.sb-wishlist-btn:hover {
+  color: rgb(var(--c-primary));
+  transform: scale(1.06);
+}
+
+/* =====================================================================
+ * FAQ accordion — premium glass cards with single-open behaviour
+ * ===================================================================== */
+
+.sb-faq-card {
+  background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
+  border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+  border-radius: 1.25rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: border-color 0.25s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow-card-light);
+}
+
+.sb-faq-card.is-open {
+  border-color: rgba(255, 122, 31, 0.35);
+  box-shadow:
+    0 18px 38px -16px rgba(255, 90, 0, 0.18),
+    var(--shadow-card-light);
+}
+
+.sb-faq-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 1.25rem 1.05rem 1.4rem;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: rgb(var(--c-fg));
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sb-faq-q {
+  flex: 1;
+  min-width: 0;
+}
+
+.sb-faq-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  background: rgba(255, 106, 26, 0.12);
+  border: 1px solid rgba(255, 106, 26, 0.25);
+  color: rgb(var(--c-primary));
+}
+
+.sb-faq-a {
+  padding: 0 1.4rem 1.2rem;
+  color: rgb(var(--c-fg-muted));
+  font-family: 'Sora', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}

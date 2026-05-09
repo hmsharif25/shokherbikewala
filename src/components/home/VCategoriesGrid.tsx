@@ -41,12 +41,13 @@ export default function VCategoriesGrid() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-12 sm:mb-16">
-          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Shop Categories</span>
+          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Featured Categories</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            Simple <em>Rider Gear</em>
+            GEAR UP. <em>RIDE BETTER.</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Essential rider categories in a clean premium layout — fast to scan, easy to shop.
+            Premium motorcycle accessories engineered for performance, safety
+            and style. Choose from our top categories.
           </p>
         </VReveal>
 
