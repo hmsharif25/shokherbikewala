@@ -34,13 +34,12 @@ export default function AnimatedSection({
       initial={{
         opacity: 0,
         scale: 0.96,
-        filter: 'blur(6px)',
         ...directionOffset[direction],
       }}
       animate={
         inView
-          ? { opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' }
-          : { opacity: 0, scale: 0.96, filter: 'blur(6px)', ...directionOffset[direction] }
+          ? { opacity: 1, x: 0, y: 0, scale: 1 }
+          : { opacity: 0, scale: 0.96, ...directionOffset[direction] }
       }
       transition={{
         duration: 0.7,

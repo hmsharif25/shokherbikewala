@@ -11,13 +11,11 @@ const pageVariants = {
     opacity: 0,
     y: 30,
     scale: 0.97,
-    filter: 'blur(6px)',
   },
   animate: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: 'blur(0px)',
     transition: {
       duration: 0.5,
       ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
@@ -28,7 +26,6 @@ const pageVariants = {
     opacity: 0,
     y: -15,
     scale: 0.98,
-    filter: 'blur(4px)',
     transition: {
       duration: 0.3,
       ease: 'easeIn' as const,
