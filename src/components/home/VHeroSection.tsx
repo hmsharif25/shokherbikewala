@@ -27,9 +27,7 @@ export default function VHeroSection() {
     >
       {/* Atmospheric background layers */}
       <div className="sb-hero-bg" />
-      <div className="sb-hero-lines" />
       <div className="sb-hero-floor" aria-hidden="true" />
-      <div className="sb-scanline-overlay" />
       <div className="sb-hex-pattern" />
       <div
         className="absolute bottom-0 left-0 right-0 h-px z-20"

@@ -27,7 +27,7 @@ export default function VFeaturedProducts() {
         <div className="absolute top-1/3 right-0 w-[28rem] h-[28rem] bg-primary/[0.05] rounded-full blur-3xl sb-ambient-orb" />
         <div className="absolute bottom-1/4 left-0 w-[28rem] h-[28rem] bg-primary/[0.04] rounded-full blur-3xl sb-ambient-orb" style={{ animationDelay: '-4s' }} />
       </div>
-      <div className="sb-scanline-overlay" />
+
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-12">

@@ -31,7 +31,7 @@ export default function VCommunity() {
 
   return (
     <section className="v-premium-section v-community-section relative py-20 sm:py-24 overflow-hidden">
-      <div className="sb-scanline-overlay" />
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

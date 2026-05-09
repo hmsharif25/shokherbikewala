@@ -27,7 +27,7 @@ export default function VTestimonials() {
   return (
     <section className="relative py-20 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 v-dot-field opacity-30 pointer-events-none" />
-      <div className="sb-scanline-overlay" />
+
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-14">
