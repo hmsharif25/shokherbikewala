@@ -139,6 +139,7 @@ export default function VFeaturedProducts() {
                         src={product.images[0]}
                         alt={product.name}
                         loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-contain transition-transform duration-700 hover:scale-110 p-2 sm:p-4 drop-shadow-[0_18px_30px_rgba(255,90,0,0.18)]"
                       />
                     </Link>

@@ -1,4 +1,11 @@
-import { Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 
 interface LazySectionProps {
   /** Min height reserved while the chunk hasn't been mounted yet. Prevents layout shift. */
@@ -55,8 +62,24 @@ export default function LazySection({
     return () => observer.disconnect()
   }, [active, rootMargin])
 
+  /*
+   * `content-visibility: auto` lets the browser skip rendering this
+   * section entirely when it is far offscreen. `contain-intrinsic-size`
+   * tells the layout engine roughly how tall the section will be so
+   * the scrollbar / page height stays stable while it's hidden.
+   * Combined, these are typically a 30-50% scrolling perf win on long
+   * pages without changing the visual output.
+   */
+  const skipPaint: CSSProperties = {
+    contentVisibility: 'auto',
+    containIntrinsicSize: `0 ${minHeight}`,
+  }
+
   return (
-    <div ref={ref} style={!active ? { minHeight } : undefined}>
+    <div
+      ref={ref}
+      style={active ? skipPaint : { minHeight, ...skipPaint }}
+    >
       {active ? <Suspense fallback={null}>{children}</Suspense> : null}
     </div>
   )

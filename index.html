@@ -8,6 +8,38 @@
     <meta name="theme-color" content="#0A0A0A" />
     <meta name="description" content="Shokher Bike Wala - Premium Bike Accessories in Bangladesh. Helmets, Gloves, Jackets, LED Lights & More." />
     <title>Shokher Bike Wala | Premium Bike Accessories</title>
+
+    <!--
+      ⚡ Performance hints
+      ──────────────────────────────────────────────────────────────
+      • preconnect to fonts.gstatic.com / fonts.googleapis.com so the
+        font handshake happens in parallel with the JS bundle download
+        instead of being discovered later from inside index.css.
+      • preconnect to Supabase storage so product images load faster
+        when the user scrolls into Categories / Featured Products.
+      • Fonts are loaded via <link> here instead of `@import` inside
+        index.css. CSS @import is strictly serial — the browser has
+        to download + parse the stylesheet before it sees the font URL,
+        which delays first paint. Loading them via <link> lets the font
+        request fire in parallel with the stylesheet.
+      • The brand logo is preloaded so it can be the LCP element.
+    -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://pfegrhsefyqqjzmbgurs.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://pfegrhsefyqqjzmbgurs.supabase.co" />
+
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+    />
+    <link rel="preload" as="image" href="/logo.png" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>

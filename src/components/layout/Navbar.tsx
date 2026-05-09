@@ -79,6 +79,10 @@ export default function Navbar() {
                 <img
                   src="/logo.png"
                   alt="Shokher Bike Wala"
+                  width={40}
+                  height={40}
+                  decoding="async"
+                  fetchPriority="high"
                   className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(255,90,0,0.45)]"
                 />
               </div>
@@ -220,7 +224,15 @@ export default function Navbar() {
             >
               <div className="absolute top-4 left-5 right-5 flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1">
-                  <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+                  <img
+                    src="/logo.png"
+                    alt="Logo"
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div className="flex flex-col leading-tight">
                   <span className="font-headline text-xs font-bold text-fg">SHOKHER</span>

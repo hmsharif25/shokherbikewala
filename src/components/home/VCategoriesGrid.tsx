@@ -77,6 +77,7 @@ export default function VCategoriesGrid() {
                       src={cat.image_url}
                       alt={cat.name}
                       loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_15px_30px_rgba(255,90,0,0.25)]"
                     />
                   </div>
