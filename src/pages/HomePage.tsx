@@ -1,12 +1,20 @@
 import { motion } from 'framer-motion'
-import HeroSection from '@/components/home/HeroSection'
-import BrandProfile from '@/components/home/BrandProfile'
-import FeaturedProducts from '@/components/home/FeaturedProducts'
-import CategoriesSection from '@/components/home/CategoriesSection'
-import FeaturesSection from '@/components/home/FeaturesSection'
-import TestimonialsSection from '@/components/home/TestimonialsSection'
-import SectionReveal from '@/components/ui/SectionReveal'
+import VHeroSection from '@/components/home/VHeroSection'
+import VCategoriesGrid from '@/components/home/VCategoriesGrid'
+import VFeaturedProducts from '@/components/home/VFeaturedProducts'
+import VBrandStory from '@/components/home/VBrandStory'
+import VPromoBanner from '@/components/home/VPromoBanner'
+import VNewArrivals from '@/components/home/VNewArrivals'
+import VCommunity from '@/components/home/VCommunity'
+import VTestimonials from '@/components/home/VTestimonials'
+import VFAQ from '@/components/home/VFAQ'
 
+/**
+ * Velocity homepage — premium futuristic motorbike accessories
+ * showroom. Sections follow the brief order: hero, categories,
+ * featured, brand story, promo, new arrivals, community,
+ * testimonials, FAQ. The premium footer renders globally in App.
+ */
 export default function HomePage() {
   return (
     <motion.div
@@ -16,22 +24,15 @@ export default function HomePage() {
       transition={{ duration: 0.5 }}
       className="relative"
     >
-      <HeroSection />
-      <SectionReveal from="up">
-        <FeaturedProducts />
-      </SectionReveal>
-      <SectionReveal from="left">
-        <CategoriesSection />
-      </SectionReveal>
-      <SectionReveal from="right">
-        <FeaturesSection />
-      </SectionReveal>
-      <SectionReveal from="up">
-        <BrandProfile />
-      </SectionReveal>
-      <SectionReveal from="up">
-        <TestimonialsSection />
-      </SectionReveal>
+      <VHeroSection />
+      <VCategoriesGrid />
+      <VFeaturedProducts />
+      <VBrandStory />
+      <VPromoBanner />
+      <VNewArrivals />
+      <VCommunity />
+      <VTestimonials />
+      <VFAQ />
     </motion.div>
   )
 }

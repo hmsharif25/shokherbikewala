@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Home, ShoppingBag, Grid3X3, User, MessageCircle, ShieldCheck } from 'lucide-react'
+import { Home, ShoppingBag, Grid3X3, User, MessageCircle, ShieldCheck, Search } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 
 type NavItem = {
@@ -8,89 +8,97 @@ type NavItem = {
   path: string
   icon: typeof Home
   external?: boolean
+  primary?: boolean
 }
 
 const baseNavItems: NavItem[] = [
   { name: 'Home', path: '/', icon: Home },
   { name: 'Shop', path: '/products', icon: ShoppingBag },
+  { name: 'Search', path: '/products', icon: Search, primary: true },
   { name: 'Browse', path: '/categories', icon: Grid3X3 },
 ]
 
+/**
+ * Velocity floating mobile dock — pill-shaped glass bar that floats
+ * above the safe area with an emphasised primary action in the middle.
+ */
 export default function MobileBottomNav() {
   const location = useLocation()
   const { user, isAdmin } = useAuth()
 
   const accountItem: NavItem = isAdmin
     ? { name: 'Admin', path: '/admin', icon: ShieldCheck }
-    : user
-      ? { name: 'Account', path: '/auth', icon: User }
-      : { name: 'Sign In', path: '/auth', icon: User }
+    : { name: user ? 'Account' : 'Sign In', path: '/auth', icon: User }
 
-  const navItems: NavItem[] = [
-    ...baseNavItems,
-    accountItem,
-    { name: 'Chat', path: 'https://wa.me/8801518934708', icon: MessageCircle, external: true },
-  ]
+  const items: NavItem[] = [...baseNavItems, accountItem]
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-      <div className="absolute inset-0 bg-bg-2/96 backdrop-blur-2xl border-t border-line shadow-[0_-12px_36px_-14px_rgba(255,106,26,0.22)]" />
-      <div className="absolute -top-px left-0 right-0 divider-glow" />
-      <div className="relative flex items-center justify-around px-2 py-1.5 safe-area-bottom">
-        {navItems.map((item) => {
-          const isActive = !item.external && location.pathname === item.path
-          const isChat = item.external
+    <div className="md:hidden">
+      <div className="v-mobile-dock">
+        <ul className="relative flex items-center justify-around px-2 py-2">
+          {items.map((item) => {
+            const isActive = location.pathname === item.path && !item.primary
+            const Icon = item.icon
 
-          if (isChat) {
+            if (item.primary) {
+              return (
+                <li key={item.name}>
+                  <Link
+                    to={item.path}
+                    aria-label={item.name}
+                    className="relative -mt-7 inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-[#ff7a1f] to-[#ff5a00] text-white shadow-[0_18px_40px_-12px_rgba(255,90,0,0.55)] border-4 border-bg"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </Link>
+                </li>
+              )
+            }
+
             return (
-              <motion.a
-                key={item.name}
-                href={item.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileTap={{ scale: 0.85 }}
-                className="flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-colors"
-                aria-label="Chat on WhatsApp"
-              >
-                <div className="relative p-1.5 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/15 border border-green-500/30 shadow-[0_8px_18px_-8px_rgba(34,197,94,0.45)]">
-                  <item.icon className="w-5 h-5 text-green-500" />
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                </div>
-                <span className="text-[10px] font-racing tracking-wide text-green-500">
-                  {item.name}
-                </span>
-              </motion.a>
-            )
-          }
-
-          return (
-            <Link key={item.name} to={item.path}>
-              <motion.div
-                whileTap={{ scale: 0.85 }}
-                className="flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-colors relative"
-              >
-                {isActive && (
+              <li key={item.name}>
+                <Link to={item.path} aria-label={item.name}>
                   <motion.div
-                    layoutId="mobile-nav-indicator"
-                    className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-gradient-to-r from-primary via-gold to-cyan rounded-full shadow-[0_0_8px_rgba(255,106,26,0.55)]"
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  />
-                )}
-                <div className={`p-1.5 rounded-xl transition-all ${
-                  isActive
-                    ? 'bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 shadow-[0_8px_18px_-8px_rgba(255,106,26,0.45)]'
-                    : 'border border-transparent'
-                }`}>
-                  <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-primary' : 'text-fg-soft'}`} />
-                </div>
-                <span className={`text-[10px] font-racing tracking-wide transition-colors ${isActive ? 'text-primary font-semibold' : 'text-fg-soft'}`}>
-                  {item.name}
-                </span>
-              </motion.div>
-            </Link>
-          )
-        })}
+                    whileTap={{ scale: 0.9 }}
+                    className="flex flex-col items-center gap-0.5 px-2 py-1.5 relative"
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="v-mobile-dot"
+                        className="absolute -top-1 w-1.5 h-1.5 rounded-full bg-gradient-to-br from-[#ff7a1f] to-[#ff5a00]"
+                        transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+                      />
+                    )}
+                    <Icon
+                      className={`w-5 h-5 transition-colors ${
+                        isActive ? 'text-primary' : 'text-fg-soft'
+                      }`}
+                    />
+                    <span
+                      className={`text-[9px] font-ui font-bold tracking-wider uppercase transition-colors ${
+                        isActive ? 'text-primary' : 'text-fg-soft'
+                      }`}
+                    >
+                      {item.name}
+                    </span>
+                  </motion.div>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
       </div>
+
+      {/* Floating WhatsApp action above the dock for one-tap chat. */}
+      <a
+        href="https://wa.me/8801518934708"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed right-4 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] z-[55] w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center shadow-[0_18px_40px_-12px_rgba(34,197,94,0.55)] active:scale-95 transition-transform"
+      >
+        <MessageCircle className="w-5 h-5" />
+        <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full animate-ping" />
+      </a>
     </div>
   )
 }
