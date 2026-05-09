@@ -8,6 +8,7 @@ import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import HomePage from '@/pages/HomePage'
 import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
+import SEO from '@/components/seo/SEO'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { ThemeProvider } from '@/context/ThemeContext'
@@ -99,6 +100,7 @@ function App() {
         <StoreProvider>
           <Router>
             <ScrollToTop />
+            <SEO />
             <PageLoader />
             <GamingBackdrop />
             <AppRoutes />
