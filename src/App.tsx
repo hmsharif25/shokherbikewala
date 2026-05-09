@@ -11,6 +11,7 @@ import CategoriesPage from '@/pages/CategoriesPage'
 import AboutPage from '@/pages/AboutPage'
 import ContactPage from '@/pages/ContactPage'
 import CheckoutPage from '@/pages/CheckoutPage'
+import TrackOrderPage from '@/pages/TrackOrderPage'
 import AuthPage from '@/pages/AuthPage'
 import AdminLoginPage from '@/pages/admin/LoginPage'
 import AdminDashboard from '@/pages/admin/AdminDashboard'
@@ -67,6 +68,7 @@ function PublicLayout() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/track" element={<TrackOrderPage />} />
         </Routes>
       </AnimatePresence>
       <Footer />
