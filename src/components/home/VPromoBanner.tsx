@@ -30,6 +30,7 @@ export default function VPromoBanner() {
 
   return (
     <section className="v-premium-section v-newsletter-showcase relative py-14 sm:py-20 overflow-hidden">
+      <div className="sb-scanline-overlay" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal>
           <div className="relative rounded-[2rem] overflow-hidden v-capsule px-6 sm:px-10 lg:px-14 py-12 sm:py-16 text-center">
@@ -80,7 +81,7 @@ export default function VPromoBanner() {
                   Up To
                 </p>
                 <div className="flex items-baseline justify-center">
-                  <span className="v-headline text-7xl sm:text-9xl md:text-[10rem] leading-none">
+                  <span className="v-headline text-7xl sm:text-9xl md:text-[10rem] leading-none sb-shimmer-text sb-flicker">
                     <em>40%</em>
                   </span>
                   <span className="font-headline text-3xl sm:text-5xl font-bold text-fg ml-2">

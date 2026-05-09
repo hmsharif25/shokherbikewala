@@ -39,6 +39,8 @@ export default function VBrandStory() {
   return (
     <section className="sb-clean-section sb-showroom-section relative py-20 sm:py-28 overflow-hidden">
       <div className="sb-showroom-grid pointer-events-none" aria-hidden="true" />
+      <div className="sb-hex-pattern" />
+      <div className="sb-scanline-overlay" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Centered headline */}
@@ -62,11 +64,12 @@ export default function VBrandStory() {
           {FEATURES.map((feat, i) => (
             <motion.div
               key={feat.title}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="sb-trust-cell flex-row gap-3 sm:flex-col sm:gap-2 p-4 sm:p-5"
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, scale: 1.03, transition: { duration: 0.25 } }}
+              className="sb-trust-cell sb-neon-card sb-card-glow flex-row gap-3 sm:flex-col sm:gap-2 p-4 sm:p-5"
             >
               <span className="sb-pillar-ico flex-shrink-0">
                 <feat.icon className="w-4 h-4" />

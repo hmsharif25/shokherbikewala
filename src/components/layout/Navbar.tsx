@@ -104,10 +104,10 @@ export default function Navbar() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className="relative px-3.5 py-2 text-[12px] font-ui font-bold uppercase tracking-[0.18em]"
+                    className="relative px-3.5 py-2 text-[12px] font-ui font-bold uppercase tracking-[0.18em] sb-glow-underline"
                   >
                     <span
-                      className={`relative z-10 transition-colors ${
+                      className={`relative z-10 transition-colors duration-300 ${
                         active ? 'text-primary' : 'text-fg-muted hover:text-fg'
                       }`}
                     >
@@ -117,6 +117,7 @@ export default function Navbar() {
                       <motion.span
                         layoutId="v-nav-pill"
                         className="absolute inset-0 rounded-full bg-primary/10 border border-primary/30"
+                        style={{ boxShadow: '0 0 12px rgba(255, 106, 26, 0.2)' }}
                         transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                       />
                     )}

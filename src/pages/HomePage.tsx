@@ -15,7 +15,12 @@ const VTestimonials = lazy(() => import('@/components/home/VTestimonials'))
 const VFAQ = lazy(() => import('@/components/home/VFAQ'))
 
 function GamingDivider() {
-  return <div className="sb-gaming-divider" aria-hidden="true" />
+  return (
+    <div className="relative" aria-hidden="true">
+      <div className="sb-gaming-divider" />
+      <div className="sb-energy-divider" />
+    </div>
+  )
 }
 
 export default function HomePage() {

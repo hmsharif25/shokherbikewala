@@ -113,7 +113,7 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     whileHover={{ y: -5, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`block p-4 sm:p-5 rounded-2xl glass group cursor-pointer transition-all duration-300 hover:shadow-xl border border-white/5 hover:border-white/10 racing-card ${method.hoverGlow}`}
+                    className={`block p-4 sm:p-5 rounded-2xl glass sb-neon-card sb-card-glow group cursor-pointer transition-all duration-300 hover:shadow-xl border border-white/5 hover:border-white/10 racing-card ${method.hoverGlow}`}
                   >
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${method.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
                       <method.icon className="w-6 h-6 text-white" />

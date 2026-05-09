@@ -61,7 +61,7 @@ export default function VFAQ() {
             const isOpen = open === i
             return (
               <VReveal key={faq.q} delay={60 * i}>
-                <div className={`sb-faq-card ${isOpen ? 'is-open' : ''}`}>
+                <div className={`sb-faq-card sb-card-glow ${isOpen ? 'is-open' : ''}`}>
                   <button
                     type="button"
                     aria-expanded={isOpen}

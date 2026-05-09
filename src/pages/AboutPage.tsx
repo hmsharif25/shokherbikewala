@@ -88,8 +88,9 @@ export default function AboutPage() {
             ].map((value, i) => (
               <AnimatedSection key={value.title} delay={i * 0.1}>
                 <motion.div
-                  whileHover={{ y: -5 }}
-                  className="p-4 sm:p-6 rounded-2xl glass group hover:shadow-xl transition-all border border-white/5 hover:border-primary/15 racing-card"
+                  whileHover={{ y: -6, scale: 1.03, transition: { duration: 0.25 } }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-4 sm:p-6 rounded-2xl glass sb-neon-card sb-card-glow group hover:shadow-xl transition-all border border-white/5 hover:border-primary/15 racing-card"
                 >
                   <div className={`w-12 h-12 rounded-xl ${value.bg} flex items-center justify-center mb-4`}>
                     <value.icon className={`w-6 h-6 ${value.color}`} />

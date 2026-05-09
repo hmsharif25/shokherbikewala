@@ -21,10 +21,10 @@ export default function AnimatedSection({
   })
 
   const directionOffset = {
-    up: { y: 60, x: 0 },
-    down: { y: -60, x: 0 },
-    left: { x: 60, y: 0 },
-    right: { x: -60, y: 0 },
+    up: { y: 50, x: 0 },
+    down: { y: -50, x: 0 },
+    left: { x: 50, y: 0 },
+    right: { x: -50, y: 0 },
     none: { x: 0, y: 0 },
   }
 
@@ -33,17 +33,19 @@ export default function AnimatedSection({
       ref={ref}
       initial={{
         opacity: 0,
+        scale: 0.96,
+        filter: 'blur(6px)',
         ...directionOffset[direction],
       }}
       animate={
         inView
-          ? { opacity: 1, x: 0, y: 0 }
-          : { opacity: 0, ...directionOffset[direction] }
+          ? { opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' }
+          : { opacity: 0, scale: 0.96, filter: 'blur(6px)', ...directionOffset[direction] }
       }
       transition={{
         duration: 0.7,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: [0.22, 1, 0.36, 1],
       }}
       className={className}
     >

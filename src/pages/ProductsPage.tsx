@@ -121,8 +121,9 @@ export default function ProductsPage() {
               <AnimatedSection key={product.id} delay={i * 0.05}>
                 <Link to={`/products/${product.slug}`}>
                   <motion.div
-                    whileHover={{ y: -5 }}
-                    className="group v-product-card flex flex-col h-full"
+                    whileHover={{ y: -6, scale: 1.02, transition: { duration: 0.25 } }}
+                    whileTap={{ scale: 0.98 }}
+                    className="group v-product-card sb-neon-card flex flex-col h-full"
                   >
                     <div className="relative h-36 sm:h-52 overflow-hidden bg-bg-2">
                       <img

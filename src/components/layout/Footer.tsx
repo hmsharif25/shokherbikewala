@@ -75,7 +75,9 @@ export default function Footer() {
   return (
     <footer className="v-premium-footer relative bg-bg-2/40 border-t border-line pt-12 sm:pt-16 pb-28 md:pb-12 overflow-hidden">
       <div className="absolute inset-0 v-dot-field opacity-20 pointer-events-none" />
+      <div className="sb-hex-pattern" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="sb-energy-divider" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trust badges */}
@@ -83,11 +85,12 @@ export default function Footer() {
           {TRUST_BADGES.map((b, i) => (
             <motion.div
               key={b.title}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 24, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
-              className="v-capsule rounded-2xl px-3 py-4 flex items-center gap-3"
+              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.25 } }}
+              className="v-capsule sb-neon-card rounded-2xl px-3 py-4 flex items-center gap-3"
             >
               <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
                 <b.icon className="w-5 h-5" />

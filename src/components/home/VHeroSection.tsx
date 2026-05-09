@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import { useRef } from 'react'
 import { useStore } from '@/context/StoreContext'
+import { AnimatedCounter } from '@/components/ui/GamingTextEffect'
 
 export default function VHeroSection() {
   const { brandSettings } = useStore()
@@ -34,6 +35,8 @@ export default function VHeroSection() {
       <div className="sb-hero-bg" />
       <div className="sb-hero-lines" />
       <div className="sb-hero-floor" aria-hidden="true" />
+      <div className="sb-scanline-overlay" />
+      <div className="sb-hex-pattern" />
       <div
         className="absolute bottom-0 left-0 right-0 h-px z-20"
         style={{
@@ -127,8 +130,18 @@ export default function VHeroSection() {
           transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           className="sb-cinematic-title items-center"
         >
-          <span className="sb-cinematic-line">SHOKHER</span>
-          <span className="sb-cinematic-line sb-cinematic-line-accent">BIKEWALA</span>
+          <motion.span
+            className="sb-cinematic-line sb-flicker"
+            animate={{ textShadow: [
+              '0 0 8px rgba(255,106,26,0.3), 0 0 24px rgba(255,106,26,0.1)',
+              '0 0 16px rgba(255,106,26,0.5), 0 0 40px rgba(255,106,26,0.2)',
+              '0 0 8px rgba(255,106,26,0.3), 0 0 24px rgba(255,106,26,0.1)',
+            ] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            SHOKHER
+          </motion.span>
+          <span className="sb-cinematic-line sb-cinematic-line-accent sb-shimmer-text">BIKEWALA</span>
         </motion.h1>
 
         {/* Social links — premium animated cards */}
@@ -217,20 +230,26 @@ export default function VHeroSection() {
           className="mt-10 flex items-center gap-6 sm:gap-10"
         >
           {stats.map((stat, i) => (
-            <div key={stat.label} className="text-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 + i * 0.08 }}
+            <motion.div
+              key={stat.label}
+              className="text-center sb-corner-brackets px-4 py-3"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 + i * 0.08 }}
+              whileHover={{ scale: 1.1, y: -4 }}
+            >
+              <div
                 className="font-display font-bold text-xl sm:text-2xl text-primary"
                 style={{ textShadow: '0 0 20px rgba(255,106,26,0.35)' }}
               >
-                {stat.value}
-              </motion.div>
+                {stat.value.includes('+')
+                  ? <><AnimatedCounter end={parseInt(stat.value)} suffix="+" />{' '}</>
+                  : stat.value}
+              </div>
               <div className="font-racing text-[10px] sm:text-xs tracking-[0.2em] uppercase text-fg-muted mt-0.5">
                 {stat.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 

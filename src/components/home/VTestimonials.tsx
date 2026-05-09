@@ -27,6 +27,7 @@ export default function VTestimonials() {
   return (
     <section className="relative py-20 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 v-dot-field opacity-30 pointer-events-none" />
+      <div className="sb-scanline-overlay" />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-14">
@@ -44,11 +45,11 @@ export default function VTestimonials() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: 60 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -60 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="v-capsule rounded-3xl p-6 sm:p-12 text-center relative"
+                initial={{ opacity: 0, x: 80, scale: 0.95, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: -80, scale: 0.95, filter: 'blur(8px)' }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="v-capsule sb-electricity rounded-3xl p-6 sm:p-12 text-center relative"
               >
                 <Quote className="absolute top-6 left-6 w-10 h-10 text-primary/20" />
                 <Quote className="absolute bottom-6 right-6 w-10 h-10 text-primary/20 rotate-180" />
