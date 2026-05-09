@@ -26,7 +26,7 @@ export default function HUDOverlay() {
 
   return (
     <div className="hud-overlay pointer-events-none fixed inset-0 z-[40]">
-      <div className="hud-scanlines absolute inset-0" />
+
       <div className="hud-vignette absolute inset-0" />
 
       <div className="hud-corner hud-corner-tl" />
