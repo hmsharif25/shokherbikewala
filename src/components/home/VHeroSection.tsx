@@ -26,7 +26,6 @@ export default function VHeroSection() {
       className="sb-cinematic-hero relative min-h-[100dvh] overflow-x-clip overflow-y-visible pt-20 pb-8 sm:pt-28 sm:pb-16"
     >
       {/* Atmospheric background layers */}
-      <div className="sb-hero-bg" />
       <div className="sb-hero-floor" aria-hidden="true" />
       <div className="sb-hex-pattern" />
       <div

@@ -360,9 +360,6 @@
     animation: revCounter 3s ease-in-out infinite;
   }
 
-  .animate-headlight-sweep {
-    animation: headlightSweep 4s ease-in-out infinite;
-  }
 
   .hud-border {
     position: relative;
@@ -541,16 +538,7 @@
   50% { transform: rotate(30deg); }
 }
 
-@keyframes headlightSweep {
-  0%, 100% {
-    background-position: -200% 0;
-    opacity: 0.3;
-  }
-  50% {
-    background-position: 200% 0;
-    opacity: 0.6;
-  }
-}
+
 
 @keyframes exhaustSmoke {
   0% { opacity: 0.2; transform: translateX(0) scale(1); }
@@ -5143,24 +5131,6 @@ html {
   animation: sb-grid-drift 22s linear infinite;
 }
 
-.sb-backdrop-orb {
-  position: absolute;
-  width: min(44vmax, 34rem);
-  aspect-ratio: 1;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 106, 26, 0.14), transparent 68%);
-  filter: blur(40px);
-}
-
-:root[data-theme='dark'] .sb-backdrop-orb--one {
-  background: radial-gradient(circle, rgba(255, 106, 26, 0.18), transparent 65%);
-}
-:root[data-theme='dark'] .sb-backdrop-orb--two {
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.12), transparent 65%);
-}
-
-.sb-backdrop-orb--one { top: -12rem; right: -8rem; }
-.sb-backdrop-orb--two { left: -12rem; bottom: -14rem; opacity: 0.72; }
 
 .sb-home-flow {
   background: transparent;
@@ -5170,24 +5140,7 @@ html {
   color: rgb(var(--c-fg));
 }
 
-.sb-hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 38%, rgba(255, 106, 26, 0.1), transparent 30%),
-    linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0));
-}
 
-.sb-hero-lines {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.68) 48%, transparent 62%),
-    repeating-linear-gradient(90deg, transparent 0 118px, rgba(255,106,26,0.035) 119px 120px);
-  background-size: 220% 100%, auto;
-  opacity: 0.72;
-  animation: sb-soft-sweep 9s ease-in-out infinite;
-}
 
 .sb-brand-card {
   position: relative;
@@ -5450,7 +5403,6 @@ html {
   -webkit-backdrop-filter: blur(16px);
 }
 
-:root[data-theme='dark'] .sb-hero-bg,
 :root[data-theme='dark'] .sb-brand-card,
 :root[data-theme='dark'] .sb-social-pill,
 :root[data-theme='dark'] .sb-secondary-btn,
@@ -5470,11 +5422,6 @@ html {
   color: rgb(var(--c-fg));
 }
 
-:root[data-theme='dark'] .sb-hero-lines {
-  background:
-    linear-gradient(110deg, transparent 30%, rgba(255,106,26,0.12) 48%, transparent 62%),
-    repeating-linear-gradient(90deg, transparent 0 118px, rgba(255,106,26,0.05) 119px 120px);
-}
 
 @media (max-width: 640px) {
   .sb-brand-card { padding: 1.25rem; }
@@ -5485,7 +5432,6 @@ html {
 }
 
 @keyframes sb-grid-drift { to { background-position: 72px 72px; } }
-@keyframes sb-soft-sweep { 0%, 45% { background-position: -120% 0, 0 0; } 100% { background-position: 120% 0, 0 0; } }
 @keyframes sb-soft-sweep-card { 0%, 42% { transform: translateX(-130%); } 100% { transform: translateX(130%); } }
 @keyframes sb-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes sb-pulse-ring { 0%, 100% { opacity: 0.35; transform: scale(0.98); } 50% { opacity: 0.75; transform: scale(1.03); } }
@@ -5494,7 +5440,6 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .sb-backdrop-grid,
-  .sb-hero-lines,
   .sb-brand-card::before,
   .sb-logo-ring,
   .sb-logo-ring::after,
