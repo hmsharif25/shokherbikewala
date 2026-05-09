@@ -1,7 +1,9 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
-  ArrowRight,
-  ShoppingBag,
+  Facebook,
+  Instagram,
+  MessageCircle,
+  Music2,
   Star,
 } from 'lucide-react'
 import { useMemo, useRef } from 'react'
@@ -14,7 +16,7 @@ import { useStore } from '@/context/StoreContext'
  * glass panels on desktop. Mobile shows a horizontal scroll strip.
  */
 export default function VHeroSection() {
-  const { products, categories } = useStore()
+  const { products, categories, brandSettings } = useStore()
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -81,19 +83,44 @@ export default function VHeroSection() {
           <span className="sb-cinematic-line sb-cinematic-line-accent">BIKEWALA</span>
         </motion.h1>
 
+        {/* Social links */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.44 }}
-          className="flex flex-wrap items-center justify-center gap-3 mt-7"
+          className="flex items-center gap-4 mt-8"
         >
-          <Link to="/products" className="sb-cta-primary group">
-            <ShoppingBag className="w-4 h-4" />
-            Shop Collection
-            <span className="sb-cta-pin">
-              <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
+          {[
+            { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook', color: '#1877F2' },
+            { Icon: Instagram, url: brandSettings.instagram, label: 'Instagram', color: '#E4405F' },
+            { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok', color: '#00f2ea' },
+            { Icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp', color: '#25D366' },
+          ].map(({ Icon, url, label, color }, i) => (
+            <motion.a
+              key={label}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
+              className="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-line bg-bg/60 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:scale-110"
+              style={{
+                boxShadow: `0 0 0 rgba(${color}, 0)`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = color
+                e.currentTarget.style.boxShadow = `0 0 20px ${color}40, 0 0 40px ${color}20`
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = ''
+                e.currentTarget.style.boxShadow = ''
+              }}
+              aria-label={label}
+            >
+              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-fg-muted transition-colors duration-300 group-hover:text-white" />
+            </motion.a>
+          ))}
         </motion.div>
 
         {/* Gaming stats bar */}
