@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Truck, Shield, Award } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
+import { useStore } from '@/context/StoreContext'
 
 const TRUST_BADGES = [
   { icon: Truck, title: 'Free Shipping', sub: 'On orders over ৳5000' },
@@ -25,6 +26,8 @@ const PILLARS = [
  * line backdrop and an orange ambient glow.
  */
 export default function VPromoBanner() {
+  const { homeSections } = useStore()
+
   return (
     <section className="v-premium-section v-newsletter-showcase relative py-14 sm:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,14 +67,11 @@ export default function VPromoBanner() {
               </span>
 
               <h2 className="sb-cinematic-title sb-cinematic-title-md">
-                <span className="sb-cinematic-line">PREMIUM</span>
-                <span className="sb-cinematic-line sb-cinematic-line-mid">RIDING</span>
-                <span className="sb-cinematic-line sb-cinematic-line-accent">GEAR</span>
+                {homeSections.promoBanner.heading}
               </h2>
 
               <p className="text-fg-muted font-ui text-base max-w-md mx-auto">
-                Exclusive deals on premium motorcycle accessories.
-                Limited stock — get yours before they ride away.
+                {homeSections.promoBanner.subheading}
               </p>
 
               {/* Oversized 40% OFF as the focal visual */}

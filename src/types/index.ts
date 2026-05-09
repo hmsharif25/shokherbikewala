@@ -40,6 +40,23 @@ export interface Testimonial {
   product: string
 }
 
+export interface SectionConfig {
+  visible: boolean
+  heading: string
+  subheading: string
+}
+
+export interface HomeSections {
+  hero: SectionConfig
+  categories: SectionConfig
+  featuredProducts: SectionConfig
+  brandStory: SectionConfig
+  promoBanner: SectionConfig
+  community: SectionConfig
+  testimonials: SectionConfig
+  faq: SectionConfig
+}
+
 export interface Inquiry {
   id: number
   customer_name: string

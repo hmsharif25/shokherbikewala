@@ -16,7 +16,7 @@ const FOLLOWER_COUNTS = [
  * reviews, and follower stats strip below.
  */
 export default function VCommunity() {
-  const { products, brandSettings, testimonials } = useStore()
+  const { products, brandSettings, testimonials, homeSections } = useStore()
 
   // 9 product images for the IG tile grid (recycle if needed).
   const igImages: string[] = []
@@ -37,11 +37,10 @@ export default function VCommunity() {
         <VReveal className="text-center mb-10 sm:mb-14">
           <span className="v-eyebrow-long mb-4 sm:mb-5 mx-auto justify-center">Creator Community</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            RIDER <em>SOCIAL FEED</em>
+            {homeSections.community.heading}
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Instagram reels, TikTok motion, YouTube-style drops, and rider reviews
-            presented as a premium creator economy showcase.
+            {homeSections.community.subheading}
           </p>
         </VReveal>
 

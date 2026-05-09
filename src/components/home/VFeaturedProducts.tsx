@@ -6,7 +6,7 @@ import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
 export default function VFeaturedProducts() {
-  const { products, categories, brandSettings } = useStore()
+  const { products, categories, brandSettings, homeSections } = useStore()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const filtered = useMemo(() => {
@@ -32,10 +32,10 @@ export default function VFeaturedProducts() {
         <VReveal className="text-center mb-10 sm:mb-12">
           <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Premium Selection</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            FEATURED <em>PRODUCTS</em>
+            {homeSections.featuredProducts.heading}
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Handpicked high-performance gear for riders who demand the best.
+            {homeSections.featuredProducts.subheading}
           </p>
         </VReveal>
 

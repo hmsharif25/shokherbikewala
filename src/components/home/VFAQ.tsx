@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
+import { useStore } from '@/context/StoreContext'
 
 /**
  * Premium FAQ accordion section. Single-open behaviour with a
@@ -37,6 +38,7 @@ const FAQS: { q: string; a: string }[] = [
 ]
 
 export default function VFAQ() {
+  const { homeSections } = useStore()
   const [open, setOpen] = useState<number | null>(0)
 
   return (
@@ -47,10 +49,10 @@ export default function VFAQ() {
             Got Questions?
           </span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            FREQUENTLY <em>ASKED</em>
+            {homeSections.faq.heading}
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Everything riders ask before ordering — answered in plain English.
+            {homeSections.faq.subheading}
           </p>
         </VReveal>
 

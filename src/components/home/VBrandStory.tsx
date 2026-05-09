@@ -12,6 +12,7 @@ import {
   Zap,
 } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
+import { useStore } from '@/context/StoreContext'
 
 /**
  * "Engineered for Riders" — centered gaming-style section with
@@ -33,6 +34,8 @@ const FEATURES = [
 ]
 
 export default function VBrandStory() {
+  const { homeSections } = useStore()
+
   return (
     <section className="sb-clean-section sb-showroom-section relative py-20 sm:py-28 overflow-hidden">
       <div className="sb-showroom-grid pointer-events-none" aria-hidden="true" />
@@ -46,15 +49,11 @@ export default function VBrandStory() {
           </span>
 
           <h2 className="sb-cinematic-title sb-cinematic-title-md mt-4 mb-6 items-center">
-            <span className="sb-cinematic-line">ENGINEERED</span>
-            <span className="sb-cinematic-line sb-cinematic-line-mid">FOR</span>
-            <span className="sb-cinematic-line sb-cinematic-line-accent">RIDERS</span>
+            {homeSections.brandStory.heading}
           </h2>
 
           <p className="text-fg-muted text-base sm:text-lg leading-relaxed font-ui max-w-xl mx-auto">
-            Precision performance. Premium quality.
-            <br />
-            Built for those who live to ride.
+            {homeSections.brandStory.subheading}
           </p>
         </VReveal>
 

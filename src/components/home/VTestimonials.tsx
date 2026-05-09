@@ -5,7 +5,7 @@ import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
 export default function VTestimonials() {
-  const { testimonials } = useStore()
+  const { testimonials, homeSections } = useStore()
   const [idx, setIdx] = useState(0)
 
   useEffect(() => {
@@ -32,10 +32,10 @@ export default function VTestimonials() {
         <VReveal className="text-center mb-10 sm:mb-14">
           <span className="v-eyebrow-long mb-4 mx-auto justify-center">Riders Speak</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-3">
-            What <em>Riders Say</em>
+            {homeSections.testimonials.heading}
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Real stories from the riders rolling with Shokher Bikewala.
+            {homeSections.testimonials.subheading}
           </p>
         </VReveal>
 

@@ -32,6 +32,7 @@ const BrandSettings = lazy(() => import('@/pages/admin/BrandSettings'))
 const TestimonialsManage = lazy(() => import('@/pages/admin/TestimonialsManage'))
 const HeroManage = lazy(() => import('@/pages/admin/HeroManage'))
 const OrdersManage = lazy(() => import('@/pages/admin/OrdersManage'))
+const HomeSectionsManage = lazy(() => import('@/pages/admin/HomeSectionsManage'))
 
 function RouteFallback() {
   return (
@@ -129,6 +130,7 @@ function AppRoutes() {
           <Route path="categories" element={<CategoriesManage />} />
           <Route path="testimonials" element={<TestimonialsManage />} />
           <Route path="hero" element={<HeroManage />} />
+          <Route path="sections" element={<HomeSectionsManage />} />
           <Route path="orders" element={<OrdersManage />} />
           <Route path="settings" element={<BrandSettings />} />
         </Route>

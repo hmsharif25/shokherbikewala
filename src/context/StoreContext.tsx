@@ -1,8 +1,19 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
-import { Product, Category, BrandSettings, Testimonial, Inquiry } from '@/types'
+import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections } from '@/types'
 import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { loadRemotePublic } from '@/lib/db'
+
+const defaultHomeSections: HomeSections = {
+  hero: { visible: true, heading: 'SHOKHER BIKEWALA', subheading: '' },
+  categories: { visible: true, heading: 'GEAR UP. RIDE BETTER.', subheading: 'Premium categories curated for riders who demand the best.' },
+  featuredProducts: { visible: true, heading: 'FEATURED PRODUCTS', subheading: 'Handpicked high-performance gear for riders who demand the best.' },
+  brandStory: { visible: true, heading: 'ENGINEERED FOR RIDERS', subheading: 'Every product is built for real-world performance.' },
+  promoBanner: { visible: true, heading: 'PREMIUM RIDING GEAR', subheading: 'UP TO 40% OFF' },
+  community: { visible: true, heading: 'RIDER SOCIAL FEED', subheading: 'Follow us across platforms — join the fastest-growing rider community.' },
+  testimonials: { visible: true, heading: 'WHAT RIDERS SAY', subheading: 'Real stories from the Shokher Bikewala community.' },
+  faq: { visible: true, heading: 'FREQUENTLY ASKED', subheading: 'Everything you need to know before you ride.' },
+}
 
 interface StoreState {
   products: Product[]
@@ -10,6 +21,7 @@ interface StoreState {
   brandSettings: BrandSettings
   testimonials: Testimonial[]
   inquiries: Inquiry[]
+  homeSections: HomeSections
 }
 
 interface StoreContextType extends StoreState {
@@ -22,6 +34,8 @@ interface StoreContextType extends StoreState {
   updateCategory: (id: string, category: Category) => void
   deleteCategory: (id: string) => void
   setBrandSettings: (settings: BrandSettings) => void
+  homeSections: HomeSections
+  setHomeSections: (sections: HomeSections) => void
   setTestimonials: (testimonials: Testimonial[]) => void
   addTestimonial: (testimonial: Testimonial) => void
   updateTestimonial: (id: number, testimonial: Testimonial) => void
@@ -62,13 +76,18 @@ const defaultState: StoreState = {
   brandSettings: demoBrandSettings,
   testimonials: demoTestimonials,
   inquiries: demoInquiries,
+  homeSections: defaultHomeSections,
 }
 
 const StoreContext = createContext<StoreContextType | null>(null)
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoreState>(() => {
-    return loadFromStorage() || defaultState
+    const stored = loadFromStorage()
+    if (stored) {
+      return { ...stored, homeSections: stored.homeSections ?? defaultHomeSections }
+    }
+    return defaultState
   })
   const [remoteLoaded, setRemoteLoaded] = useState(false)
 
@@ -94,6 +113,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           ? remote.testimonials
           : prev.testimonials,
         inquiries: prev.inquiries,
+        homeSections: prev.homeSections,
       }))
       setRemoteLoaded(true)
     })
@@ -148,6 +168,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const setBrandSettings = useCallback((brandSettings: BrandSettings) => {
     setState(prev => ({ ...prev, brandSettings }))
+  }, [])
+
+  const setHomeSections = useCallback((homeSections: HomeSections) => {
+    setState(prev => ({ ...prev, homeSections }))
   }, [])
 
   const setTestimonials = useCallback((testimonials: Testimonial[]) => {
@@ -211,6 +235,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       updateCategory,
       deleteCategory,
       setBrandSettings,
+      setHomeSections,
       setTestimonials,
       addTestimonial,
       updateTestimonial,
