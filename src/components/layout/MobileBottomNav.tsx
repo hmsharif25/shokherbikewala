@@ -180,15 +180,11 @@ export default function MobileBottomNav() {
               key="v-more-sheet"
               role="dialog"
               aria-label="More menu"
-              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              initial={{ opacity: 0, y: 30, scale: 0.94 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 16, scale: 0.97 }}
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: 20, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               className="md:hidden v-sheet"
-              style={{
-                bottom:
-                  'calc(4.5rem + env(safe-area-inset-bottom, 0.5rem))',
-              }}
             >
               <div className="px-4 pt-4 pb-4">
                 <div className="flex items-center justify-between mb-3">
@@ -212,18 +208,24 @@ export default function MobileBottomNav() {
                     { name: 'About', path: '/about', icon: Info },
                     { name: 'Contact', path: '/contact', icon: Phone },
                     { name: 'Track', path: '/track', icon: PackageSearch },
-                  ].map((m) => (
-                    <Link
+                  ].map((m, i) => (
+                    <motion.div
                       key={m.name}
-                      to={m.path}
-                      className="v-sheet-tile v-card-sheen"
-                      onClick={() => setMoreOpen(false)}
+                      initial={{ opacity: 0, y: 12, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 250, damping: 20, delay: i * 0.04 }}
                     >
-                      <m.icon className="w-5 h-5" />
-                      <span className="text-[10px] font-ui font-bold uppercase tracking-wider">
-                        {m.name}
-                      </span>
-                    </Link>
+                      <Link
+                        to={m.path}
+                        className="v-sheet-tile v-card-sheen h-full"
+                        onClick={() => setMoreOpen(false)}
+                      >
+                        <m.icon className="w-5 h-5" />
+                        <span className="text-[10px] font-ui font-bold uppercase tracking-wider">
+                          {m.name}
+                        </span>
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
                 <a
