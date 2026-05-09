@@ -10,9 +10,7 @@ const VCategoriesGrid = lazy(() => import('@/components/home/VCategoriesGrid'))
 const VFeaturedProducts = lazy(
   () => import('@/components/home/VFeaturedProducts')
 )
-const VBrandStory = lazy(() => import('@/components/home/VBrandStory'))
 const VPromoBanner = lazy(() => import('@/components/home/VPromoBanner'))
-const VNewArrivals = lazy(() => import('@/components/home/VNewArrivals'))
 const VCommunity = lazy(() => import('@/components/home/VCommunity'))
 const VTestimonials = lazy(() => import('@/components/home/VTestimonials'))
 const VFAQ = lazy(() => import('@/components/home/VFAQ'))
@@ -40,13 +38,7 @@ export default function HomePage() {
         <VFeaturedProducts />
       </LazySection>
       <LazySection>
-        <VBrandStory />
-      </LazySection>
-      <LazySection>
         <VPromoBanner />
-      </LazySection>
-      <LazySection>
-        <VNewArrivals />
       </LazySection>
       <LazySection>
         <VCommunity />
