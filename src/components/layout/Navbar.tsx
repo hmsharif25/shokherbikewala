@@ -29,6 +29,7 @@ const navLinks = [
  */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [search, setSearch] = useState('')
   const location = useLocation()
@@ -40,7 +41,14 @@ export default function Navbar() {
   const cartCount = products.filter((p) => p.featured).length // visual placeholder
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 24)
+      if (y > 100 && y > lastY + 5) setHidden(true)
+      else if (y < lastY - 5) setHidden(false)
+      lastY = y
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -65,9 +73,9 @@ export default function Navbar() {
     <>
       <motion.nav
         initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-[padding] duration-500 ${
           scrolled ? 'pt-2' : 'pt-3 sm:pt-4'
         }`}
       >
@@ -75,7 +83,7 @@ export default function Navbar() {
           <div className="v-capsule v-live-nav rounded-full pl-3 pr-2 sm:pl-5 sm:pr-3 py-1.5 sm:py-2 flex items-center gap-3 sm:gap-4">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
-              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1 flex items-center justify-center">
+              <div className="relative w-10 h-10 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1 flex items-center justify-center shadow-[0_0_16px_rgba(255,106,26,0.15)]">
                 <img
                   src="/logo.png"
                   alt="Shokher Bikewala"
@@ -83,7 +91,7 @@ export default function Navbar() {
                   height={40}
                   decoding="async"
                   fetchPriority="high"
-                  className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(255,90,0,0.45)]"
+                  className="w-full h-full object-contain drop-shadow-[0_0_14px_rgba(255,90,0,0.5)]"
                 />
               </div>
               <div className="hidden sm:flex flex-col leading-none">
