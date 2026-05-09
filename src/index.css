@@ -580,18 +580,6 @@
   mix-blend-mode: normal;
 }
 
-.hud-scanlines {
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.025) 0px,
-    rgba(255, 255, 255, 0.025) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-  animation: scanlinesShift 8s linear infinite;
-}
 
 .hud-vignette {
   background: radial-gradient(
@@ -673,14 +661,7 @@
   color: rgba(255, 255, 255, 0.25);
 }
 
-@keyframes scanlinesShift {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 24px;
-  }
-}
+
 
 @keyframes hudDot {
   0%, 100% {
@@ -1043,7 +1024,6 @@
 @media (prefers-reduced-motion: reduce) {
   .perspective-grid-lines,
   .ambient-spark,
-  .hud-scanlines,
   .boot-grid,
   .gaming-cursor-trail {
     animation: none !important;
@@ -1344,18 +1324,7 @@
     );
 }
 
-/* ============ HUD scanlines on light — ultra-subtle ============ */
-:root[data-theme='light'] .hud-scanlines {
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(17, 24, 39, 0.03) 0px,
-    rgba(17, 24, 39, 0.03) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  opacity: 0.35;
-  mix-blend-mode: multiply;
-}
+
 :root[data-theme='light'] .hud-vignette {
   background: radial-gradient(
     ellipse at center,
@@ -6492,10 +6461,6 @@ html {
   height: 34px;
 }
 
-/* Gaming scanlines more visible in dark mode */
-:root[data-theme='dark'] .hud-scanlines {
-  opacity: 0.35;
-}
 
 /* Enhanced vignette for gaming atmosphere */
 :root[data-theme='dark'] .hud-vignette {
@@ -6866,26 +6831,6 @@ html {
   100% { background-position: -50% 0; }
 }
 
-/* ── Scanline overlay for sections ── */
-.sb-scanline-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0px,
-    transparent 2px,
-    rgba(255, 106, 26, 0.015) 2px,
-    rgba(255, 106, 26, 0.015) 4px
-  );
-  animation: sb-scanline-drift 10s linear infinite;
-  z-index: 1;
-  mix-blend-mode: overlay;
-}
-@keyframes sb-scanline-drift {
-  0%   { background-position: 0 0; }
-  100% { background-position: 0 60px; }
-}
 
 /* ── Gaming flicker for headings ── */
 .sb-flicker {
