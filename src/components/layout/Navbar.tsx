@@ -128,7 +128,7 @@ export default function Navbar() {
             {/* Search — md+ */}
             <form
               onSubmit={onSearchSubmit}
-              className="hidden md:flex items-center bg-bg-2/70 border border-line rounded-full px-4 py-1.5 w-56 lg:w-64 transition-all hover:border-primary/40 focus-within:border-primary/50 focus-within:bg-bg"
+              className="hidden md:flex items-center v-nav-search rounded-full px-4 py-1.5 w-56 lg:w-64 transition-all"
             >
               <Search className="w-4 h-4 text-fg-soft mr-2 flex-shrink-0" />
               <input
@@ -220,7 +220,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 26, stiffness: 220 }}
-              className="absolute right-3 top-3 bottom-3 w-[78vw] max-w-xs v-capsule rounded-3xl p-5 pt-16 overflow-hidden"
+              className="absolute right-3 top-3 bottom-3 w-[78vw] max-w-xs v-capsule v-premium-drawer rounded-3xl p-5 pt-16 overflow-hidden"
             >
               <div className="absolute top-4 left-5 right-5 flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1">

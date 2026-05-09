@@ -70,7 +70,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
 function PublicLayout() {
   const location = useLocation()
   return (
-    <>
+    <div className="v-public-site">
       <Navbar />
       <AnimatePresence mode="wait">
         <Suspense fallback={<RouteFallback />}>
@@ -89,7 +89,7 @@ function PublicLayout() {
       <Footer />
       <FloatingWhatsApp />
       <MobileBottomNav />
-    </>
+    </div>
   )
 }
 

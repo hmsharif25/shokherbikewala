@@ -75,7 +75,7 @@ export default function MobileBottomNav() {
     <>
       <nav
         aria-label="Mobile navigation"
-        className="md:hidden fixed inset-x-0 bottom-0 z-[60] v-tabbar"
+        className="md:hidden fixed inset-x-3 bottom-3 z-[60] v-tabbar rounded-[1.7rem]"
       >
         <ul className="grid grid-cols-4 px-1 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom,0.5rem))]">
           {tabs.map((item) => {
@@ -90,7 +90,7 @@ export default function MobileBottomNav() {
                 >
                   <motion.div
                     whileTap={{ scale: 0.9 }}
-                    className="flex flex-col items-center gap-0.5"
+                    className="v-mobile-nav-action flex flex-col items-center gap-0.5"
                   >
                     <Icon
                       className={`w-5 h-5 transition-colors ${
@@ -129,7 +129,7 @@ export default function MobileBottomNav() {
                 whileTap={{ scale: 0.9 }}
                 animate={{ rotate: moreOpen ? 90 : 0 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="flex items-center justify-center"
+                className="v-mobile-nav-action flex items-center justify-center"
               >
                 {moreOpen ? (
                   <X className="w-5 h-5 text-primary" strokeWidth={2.5} />
@@ -193,7 +193,7 @@ export default function MobileBottomNav() {
               <div className="px-4 pt-4 pb-4">
                 <div className="flex items-center justify-between mb-3">
                   <span className="font-headline font-bold tracking-wider uppercase text-fg text-sm">
-                    Quick Actions
+                    Premium Actions
                   </span>
                   <button
                     type="button"
@@ -216,7 +216,7 @@ export default function MobileBottomNav() {
                     <Link
                       key={m.name}
                       to={m.path}
-                      className="v-sheet-tile"
+                      className="v-sheet-tile v-card-sheen"
                       onClick={() => setMoreOpen(false)}
                     >
                       <m.icon className="w-5 h-5" />

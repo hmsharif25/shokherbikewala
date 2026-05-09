@@ -35,23 +35,23 @@ export default function VCategoriesGrid() {
   const visible = categories.slice(0, 5)
 
   return (
-    <section className="relative py-20 sm:py-24 overflow-hidden">
+    <section className="v-premium-section v-premium-categories relative py-20 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 v-dot-field opacity-30 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-12 sm:mb-16">
-          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Featured Categories</span>
+          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Premium Categories</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            GEAR UP. <em>RIDE BETTER.</em>
+            SHOP BY <em>RIDER SYSTEM</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Premium motorcycle accessories engineered for performance, safety
-            and style. Choose from our top categories.
+            Helmet, gloves, jackets, exhausts, and bike lights arranged like a
+            futuristic rider loadout for every screen size.
           </p>
         </VReveal>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+        <div className="v-category-scroll grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
           {visible.map((cat, i) => {
             const Icon = iconFor(cat.slug)
             return (

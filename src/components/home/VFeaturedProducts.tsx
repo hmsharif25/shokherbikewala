@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, ArrowRight, Star, ChevronDown } from 'lucide-react'
+import { ShoppingCart, ArrowRight, Star, ChevronDown, Heart } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
@@ -36,7 +36,7 @@ export default function VFeaturedProducts() {
   ]
 
   return (
-    <section className="relative py-20 sm:py-24 overflow-hidden">
+    <section className="v-premium-section v-premium-products relative py-20 sm:py-24 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 right-0 w-[28rem] h-[28rem] bg-primary/[0.05] rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-[28rem] h-[28rem] bg-primary/[0.04] rounded-full blur-3xl" />
@@ -44,12 +44,12 @@ export default function VFeaturedProducts() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-12">
-          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Premium Selection</span>
+          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Product Showcase</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            FEATURED <em>PRODUCTS</em>
+            PREMIUM <em>LOADOUTS</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Handpicked high-performance gear for riders who demand the best.
+            Ultra-clean ecommerce cards with live ratings, pricing, wishlist actions, and fast checkout motion.
           </p>
         </VReveal>
 
@@ -120,11 +120,11 @@ export default function VFeaturedProducts() {
                 Ecommerce Command Center
               </p>
               <h3 className="font-headline text-xl sm:text-2xl font-bold text-fg mt-1">
-                Shop gear like a high-score loadout.
+                Shop gear like a cinematic rider loadout.
               </h3>
               <p className="font-ui text-sm text-fg-muted mt-1 max-w-xl">
-                Filter categories, compare prices, and jump straight into
-                WhatsApp checkout from every product card.
+                Filter categories, compare prices, save wishlist picks, and jump
+                straight into premium checkout from every product card.
               </p>
             </div>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -164,6 +164,12 @@ export default function VFeaturedProducts() {
                         -{discountPct}%
                       </span>
                     )}
+                    <button
+                      aria-label={`Add ${product.name} to wishlist`}
+                      className="absolute top-3 right-3 z-10 v-product-wishlist"
+                    >
+                      <Heart className="w-4 h-4" />
+                    </button>
 
                     <Link to={`/products/${product.slug}`} className="block w-full h-full">
                       <img
@@ -226,7 +232,7 @@ export default function VFeaturedProducts() {
                         rel="noopener noreferrer"
                         className="flex-1 text-center text-xs sm:text-sm font-ui font-bold uppercase tracking-[0.18em] py-2.5 rounded-xl text-white bg-gradient-to-r from-[#ff7a1f] to-[#ff5a00] hover:shadow-[0_12px_28px_-8px_rgba(255,90,0,0.55)] transition-all hover:-translate-y-0.5"
                       >
-                        Add to Cart
+Add to Cart
                       </a>
                     </div>
                   </div>

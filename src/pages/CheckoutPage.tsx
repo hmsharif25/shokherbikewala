@@ -125,7 +125,7 @@ export default function CheckoutPage() {
 
   if (!product) {
     return (
-      <PageTransition className="min-h-screen pt-24 pb-20">
+      <PageTransition className="v-shop-page min-h-screen pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 text-center py-20">
           <ShoppingBag className="w-16 h-16 mx-auto text-fg-soft mb-4" />
           <h1 className="text-2xl font-display font-bold text-fg mb-2">

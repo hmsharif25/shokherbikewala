@@ -29,7 +29,7 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <PageTransition className="min-h-screen pt-24 pb-20">
+      <PageTransition className="v-shop-page min-h-screen pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 text-center py-20">
           <Package className="w-16 h-16 mx-auto text-gray-600 mb-4" />
           <h1 className="text-2xl font-display font-bold text-white mb-2">Product Not Found</h1>
@@ -78,7 +78,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-20 md:pb-16 speed-lines-bg">
+    <PageTransition className="v-shop-page min-h-screen pt-24 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-6 sm:mb-8">
           <Link
