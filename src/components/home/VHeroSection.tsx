@@ -7,7 +7,6 @@ import {
 } from 'lucide-react'
 import { useRef } from 'react'
 import { useStore } from '@/context/StoreContext'
-import { AnimatedCounter } from '@/components/ui/GamingTextEffect'
 
 export default function VHeroSection() {
   const { brandSettings } = useStore()
@@ -19,12 +18,6 @@ export default function VHeroSection() {
   const y = useTransform(scrollYProgress, [0, 1], [0, -40])
   const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.25])
 
-  const stats = [
-    { value: '500+', label: 'Products' },
-    { value: '10K+', label: 'Riders' },
-    { value: '4.9', label: 'Rating' },
-    { value: '24/7', label: 'Support' },
-  ]
 
   return (
     <section
@@ -222,36 +215,6 @@ export default function VHeroSection() {
           ))}
         </motion.div>
 
-        {/* Gaming stats bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.55 }}
-          className="mt-10 flex items-center gap-6 sm:gap-10"
-        >
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              className="text-center sb-corner-brackets px-4 py-3"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 + i * 0.08 }}
-              whileHover={{ scale: 1.1, y: -4 }}
-            >
-              <div
-                className="font-display font-bold text-xl sm:text-2xl text-primary"
-                style={{ textShadow: '0 0 20px rgba(255,106,26,0.35)' }}
-              >
-                {stat.value.includes('+')
-                  ? <><AnimatedCounter end={parseInt(stat.value)} suffix="+" />{' '}</>
-                  : stat.value}
-              </div>
-              <div className="font-racing text-[10px] sm:text-xs tracking-[0.2em] uppercase text-fg-muted mt-0.5">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
 
 
       </motion.div>
