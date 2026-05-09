@@ -97,9 +97,8 @@ export default function VHeroSection() {
           transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="sb-cinematic-title items-center"
         >
-          <span className="sb-cinematic-line">RIDE</span>
-          <span className="sb-cinematic-line sb-cinematic-line-mid">WITH</span>
-          <span className="sb-cinematic-line sb-cinematic-line-accent">POWER</span>
+          <span className="sb-cinematic-line">SHOKHER</span>
+          <span className="sb-cinematic-line sb-cinematic-line-accent">BIKEWALA</span>
         </motion.h1>
 
         <motion.p
