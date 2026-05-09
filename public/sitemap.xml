@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.shokherbikewala.com/</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.shokherbikewala.com/logo-512.png</image:loc>
+      <image:title>Shokher Bike Wala premium bike accessories</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/categories</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/about</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/contact</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/steelbird-sba-21-gt</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1591375372226-1cef8a93019d?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Steelbird SBA-21 GT Full Face Helmet</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/riding-leather-gloves-pro</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1615484477778-ca3b77940c25?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Riding Leather Gloves Pro</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/windproof-racing-jacket</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Windproof Racing Jacket</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/led-strip-light-kit</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1517322048670-4fba75cbbb62?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>LED Strip Light Kit</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/universal-phone-mount-x1</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1601362840469-51e4d8d58785?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Universal Phone Mount X1</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/performance-exhaust-slip-on</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Performance Exhaust Slip-On</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/half-face-vintage-helmet</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1599256871681-29f55f594fe2?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Half Face Vintage Helmet</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.shokherbikewala.com/products/mesh-summer-gloves</loc>
+    <lastmod>2026-05-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1604459222860-94a936ed1c9f?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>Mesh Summer Gloves</image:title>
+    </image:image>
+  </url>
+</urlset>
