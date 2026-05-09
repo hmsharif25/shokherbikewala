@@ -11,8 +11,11 @@ insert into storage.buckets (id, name, public)
 values ('assets', 'assets', true)
 on conflict (id) do update set public = excluded.public;
 
--- 2. Make sure RLS is on (it usually already is for storage.objects)
-alter table storage.objects enable row level security;
+-- 2. RLS is already enabled on storage.objects by default in Supabase, and
+--    `alter table storage.objects enable row level security` requires
+--    ownership of the table (which the SQL editor role does not have, you'd
+--    get `42501: must be owner of table objects`). So we skip that step
+--    entirely — Supabase already has RLS on storage.objects.
 
 -- 3. Drop any prior copies of our policies so re-running this migration
 --    is safe.
