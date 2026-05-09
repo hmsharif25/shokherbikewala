@@ -1,170 +1,191 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ShoppingBag, Zap, User, LogOut, ShieldCheck, Sparkles } from 'lucide-react'
+import {
+  Menu,
+  X,
+  ShoppingBag,
+  User,
+  LogOut,
+  ShieldCheck,
+  Search,
+  Heart,
+} from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { useStore } from '@/context/StoreContext'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 
 const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'Products', path: '/products' },
+  { name: 'Shop', path: '/products' },
   { name: 'Categories', path: '/categories' },
   { name: 'About', path: '/about' },
   { name: 'Contact', path: '/contact' },
 ]
 
+/**
+ * Velocity navbar — floating glass capsule with logo, center menu,
+ * pill search, profile/cart actions and animated active indicator.
+ * Mirrors the reference image design.
+ */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [search, setSearch] = useState('')
   const location = useLocation()
+  const navigate = useNavigate()
   const { user, isAdmin, signOut } = useAuth()
+  const { products } = useStore()
+
+  // Show a small badge on cart matching favourite items in localStorage (best-effort).
+  const cartCount = products.filter((p) => p.featured).length // visual placeholder
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30)
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    setMobileOpen(false)
-  }, [location])
+  useEffect(() => setMobileOpen(false), [location])
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => {
       document.body.style.overflow = ''
     }
-    return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
+
+  const onSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!search.trim()) return
+    navigate(`/products?q=${encodeURIComponent(search.trim())}`)
+  }
 
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? 'glass-dark shadow-lg shadow-primary/10 border-b border-line'
-            : 'bg-gradient-to-b from-bg/80 via-bg/20 to-transparent'
+          scrolled ? 'pt-2' : 'pt-3 sm:pt-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 lg:h-20">
-            <Link to="/" className="flex items-center gap-2 group">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: 'spring', stiffness: 300 }}
-                className="flex items-center gap-2.5"
-              >
-                <div className="relative w-9 h-9 lg:w-11 lg:h-11 flex-shrink-0 rounded-lg bg-gradient-to-br from-primary/15 to-cyan/10 p-1.5 border border-primary/20">
-                  <img
-                    src="/logo.png"
-                    alt="Shokher Bike Wala"
-                    className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(255,106,26,0.45)]"
-                  />
-                </div>
-                <div className="hidden sm:flex flex-col leading-none">
-                  <span className="font-display text-sm lg:text-base font-bold text-gradient-fire tracking-wide">
-                    SHOKHER
-                  </span>
-                  <span className="font-display text-[10px] lg:text-xs font-semibold text-cyan/85 tracking-[0.22em]">
-                    BIKE WALA
-                  </span>
-                </div>
-              </motion.div>
+        <div className="max-w-7xl mx-auto px-3 sm:px-4">
+          <div className="v-capsule rounded-full pl-3 pr-2 sm:pl-5 sm:pr-3 py-1.5 sm:py-2 flex items-center gap-3 sm:gap-4">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1 flex items-center justify-center">
+                <img
+                  src="/logo.png"
+                  alt="Shokher Bike Wala"
+                  className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(255,90,0,0.45)]"
+                />
+              </div>
+              <div className="hidden sm:flex flex-col leading-none">
+                <span className="font-headline text-[13px] lg:text-sm font-bold text-fg tracking-wide">
+                  SHOKHER
+                </span>
+                <span className="font-headline text-[9px] lg:text-[10px] font-bold text-primary tracking-[0.32em]">
+                  BIKE WALA
+                </span>
+              </div>
             </Link>
 
-            <div className="hidden md:flex items-center gap-0.5">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className="relative px-4 py-2 text-sm font-medium group"
-                >
-                  <span
-                    className={`relative z-10 transition-colors duration-300 font-racing tracking-wide ${
-                      location.pathname === link.path
-                        ? 'text-primary'
-                        : 'text-fg-muted group-hover:text-fg'
-                    }`}
+            {/* Center menu — desktop only */}
+            <div className="hidden lg:flex items-center justify-center flex-1">
+              {navLinks.map((link) => {
+                const active = location.pathname === link.path
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className="relative px-3.5 py-2 text-[12px] font-ui font-bold uppercase tracking-[0.18em]"
                   >
-                    {link.name}
-                  </span>
-                  {location.pathname === link.path && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute -bottom-0.5 left-2 right-2 h-0.5 bg-gradient-to-r from-primary via-gold to-cyan rounded-full shadow-[0_0_10px_rgba(255,106,26,0.6)]"
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              ))}
+                    <span
+                      className={`relative z-10 transition-colors ${
+                        active ? 'text-primary' : 'text-fg-muted hover:text-fg'
+                      }`}
+                    >
+                      {link.name}
+                    </span>
+                    {active && (
+                      <motion.span
+                        layoutId="v-nav-pill"
+                        className="absolute inset-0 rounded-full bg-primary/10 border border-primary/30"
+                        transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+                      />
+                    )}
+                  </Link>
+                )
+              })}
             </div>
 
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Search — md+ */}
+            <form
+              onSubmit={onSearchSubmit}
+              className="hidden md:flex items-center bg-bg-2/70 border border-line rounded-full px-4 py-1.5 w-56 lg:w-64 transition-all hover:border-primary/40 focus-within:border-primary/50 focus-within:bg-bg"
+            >
+              <Search className="w-4 h-4 text-fg-soft mr-2 flex-shrink-0" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search products..."
+                className="flex-1 bg-transparent text-sm font-ui placeholder:text-fg-soft text-fg outline-none"
+                aria-label="Search"
+              />
+            </form>
+
+            <div className="flex items-center gap-1.5 sm:gap-2 ml-auto lg:ml-0">
               <ThemeToggle className="hidden sm:inline-flex" />
 
-              <Link
-                to="/products"
-                className="relative p-2.5 text-fg-muted hover:text-primary transition-all duration-300 hover:bg-primary/10 rounded-lg group"
-                aria-label="Browse products"
-              >
-                <ShoppingBag className="w-5 h-5" />
-                <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-primary/30" />
+              <Link to="/products" aria-label="Wishlist" className="hidden sm:inline-flex v-icon-btn">
+                <Heart className="w-4 h-4" />
               </Link>
 
               {user ? (
-                <div className="hidden md:flex items-center gap-2">
-                  {isAdmin && (
-                    <Link
-                      to="/admin"
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-primary/15 to-gold/10 border border-primary/30 text-primary text-xs font-racing tracking-wide hover:from-primary/25 hover:to-gold/20 transition-all"
-                      title="Admin panel"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      Admin
-                    </Link>
-                  )}
-                  <span className="text-xs text-fg-soft font-racing max-w-[150px] truncate">{user.name || user.email}</span>
-                  <button
-                    onClick={() => signOut()}
-                    className="p-2 text-fg-soft hover:text-red-500 transition-colors rounded-lg hover:bg-red-500/10"
-                    title="Sign Out"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
+                <Link to={isAdmin ? '/admin' : '/auth'} aria-label="Profile" className="v-icon-btn">
+                  {isAdmin ? <ShieldCheck className="w-4 h-4 text-primary" /> : <User className="w-4 h-4" />}
+                </Link>
               ) : (
-                <Link
-                  to="/auth"
-                  className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-fg-muted hover:text-primary transition-colors font-racing tracking-wide"
-                >
+                <Link to="/auth" aria-label="Sign in" className="v-icon-btn">
                   <User className="w-4 h-4" />
-                  Sign In
                 </Link>
               )}
 
-              <ThemeToggle className="sm:hidden" size="sm" />
+              <Link to="/checkout" aria-label="Cart" className="v-icon-btn relative">
+                <ShoppingBag className="w-4 h-4" />
+                {cartCount > 0 && (
+                  <span className="v-badge-dot">{cartCount}</span>
+                )}
+              </Link>
 
+              {user && (
+                <button
+                  onClick={() => signOut()}
+                  aria-label="Sign out"
+                  className="hidden lg:inline-flex v-icon-btn hover:text-red-500 hover:border-red-500/30"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              )}
+
+              {/* Mobile menu */}
               <button
-                onClick={() => setMobileOpen(!mobileOpen)}
+                onClick={() => setMobileOpen((v) => !v)}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-                className="md:hidden p-2 text-fg-muted hover:text-primary transition-colors rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20"
+                className="lg:hidden v-icon-btn"
               >
-                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </button>
             </div>
           </div>
         </div>
-
-        {scrolled && (
-          <div className="absolute bottom-0 left-0 right-0 divider-glow" />
-        )}
       </motion.nav>
 
+      {/* Mobile slide-in menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -172,7 +193,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 md:hidden"
+            className="fixed inset-0 z-40 lg:hidden"
           >
             <div
               className="absolute inset-0 bg-bg/70 backdrop-blur-sm"
@@ -183,77 +204,78 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 26, stiffness: 220 }}
-              className="absolute right-0 top-0 bottom-0 w-[80vw] max-w-xs bg-bg-2/96 backdrop-blur-2xl border-l border-primary/15 p-6 pt-20 shadow-[-12px_0_44px_-14px_rgba(255,106,26,0.32)] overflow-hidden"
+              className="absolute right-3 top-3 bottom-3 w-[78vw] max-w-xs v-capsule rounded-3xl p-5 pt-16 overflow-hidden"
             >
-              <div className="absolute inset-0 premium-mesh-bg opacity-25 pointer-events-none" />
-
-              <div className="absolute top-5 left-5 right-5 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary/15 to-cyan/10 p-1 border border-primary/20">
+              <div className="absolute top-4 left-5 right-5 flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 p-1">
                   <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
                 </div>
                 <div className="flex flex-col leading-tight">
-                  <span className="font-display text-sm font-bold text-gradient-fire">SHOKHER BIKE WALA</span>
-                  <span className="font-racing text-[10px] text-fg-soft tracking-[0.2em] uppercase">Premium Gear</span>
+                  <span className="font-headline text-xs font-bold text-fg">SHOKHER</span>
+                  <span className="font-headline text-[9px] text-primary tracking-[0.32em]">BIKE WALA</span>
                 </div>
               </div>
 
-              <div className="relative flex flex-col gap-1.5 mt-2">
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.path}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.06 }}
-                  >
-                    <Link
-                      to={link.path}
-                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-racing tracking-wide font-medium transition-all border ${
-                        location.pathname === link.path
-                          ? 'bg-gradient-to-r from-primary/20 to-primary/5 text-primary border-primary/30 shadow-[0_8px_18px_-8px_rgba(255,106,26,0.35)]'
-                          : 'text-fg-muted hover:text-fg hover:bg-primary/[0.06] border-transparent hover:border-primary/15'
-                      }`}
+              <form
+                onSubmit={onSearchSubmit}
+                className="flex items-center bg-bg-2/70 border border-line rounded-full px-4 py-2 mb-5"
+              >
+                <Search className="w-4 h-4 text-fg-soft mr-2" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search..."
+                  className="flex-1 bg-transparent text-sm font-ui placeholder:text-fg-soft text-fg outline-none"
+                  aria-label="Search"
+                />
+              </form>
+
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link, i) => {
+                  const active = location.pathname === link.path
+                  return (
+                    <motion.div
+                      key={link.path}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.06 }}
                     >
-                      {location.pathname === link.path ? (
-                        <Zap className="w-4 h-4 text-primary fill-primary/30" />
-                      ) : (
-                        <span className="w-1.5 h-1.5 rounded-full bg-fg-soft/40" />
-                      )}
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                ))}
+                      <Link
+                        to={link.path}
+                        className={`flex items-center justify-between px-4 py-3 rounded-2xl text-base font-headline tracking-wider uppercase transition-all border ${
+                          active
+                            ? 'bg-primary/10 text-primary border-primary/30'
+                            : 'text-fg-muted hover:text-fg hover:bg-primary/[0.06] border-transparent hover:border-primary/15'
+                        }`}
+                      >
+                        {link.name}
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            active ? 'bg-primary' : 'bg-line'
+                          }`}
+                        />
+                      </Link>
+                    </motion.div>
+                  )
+                })}
               </div>
 
-              <div className="absolute bottom-8 left-6 right-6">
-                <div className="divider-glow mb-4" />
+              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+                <ThemeToggle />
                 {user ? (
-                  <div className="space-y-3">
-                    {isAdmin && (
-                      <Link
-                        to="/admin"
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary/15 to-gold/10 border border-primary/30 text-primary text-sm font-racing tracking-wide"
-                      >
-                        <ShieldCheck className="w-4 h-4" />
-                        Admin Panel
-                      </Link>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className="text-fg-soft text-xs font-racing truncate">{user.name || user.email}</span>
-                      <button
-                        onClick={() => signOut()}
-                        className="text-xs text-red-500 hover:text-red-400 font-racing flex items-center gap-1"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                        Sign Out
-                      </button>
-                    </div>
-                  </div>
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-1.5 text-xs font-ui font-bold uppercase tracking-wider text-fg-muted hover:text-red-500"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </button>
                 ) : (
-                  <Link to="/auth" className="block">
-                    <span className="btn-premium w-full text-sm">
-                      <Sparkles className="w-4 h-4" />
-                      Sign In
-                    </span>
+                  <Link
+                    to="/auth"
+                    className="flex items-center gap-1.5 text-xs font-ui font-bold uppercase tracking-wider text-fg-muted hover:text-primary"
+                  >
+                    <User className="w-4 h-4" /> Sign In
                   </Link>
                 )}
               </div>

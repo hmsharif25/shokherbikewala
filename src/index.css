@@ -2196,3 +2196,513 @@ html {
   }
 }
 
+
+/* ============================================================
+ * VELOCITY REDESIGN — premium futuristic motorbike storefront
+ * Mobile-first cinematic glass + ambient orange glow.
+ * Added on top of existing tokens; does not replace them.
+ * ============================================================ */
+
+/* ---------- Display & UI typography weights ---------- */
+.font-headline {
+  font-family: 'Orbitron', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+.font-ui {
+  font-family: 'Rajdhani', 'Inter', system-ui, sans-serif;
+}
+
+/* ---------- Velocity glass capsule (navbar / floating shells) ---------- */
+.v-capsule {
+  background: rgb(var(--c-bg) / 0.78);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgb(var(--c-line) / 0.7);
+  box-shadow:
+    0 10px 40px -12px rgba(17, 24, 39, 0.10),
+    0 2px 6px -2px rgba(17, 24, 39, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+:root[data-theme='dark'] .v-capsule {
+  background: rgba(18, 18, 28, 0.72);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 60px -18px rgba(0, 0, 0, 0.55),
+    0 2px 12px -2px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.v-capsule-soft {
+  background: rgb(var(--c-bg) / 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgb(var(--c-line) / 0.5);
+}
+
+/* ---------- Floating product card (hero pinned cards) ---------- */
+.v-float-card {
+  position: relative;
+  background: rgb(var(--c-bg) / 0.86);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgb(var(--c-line) / 0.7);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 24px 50px -20px rgba(17, 24, 39, 0.18),
+    0 4px 12px -4px rgba(17, 24, 39, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+:root[data-theme='dark'] .v-float-card {
+  background: rgba(22, 22, 36, 0.75);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 26px 70px -22px rgba(0, 0, 0, 0.7),
+    0 6px 16px -4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* ---------- Velocity headline gradient (orange + black) ---------- */
+.v-headline {
+  font-family: 'Orbitron', 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  font-style: italic;
+}
+.v-headline em {
+  font-style: italic;
+  background: linear-gradient(135deg, #ff7a1f 0%, #ff5a00 50%, #ff8a3a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 50px rgba(255, 106, 26, 0.28);
+}
+
+/* Headline body ink color tied to theme */
+:root[data-theme='light'] .v-headline {
+  color: #0e0f12;
+}
+:root[data-theme='dark'] .v-headline {
+  color: #f5f6fa;
+}
+
+/* ---------- Premium pill button ---------- */
+.v-pill-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.95rem 1.6rem;
+  border-radius: 999px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: white;
+  background: linear-gradient(135deg, #ff7a1f 0%, #ff5a00 100%);
+  box-shadow:
+    0 14px 32px -10px rgba(255, 90, 0, 0.55),
+    0 4px 12px -4px rgba(255, 90, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+.v-pill-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+  transform: translateX(-150%);
+  transition: transform 0.7s ease;
+  z-index: -1;
+}
+.v-pill-cta:hover { transform: translateY(-2px); }
+.v-pill-cta:hover::before { transform: translateX(150%); }
+.v-pill-cta:active { transform: translateY(0); }
+
+.v-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg));
+  background: rgb(var(--c-bg) / 0.7);
+  border: 1px solid rgb(var(--c-line));
+  transition: all 0.25s ease;
+}
+.v-pill-ghost:hover {
+  background: rgb(var(--c-bg));
+  border-color: rgb(var(--c-primary) / 0.5);
+  color: rgb(var(--c-primary));
+  transform: translateY(-2px);
+}
+
+/* ---------- Velocity tabs (filter pills) ---------- */
+.v-tab {
+  position: relative;
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: rgb(var(--c-fg-muted));
+  border: 1px solid rgb(var(--c-line));
+  background: rgb(var(--c-bg) / 0.6);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.v-tab:hover {
+  color: rgb(var(--c-fg));
+  border-color: rgb(var(--c-primary) / 0.4);
+}
+.v-tab.active {
+  color: white;
+  background: linear-gradient(135deg, #ff7a1f, #ff5a00);
+  border-color: transparent;
+  box-shadow: 0 8px 22px -8px rgba(255, 90, 0, 0.55);
+}
+
+/* ---------- Velocity product card ---------- */
+.v-product-card {
+  position: relative;
+  background: rgb(var(--c-bg) / 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgb(var(--c-line));
+  border-radius: 1.5rem;
+  box-shadow:
+    0 8px 28px -12px rgba(17, 24, 39, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+.v-product-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255,122,31,0.5), transparent 30%, transparent 70%, rgba(255,122,31,0.3));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+  z-index: 1;
+}
+.v-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 22px 50px -18px rgba(255, 90, 0, 0.25),
+    0 8px 18px -6px rgba(17, 24, 39, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+.v-product-card:hover::after { opacity: 1; }
+:root[data-theme='dark'] .v-product-card {
+  background: rgba(22, 22, 36, 0.85);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+:root[data-theme='dark'] .v-product-card:hover {
+  box-shadow:
+    0 28px 70px -22px rgba(255, 90, 0, 0.3),
+    0 10px 22px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Velocity category card ---------- */
+.v-cat-card {
+  position: relative;
+  background: rgb(var(--c-bg) / 0.92);
+  border: 1px solid rgb(var(--c-line));
+  border-radius: 1.5rem;
+  box-shadow:
+    0 8px 28px -14px rgba(17, 24, 39, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  isolation: isolate;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v-cat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 122, 31, 0.12), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.v-cat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgb(var(--c-primary) / 0.4);
+  box-shadow:
+    0 22px 50px -18px rgba(255, 90, 0, 0.25);
+}
+.v-cat-card:hover::before { opacity: 1; }
+:root[data-theme='dark'] .v-cat-card {
+  background: rgba(22, 22, 36, 0.85);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- Section ribbon (small orange "FEATURED" eyebrow) ---------- */
+.v-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: rgb(var(--c-primary));
+}
+.v-eyebrow::before,
+.v-eyebrow::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(var(--c-primary)));
+}
+.v-eyebrow::after {
+  background: linear-gradient(90deg, rgb(var(--c-primary)), transparent);
+}
+
+/* ---------- Hero ambient halo ---------- */
+.v-hero-halo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.v-hero-halo::before {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  width: 90%;
+  height: 60%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(255, 122, 31, 0.22), transparent 60%);
+  filter: blur(40px);
+}
+.v-hero-halo::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(255, 90, 0, 0.12), transparent 60%);
+  filter: blur(40px);
+}
+
+/* ---------- Speed motion lines (used in promo banner) ---------- */
+.v-motion-lines {
+  background-image:
+    linear-gradient(115deg, transparent 0%, transparent 40%, rgba(255, 122, 31, 0.10) 42%, transparent 44%),
+    linear-gradient(115deg, transparent 0%, transparent 60%, rgba(255, 122, 31, 0.07) 62%, transparent 64%),
+    linear-gradient(115deg, transparent 0%, transparent 75%, rgba(255, 122, 31, 0.10) 77%, transparent 79%);
+  background-size: 100% 100%;
+}
+
+/* ---------- Animated gradient border (premium) ---------- */
+.v-grad-border {
+  position: relative;
+}
+.v-grad-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 122, 31, 0.6), rgba(255, 122, 31, 0) 40%, rgba(255, 122, 31, 0) 60%, rgba(255, 122, 31, 0.4));
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ---------- Sticky-floating mobile bottom dock ---------- */
+.v-mobile-dock {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: max(0.85rem, env(safe-area-inset-bottom, 0.85rem));
+  z-index: 60;
+  width: min(92%, 460px);
+  border-radius: 999px;
+  background: rgb(var(--c-bg) / 0.85);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgb(var(--c-line) / 0.7);
+  box-shadow:
+    0 18px 50px -16px rgba(17, 24, 39, 0.25),
+    0 6px 16px -4px rgba(255, 90, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+:root[data-theme='dark'] .v-mobile-dock {
+  background: rgba(18, 18, 28, 0.78);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 22px 60px -18px rgba(0, 0, 0, 0.7),
+    0 8px 22px -6px rgba(255, 90, 0, 0.2);
+}
+
+/* ---------- Velocity scroll-reveal helpers ---------- */
+.v-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.v-reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Marquee ticker for promo banner ---------- */
+@keyframes vMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.v-marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: vMarquee 40s linear infinite;
+}
+
+/* ---------- Particle dot field ---------- */
+.v-dot-field {
+  background-image: radial-gradient(circle at 1px 1px, rgba(17, 24, 39, 0.08) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+:root[data-theme='dark'] .v-dot-field {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
+}
+
+/* ---------- Velocity rating star color ---------- */
+.v-star-fill { color: #ff8a3a; fill: #ff8a3a; }
+.v-star-empty { color: rgb(var(--c-fg-soft) / 0.35); }
+
+/* ---------- Hero floating card animation ---------- */
+@keyframes vFloatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.v-float-anim { animation: vFloatY 6s ease-in-out infinite; }
+.v-float-anim.delay-1 { animation-delay: -2s; }
+.v-float-anim.delay-2 { animation-delay: -4s; }
+
+/* ---------- Premium discount chip ---------- */
+.v-discount-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: white;
+  background: linear-gradient(135deg, #ff7a1f, #ff5a00);
+  box-shadow: 0 4px 12px -2px rgba(255, 90, 0, 0.45);
+}
+
+/* ---------- Magnetic icon button ---------- */
+.v-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: rgb(var(--c-bg) / 0.9);
+  border: 1px solid rgb(var(--c-line));
+  color: rgb(var(--c-fg-muted));
+  transition: all 0.25s ease;
+  position: relative;
+}
+.v-icon-btn:hover {
+  color: rgb(var(--c-primary));
+  border-color: rgb(var(--c-primary) / 0.5);
+  background: rgb(var(--c-primary) / 0.05);
+  transform: translateY(-2px);
+}
+
+/* ---------- Velocity badge dot ---------- */
+.v-badge-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7a1f, #ff5a00);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px -2px rgba(255, 90, 0, 0.55);
+}
+
+/* ---------- Decorative arrow line eyebrow (longer, used in some sections) ---------- */
+.v-eyebrow-long {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: rgb(var(--c-primary));
+}
+.v-eyebrow-long::before,
+.v-eyebrow-long::after {
+  content: '';
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(var(--c-primary)));
+}
+.v-eyebrow-long::after { background: linear-gradient(90deg, rgb(var(--c-primary)), transparent); }
+
+/* ---------- "ALL PRODUCTS" main pill matches CTA ---------- */
+.v-pill-active {
+  background: linear-gradient(135deg, #ff7a1f, #ff5a00);
+  color: white !important;
+  border-color: transparent !important;
+}
+
+/* ---------- Star row (Velocity) ---------- */
+.v-stars { display: inline-flex; gap: 0.15rem; }
+
+/* ---------- Subtle inner highlight for cards ---------- */
+.v-card-sheen::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.7), transparent);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
+:root[data-theme='dark'] .v-card-sheen::before { opacity: 0.05; }
