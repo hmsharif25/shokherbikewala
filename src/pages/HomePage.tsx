@@ -16,6 +16,10 @@ const VCommunity = lazy(() => import('@/components/home/VCommunity'))
 const VTestimonials = lazy(() => import('@/components/home/VTestimonials'))
 const VFAQ = lazy(() => import('@/components/home/VFAQ'))
 
+function GamingDivider() {
+  return <div className="sb-gaming-divider" aria-hidden="true" />
+}
+
 /**
  * Velocity homepage — premium futuristic motorbike accessories
  * showroom. The hero ships with the initial bundle; every other
@@ -42,24 +46,31 @@ export default function HomePage() {
       className="relative sb-home-flow"
     >
       <VHeroSection />
+      <GamingDivider />
       <LazySection>
         <VCategoriesGrid />
       </LazySection>
+      <GamingDivider />
       <LazySection>
         <VFeaturedProducts />
       </LazySection>
+      <GamingDivider />
       <LazySection>
         <VBrandStory />
       </LazySection>
+      <GamingDivider />
       <LazySection>
         <VPromoBanner />
       </LazySection>
+      <GamingDivider />
       <LazySection>
         <VCommunity />
       </LazySection>
+      <GamingDivider />
       <LazySection>
         <VTestimonials />
       </LazySection>
+      <GamingDivider />
       <LazySection>
         <VFAQ />
       </LazySection>
