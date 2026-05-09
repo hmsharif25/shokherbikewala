@@ -13,7 +13,6 @@ import {
   ChevronRight,
   MessageCircle,
   Share2,
-  Heart,
   Package,
 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
@@ -25,7 +24,6 @@ export default function ProductDetailPage() {
   const navigate = useNavigate()
   const { products, categories, brandSettings } = useStore()
   const [selectedImage, setSelectedImage] = useState(0)
-  const [isWishlisted, setIsWishlisted] = useState(false)
 
   const product = products.find((p) => p.slug === slug)
 
@@ -138,16 +136,6 @@ export default function ProductDetailPage() {
                 )}
 
                 <div className="absolute top-4 right-4 flex flex-col gap-2">
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => setIsWishlisted(!isWishlisted)}
-                    className={`p-2.5 rounded-xl glass transition-all ${
-                      isWishlisted ? 'text-red-500 bg-red-500/10' : 'text-gray-300 hover:text-red-400'
-                    }`}
-                  >
-                    <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
-                  </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}

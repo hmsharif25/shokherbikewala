@@ -9,7 +9,6 @@ import {
   LogOut,
   ShieldCheck,
   Search,
-  Heart,
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useStore } from '@/context/StoreContext'
@@ -139,23 +138,35 @@ export default function Navbar() {
             </form>
 
             <div className="flex items-center gap-1.5 sm:gap-2 ml-auto lg:ml-0">
-              <ThemeToggle className="hidden sm:inline-flex" />
-
-              <Link to="/products" aria-label="Wishlist" className="hidden sm:inline-flex v-icon-btn">
-                <Heart className="w-4 h-4" />
-              </Link>
+              {/* Theme toggle is the only icon shown on mobile —
+                  every other navigation entry has been moved to the
+                  bottom nav + "More" sheet. From sm+ the desktop
+                  action group reappears. */}
+              <ThemeToggle />
 
               {user ? (
-                <Link to={isAdmin ? '/admin' : '/auth'} aria-label="Profile" className="v-icon-btn">
+                <Link
+                  to={isAdmin ? '/admin' : '/auth'}
+                  aria-label="Profile"
+                  className="hidden sm:inline-flex v-icon-btn"
+                >
                   {isAdmin ? <ShieldCheck className="w-4 h-4 text-primary" /> : <User className="w-4 h-4" />}
                 </Link>
               ) : (
-                <Link to="/auth" aria-label="Sign in" className="v-icon-btn">
+                <Link
+                  to="/auth"
+                  aria-label="Sign in"
+                  className="hidden sm:inline-flex v-icon-btn"
+                >
                   <User className="w-4 h-4" />
                 </Link>
               )}
 
-              <Link to="/checkout" aria-label="Cart" className="v-icon-btn relative">
+              <Link
+                to="/checkout"
+                aria-label="Cart"
+                className="hidden sm:inline-flex v-icon-btn relative"
+              >
                 <ShoppingBag className="w-4 h-4" />
                 {cartCount > 0 && (
                   <span className="v-badge-dot">{cartCount}</span>
@@ -172,11 +183,12 @@ export default function Navbar() {
                 </button>
               )}
 
-              {/* Mobile menu */}
+              {/* Tablet-only burger (sm to lg). Mobile uses the
+                  bottom-nav "More" sheet instead. */}
               <button
                 onClick={() => setMobileOpen((v) => !v)}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-                className="lg:hidden v-icon-btn"
+                className="hidden sm:inline-flex lg:hidden v-icon-btn"
               >
                 {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </button>

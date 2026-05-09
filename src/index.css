@@ -2663,25 +2663,32 @@ html {
   box-shadow: 0 4px 12px -2px rgba(255, 90, 0, 0.45);
 }
 
-/* ---------- Magnetic icon button ---------- */
-.v-icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  background: rgb(var(--c-bg) / 0.9);
-  border: 1px solid rgb(var(--c-line));
-  color: rgb(var(--c-fg-muted));
-  transition: all 0.25s ease;
-  position: relative;
-}
-.v-icon-btn:hover {
-  color: rgb(var(--c-primary));
-  border-color: rgb(var(--c-primary) / 0.5);
-  background: rgb(var(--c-primary) / 0.05);
-  transform: translateY(-2px);
+/* ---------- Magnetic icon button ----------
+ * Wrapped in @layer components so the `display: inline-flex` rule is
+ * placed before `@tailwind utilities` in the cascade. This lets us
+ * combine `.v-icon-btn` with Tailwind's `hidden` / `sm:inline-flex`
+ * responsive utilities to toggle visibility at breakpoints.
+ */
+@layer components {
+  .v-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    background: rgb(var(--c-bg) / 0.9);
+    border: 1px solid rgb(var(--c-line));
+    color: rgb(var(--c-fg-muted));
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .v-icon-btn:hover {
+    color: rgb(var(--c-primary));
+    border-color: rgb(var(--c-primary) / 0.5);
+    background: rgb(var(--c-primary) / 0.05);
+    transform: translateY(-2px);
+  }
 }
 
 /* ---------- Velocity badge dot ---------- */
