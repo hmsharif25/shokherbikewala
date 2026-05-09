@@ -160,21 +160,61 @@ export async function loadRemoteInquiries(): Promise<Inquiry[]> {
   return (data || []).map(mapInquiry)
 }
 
+export async function loadInquiriesByPhone(phone: string): Promise<Inquiry[]> {
+  if (!isSupabaseConfigured()) return []
+  const cleaned = phone.replace(/[^0-9]/g, '').slice(-10)
+  if (!cleaned) return []
+  const { data, error } = await supabase
+    .from('inquiries')
+    .select('*')
+    .ilike('phone', `%${cleaned}%`)
+    .order('created_at', { ascending: false })
+  if (error) {
+    console.warn('[db] loadInquiriesByPhone failed', error)
+    return []
+  }
+  return (data || []).map(mapInquiry)
+}
+
 export async function submitInquiry(input: {
   customer_name: string
   phone: string
   product_name?: string
   message?: string
-}): Promise<{ error: string | null }> {
+}): Promise<{ error: string | null; id?: number }> {
   if (!isSupabaseConfigured()) {
     // No-op fallback; UI handles localStorage append elsewhere
     return { error: null }
   }
-  const { error } = await supabase.from('inquiries').insert({
-    customer_name: input.customer_name,
-    phone: input.phone,
-    product_name: input.product_name ?? '',
-    message: input.message ?? '',
-  })
+  const { data, error } = await supabase
+    .from('inquiries')
+    .insert({
+      customer_name: input.customer_name,
+      phone: input.phone,
+      product_name: input.product_name ?? '',
+      message: input.message ?? '',
+    })
+    .select('id')
+    .maybeSingle()
+  return { error: error?.message ?? null, id: data?.id }
+}
+
+export async function updateInquiryStatusRemote(
+  id: number,
+  status: Inquiry['status'],
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('inquiries')
+    .update({ status })
+    .eq('id', id)
+  return { error: error?.message ?? null }
+}
+
+export async function deleteInquiryRemote(
+  id: number,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase.from('inquiries').delete().eq('id', id)
   return { error: error?.message ?? null }
 }
