@@ -2490,6 +2490,37 @@ html {
   background: linear-gradient(90deg, rgb(var(--c-primary)), transparent);
 }
 
+/* ---------- Hero brand tagline pill ----------
+ * Small glassy capsule that sits below the brand wordmark, with an
+ * orange dot accent on the left. Used to surface the brand tagline
+ * in the hero without competing with the main headline.
+ */
+.v-tagline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  background: rgb(var(--c-bg) / 0.6);
+  border: 1px solid rgb(var(--c-line) / 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg-muted));
+  white-space: nowrap;
+}
+.v-tagline-pill-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: rgb(var(--c-primary));
+  box-shadow: 0 0 8px 1px rgba(255, 122, 31, 0.6);
+}
+
 /* ---------- Hero ambient halo ---------- */
 .v-hero-halo {
   position: absolute;
