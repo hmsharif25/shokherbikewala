@@ -1,9 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight,
-  Globe,
-  Lock,
-  ShieldCheck,
   ShoppingBag,
   Star,
 } from 'lucide-react'
@@ -45,13 +42,6 @@ export default function VHeroSection() {
     }
     return picks.slice(0, 4)
   }, [products, categories])
-
-  const trustChips = [
-    { Icon: ShieldCheck, label: 'Premium\nQuality' },
-    { Icon: Globe, label: 'Worldwide\nShipping' },
-    { Icon: Lock, label: 'Secure\nPayment' },
-    { Icon: Star, label: '2 Year\nWarranty' },
-  ]
 
   const stats = [
     { value: '500+', label: 'Products' },
@@ -147,23 +137,6 @@ export default function VHeroSection() {
               <div className="font-racing text-[10px] sm:text-xs tracking-[0.2em] uppercase text-fg-muted mt-0.5">
                 {stat.label}
               </div>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Trust strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="sb-trust-cluster mx-auto mt-8"
-        >
-          {trustChips.map(({ Icon, label }) => (
-            <div key={label} className="sb-trust-cell">
-              <span className="sb-trust-ico">
-                <Icon className="w-3.5 h-3.5" />
-              </span>
-              <span className="sb-trust-label">{label}</span>
             </div>
           ))}
         </motion.div>
