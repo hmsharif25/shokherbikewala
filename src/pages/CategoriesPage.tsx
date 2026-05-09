@@ -36,6 +36,8 @@ export default function CategoriesPage() {
                     <img
                       src={category.image_url}
                       alt={category.name}
+                      loading="lazy"
+                      decoding="async"
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent group-hover:from-primary/80 transition-all duration-500" />

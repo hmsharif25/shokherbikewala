@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+/*
+ * Fonts (Inter / Orbitron / Rajdhani) are loaded from a <link> tag
+ * in `index.html` rather than `@import`-ed here. The @import inside
+ * a stylesheet is strictly serial — the browser must download +
+ * parse the CSS file before discovering the font URL — which delays
+ * first paint by hundreds of milliseconds. Loading them via <link>
+ * with a `preconnect` / `preload` hint lets the font handshake fire
+ * in parallel with the JS bundle download instead.
+ */
 
 @tailwind base;
 @tailwind components;

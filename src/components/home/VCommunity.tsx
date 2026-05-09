@@ -62,7 +62,7 @@ export default function VCommunity() {
                   whileHover={{ scale: 1.04 }}
                   className="relative aspect-square rounded-lg overflow-hidden bg-bg-2"
                 >
-                  <img src={src} alt={`Post ${i}`} loading="lazy" className="w-full h-full object-cover" />
+                  <img src={src} alt={`Post ${i}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                   {i === 1 && (
                     <span className="absolute inset-0 flex items-center justify-center bg-black/30">
                       <Play className="w-5 h-5 text-white fill-white" />
@@ -86,7 +86,7 @@ export default function VCommunity() {
             Icon={Music2}
           >
             <div className="relative aspect-[9/14] rounded-2xl overflow-hidden bg-bg-2">
-              <img src={tiktokCover} alt="TikTok cover" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={tiktokCover} alt="TikTok cover" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
               <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
                 <span className="font-headline text-white font-bold tracking-wider text-sm">

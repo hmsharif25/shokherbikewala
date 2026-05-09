@@ -106,6 +106,8 @@ export default function ProductDetailPage() {
                     transition={{ duration: 0.4 }}
                     src={product.images[selectedImage]}
                     alt={product.name}
+                    decoding="async"
+                    fetchPriority="high"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark-50/50 via-transparent to-transparent" />
@@ -161,7 +163,7 @@ export default function ProductDetailPage() {
                           : 'border-white/10 hover:border-white/20'
                       }`}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img src={img} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
                     </motion.button>
                   ))}
                 </div>
@@ -295,6 +297,8 @@ export default function ProductDetailPage() {
                         <img
                           src={rp.images[0]}
                           alt={rp.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />

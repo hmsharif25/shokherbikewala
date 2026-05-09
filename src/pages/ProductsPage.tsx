@@ -128,6 +128,8 @@ export default function ProductsPage() {
                       <img
                         src={product.images[0]}
                         alt={product.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-dark-50 via-transparent to-transparent" />

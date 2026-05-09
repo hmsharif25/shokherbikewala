@@ -112,6 +112,10 @@ export default function Footer() {
                 <img
                   src="/logo.png"
                   alt="Shokher Bike Wala"
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(255,90,0,0.45)]"
                 />
               </div>

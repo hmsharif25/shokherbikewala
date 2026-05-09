@@ -100,6 +100,10 @@ export default function VHeroSection() {
           <img
             src={logoSrc}
             alt={brandSettings.brand_name || 'Shokher Bike Wala'}
+            width={144}
+            height={144}
+            decoding="async"
+            fetchPriority="high"
             className="relative w-full h-full object-contain drop-shadow-[0_0_22px_rgba(255,90,0,0.55)]"
           />
         </motion.div>
