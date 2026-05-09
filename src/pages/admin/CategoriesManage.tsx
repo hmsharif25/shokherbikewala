@@ -51,7 +51,7 @@ export default function CategoriesManage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-display font-bold text-white mb-1">Categories</h1>
+          <h1 className="text-2xl font-display font-bold text-fg mb-1">Categories</h1>
           <p className="text-gray-400 text-sm">{categories.length} categories in your store</p>
         </div>
         <motion.button
@@ -78,7 +78,7 @@ export default function CategoriesManage() {
                 <h2 className="text-lg font-bold text-white">
                   {editingCategory ? 'Edit Category' : 'Add New Category'}
                 </h2>
-                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-white">
+                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-fg">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -90,7 +90,7 @@ export default function CategoriesManage() {
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
                     placeholder="e.g., Helmets"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <ImageUpload
@@ -113,7 +113,7 @@ export default function CategoriesManage() {
                 </motion.button>
                 <button
                   onClick={() => setIsAdding(false)}
-                  className="px-5 py-2.5 text-gray-400 hover:text-white text-sm transition-colors"
+                  className="px-5 py-2.5 text-gray-400 hover:text-fg text-sm transition-colors"
                 >
                   Cancel
                 </button>
@@ -143,7 +143,7 @@ export default function CategoriesManage() {
             </div>
             <div className="p-4 flex items-center justify-between">
               <div>
-                <h3 className="text-white font-bold">{category.name}</h3>
+                <h3 className="text-fg font-bold">{category.name}</h3>
                 <p className="text-gray-500 text-xs">{category.slug}</p>
               </div>
               <div className="flex items-center gap-1">

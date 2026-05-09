@@ -27,7 +27,7 @@ export default function BrandSettings() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-display font-bold text-white mb-1">Brand Settings</h1>
+        <h1 className="text-2xl font-display font-bold text-fg mb-1">Brand Settings</h1>
         <p className="text-gray-400 text-sm">Customize your store&apos;s brand identity</p>
       </div>
 

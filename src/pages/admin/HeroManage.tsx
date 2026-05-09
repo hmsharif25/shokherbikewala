@@ -19,7 +19,7 @@ export default function HeroManage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-display font-bold text-white mb-1">Hero & Content</h1>
+        <h1 className="text-2xl font-display font-bold text-fg mb-1">Hero & Content</h1>
         <p className="text-gray-400 text-sm">Customize the homepage hero section and brand content</p>
       </div>
 
@@ -30,7 +30,7 @@ export default function HeroManage() {
               <Type className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="text-white font-bold">Brand Identity</h2>
+              <h2 className="text-fg font-bold">Brand Identity</h2>
               <p className="text-gray-400 text-xs">Name, tagline, and logo</p>
             </div>
           </div>
@@ -41,7 +41,7 @@ export default function HeroManage() {
               <input
                 value={settings.brand_name}
                 onChange={e => setSettings({ ...settings, brand_name: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -49,7 +49,7 @@ export default function HeroManage() {
               <input
                 value={settings.tagline}
                 onChange={e => setSettings({ ...settings, tagline: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function HeroManage() {
               <Image className="w-5 h-5 text-cyan" />
             </div>
             <div>
-              <h2 className="text-white font-bold">Media</h2>
+              <h2 className="text-fg font-bold">Media</h2>
               <p className="text-gray-400 text-xs">Logo and hero images</p>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default function HeroManage() {
               <Eye className="w-5 h-5 text-green-400" />
             </div>
             <div>
-              <h2 className="text-white font-bold">Social Links</h2>
+              <h2 className="text-fg font-bold">Social Links</h2>
               <p className="text-gray-400 text-xs">WhatsApp, Facebook, TikTok, Instagram</p>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function HeroManage() {
               <input
                 value={settings.whatsapp}
                 onChange={e => setSettings({ ...settings, whatsapp: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -111,7 +111,7 @@ export default function HeroManage() {
               <input
                 value={settings.facebook}
                 onChange={e => setSettings({ ...settings, facebook: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -119,7 +119,7 @@ export default function HeroManage() {
               <input
                 value={settings.tiktok}
                 onChange={e => setSettings({ ...settings, tiktok: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -127,7 +127,7 @@ export default function HeroManage() {
               <input
                 value={settings.instagram}
                 onChange={e => setSettings({ ...settings, instagram: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
           </div>

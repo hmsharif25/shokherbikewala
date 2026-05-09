@@ -55,7 +55,7 @@ export default function TestimonialsManage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-display font-bold text-white mb-1">Testimonials</h1>
+          <h1 className="text-2xl font-display font-bold text-fg mb-1">Testimonials</h1>
           <p className="text-gray-400 text-sm">{testimonials.length} customer reviews</p>
         </div>
         <motion.button
@@ -82,7 +82,7 @@ export default function TestimonialsManage() {
                 <h2 className="text-lg font-bold text-white">
                   {editingTestimonial ? 'Edit Testimonial' : 'Add New Testimonial'}
                 </h2>
-                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-white">
+                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-fg">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -94,7 +94,7 @@ export default function TestimonialsManage() {
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
                     placeholder="e.g., Rafiq Ahmed"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
@@ -103,7 +103,7 @@ export default function TestimonialsManage() {
                     value={form.product}
                     onChange={e => setForm({ ...form, product: e.target.value })}
                     placeholder="e.g., Steelbird SBA-21 GT"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
@@ -111,7 +111,7 @@ export default function TestimonialsManage() {
                   <select
                     value={form.rating}
                     onChange={e => setForm({ ...form, rating: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   >
                     {[5, 4, 3, 2, 1].map(r => (
                       <option key={r} value={r} className="bg-dark-50">{r} Star{r > 1 ? 's' : ''}</option>
@@ -125,7 +125,7 @@ export default function TestimonialsManage() {
                     value={form.text}
                     onChange={e => setForm({ ...form, text: e.target.value })}
                     placeholder="What did the customer say?"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                   />
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default function TestimonialsManage() {
                 </motion.button>
                 <button
                   onClick={() => setIsAdding(false)}
-                  className="px-5 py-2.5 text-gray-400 hover:text-white text-sm transition-colors"
+                  className="px-5 py-2.5 text-gray-400 hover:text-fg text-sm transition-colors"
                 >
                   Cancel
                 </button>
