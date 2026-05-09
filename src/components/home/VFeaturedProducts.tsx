@@ -29,12 +29,6 @@ export default function VFeaturedProducts() {
     return pool.slice(0, 8)
   }, [products, categories, activeSlug, sortBy])
 
-  const arenaStats = [
-    { label: 'Live Inventory', value: `${products.filter((p) => p.in_stock).length}+` },
-    { label: 'Featured Builds', value: `${products.filter((p) => p.featured).length}+` },
-    { label: 'Rider Categories', value: `${categories.length}` },
-  ]
-
   return (
     <section className="sb-clean-section sb-clean-products relative py-16 sm:py-20 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -44,12 +38,12 @@ export default function VFeaturedProducts() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-10 sm:mb-12">
-          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Featured Products</span>
+          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Premium Selection</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            Best <em>Rider Picks</em>
+            FEATURED <em>PRODUCTS</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Clean product cards, smooth animation, rider-focused pricing, and quick WhatsApp checkout.
+            Handpicked high-performance gear for riders who demand the best.
           </p>
         </VReveal>
 
@@ -110,31 +104,6 @@ export default function VFeaturedProducts() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </VReveal>
-
-        <VReveal delay={120} className="mb-8 sm:mb-10">
-          <div className="v-market-console">
-            <div className="min-w-0">
-              <p className="font-ui text-[10px] sm:text-xs font-bold uppercase tracking-[0.34em] text-primary">
-                Ecommerce Command Center
-              </p>
-              <h3 className="font-headline text-xl sm:text-2xl font-bold text-fg mt-1">
-                Shop gear without visual clutter.
-              </h3>
-              <p className="font-ui text-sm text-fg-muted mt-1 max-w-xl">
-                Filter categories, compare prices, save wishlist picks, and jump
-                straight into checkout from every product card.
-              </p>
-            </div>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
-              {arenaStats.map((stat) => (
-                <div key={stat.label} className="v-market-stat">
-                  <span className="value">{stat.value}</span>
-                  <span className="label">{stat.label}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </VReveal>
 
