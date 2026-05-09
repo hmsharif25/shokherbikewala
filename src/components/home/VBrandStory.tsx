@@ -1,9 +1,5 @@
-import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
-  ArrowRight,
-  Award,
-  Gauge,
   Headphones,
   Package,
   ShieldCheck,
@@ -16,14 +12,8 @@ import { useStore } from '@/context/StoreContext'
 
 /**
  * "Engineered for Riders" — centered gaming-style section with
- * feature grid and trust pillars replacing the showroom bike image.
+ * feature grid replacing the showroom bike image.
  */
-const PILLARS = [
-  { icon: ShieldCheck, label: 'Premium\nQuality' },
-  { icon: Gauge, label: 'Performance\nFocused' },
-  { icon: Award, label: 'Rider\nApproved' },
-]
-
 const FEATURES = [
   { icon: Zap, title: 'High Performance', desc: 'Race-grade materials built for speed' },
   { icon: ShieldCheck, title: 'Safety Certified', desc: 'DOT & ECE approved protection' },
@@ -86,29 +76,7 @@ export default function VBrandStory() {
           ))}
         </div>
 
-        {/* CTA + Pillars */}
-        <VReveal className="text-center">
-          <Link
-            to="/products"
-            className="sb-cta-primary group inline-flex"
-          >
-            Explore Collection
-            <span className="sb-cta-pin">
-              <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
 
-          <div className="sb-pillar-capsule mx-auto mt-8">
-            {PILLARS.map((pillar) => (
-              <div key={pillar.label} className="sb-pillar-cell">
-                <span className="sb-pillar-ico">
-                  <pillar.icon className="w-4 h-4" />
-                </span>
-                <span className="sb-pillar-label">{pillar.label}</span>
-              </div>
-            ))}
-          </div>
-        </VReveal>
       </div>
     </section>
   )
