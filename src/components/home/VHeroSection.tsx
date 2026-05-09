@@ -83,42 +83,80 @@ export default function VHeroSection() {
           <span className="sb-cinematic-line sb-cinematic-line-accent">BIKEWALA</span>
         </motion.h1>
 
-        {/* Social links */}
+        {/* Social links — premium animated cards */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.44 }}
-          className="flex items-center gap-4 mt-8"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-8"
         >
           {[
-            { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook', color: '#1877F2' },
-            { Icon: Instagram, url: brandSettings.instagram, label: 'Instagram', color: '#E4405F' },
-            { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok', color: '#00f2ea' },
-            { Icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp', color: '#25D366' },
-          ].map(({ Icon, url, label, color }, i) => (
+            { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook', tag: 'Follow', color: '#1877F2', gradient: 'from-[#1877F2] to-[#0d5cbf]' },
+            { Icon: Instagram, url: brandSettings.instagram, label: 'Instagram', tag: 'Follow', color: '#E4405F', gradient: 'from-[#E4405F] via-[#C13584] to-[#F77737]' },
+            { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok', tag: 'Watch', color: '#00f2ea', gradient: 'from-[#00f2ea] to-[#ff0050]' },
+            { Icon: MessageCircle, url: brandSettings.whatsapp, label: 'WhatsApp', tag: 'Chat', color: '#25D366', gradient: 'from-[#25D366] to-[#128C7E]' },
+          ].map(({ Icon, url, label, tag, color, gradient }, i) => (
             <motion.a
               key={label}
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-              className="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-line bg-bg/60 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:scale-110"
-              style={{
-                boxShadow: `0 0 0 rgba(${color}, 0)`,
-              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.97 }}
+              className="group relative flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl bg-bg/40 backdrop-blur-md border border-line overflow-hidden transition-all duration-300"
+              style={{ '--social-color': color } as React.CSSProperties}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = color
-                e.currentTarget.style.boxShadow = `0 0 20px ${color}40, 0 0 40px ${color}20`
+                e.currentTarget.style.boxShadow = `0 0 24px ${color}30, 0 0 48px ${color}15`
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = ''
                 e.currentTarget.style.boxShadow = ''
               }}
-              aria-label={label}
             >
-              <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-fg-muted transition-colors duration-300 group-hover:text-white" />
+              {/* Animated gradient sweep on hover */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background: `linear-gradient(135deg, ${color}10, transparent 60%)`,
+                }}
+              />
+
+              {/* Icon circle with gradient */}
+              <div className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-shadow duration-300`}
+                style={{ boxShadow: `0 4px 12px ${color}30` }}
+              >
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                {/* Shine effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-xl"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.25), transparent 50%)',
+                  }}
+                />
+              </div>
+
+              {/* Label + tag */}
+              <div className="relative flex flex-col">
+                <span className="text-[9px] sm:text-[10px] font-ui uppercase tracking-[0.18em] text-fg-soft/60">
+                  {tag}
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-fg tracking-wide group-hover:text-white transition-colors duration-300">
+                  {label}
+                </span>
+              </div>
+
+              {/* Animated border glow on hover */}
+              <motion.div
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 pointer-events-none"
+                style={{
+                  boxShadow: `inset 0 0 0 1px ${color}40`,
+                }}
+                transition={{ duration: 0.3 }}
+              />
             </motion.a>
           ))}
         </motion.div>
