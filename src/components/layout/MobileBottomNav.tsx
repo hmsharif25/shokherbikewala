@@ -34,8 +34,8 @@ export default function MobileBottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-      <div className="absolute inset-0 bg-bg-2/95 backdrop-blur-xl border-t border-line shadow-[0_-8px_32px_-12px_rgba(255,106,26,0.18)]" />
-      <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+      <div className="absolute inset-0 bg-bg-2/96 backdrop-blur-2xl border-t border-line shadow-[0_-12px_36px_-14px_rgba(255,106,26,0.22)]" />
+      <div className="absolute -top-px left-0 right-0 divider-glow" />
       <div className="relative flex items-center justify-around px-2 py-1.5 safe-area-bottom">
         {navItems.map((item) => {
           const isActive = !item.external && location.pathname === item.path
@@ -50,12 +50,13 @@ export default function MobileBottomNav() {
                 rel="noopener noreferrer"
                 whileTap={{ scale: 0.85 }}
                 className="flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-colors"
+                aria-label="Chat on WhatsApp"
               >
-                <div className="relative p-1.5 rounded-xl bg-green-500/20">
-                  <item.icon className="w-5 h-5 text-green-400" />
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <div className="relative p-1.5 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/15 border border-green-500/30 shadow-[0_8px_18px_-8px_rgba(34,197,94,0.45)]">
+                  <item.icon className="w-5 h-5 text-green-500" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 </div>
-                <span className="text-[10px] font-racing tracking-wide text-green-400">
+                <span className="text-[10px] font-racing tracking-wide text-green-500">
                   {item.name}
                 </span>
               </motion.a>
@@ -71,14 +72,18 @@ export default function MobileBottomNav() {
                 {isActive && (
                   <motion.div
                     layoutId="mobile-nav-indicator"
-                    className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-gradient-to-r from-primary to-gold rounded-full"
+                    className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-gradient-to-r from-primary via-gold to-cyan rounded-full shadow-[0_0_8px_rgba(255,106,26,0.55)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
-                <div className={`p-1.5 rounded-xl transition-colors ${isActive ? 'bg-primary/15' : ''}`}>
-                  <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-primary' : 'text-gray-500'}`} />
+                <div className={`p-1.5 rounded-xl transition-all ${
+                  isActive
+                    ? 'bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 shadow-[0_8px_18px_-8px_rgba(255,106,26,0.45)]'
+                    : 'border border-transparent'
+                }`}>
+                  <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-primary' : 'text-fg-soft'}`} />
                 </div>
-                <span className={`text-[10px] font-racing tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-500'}`}>
+                <span className={`text-[10px] font-racing tracking-wide transition-colors ${isActive ? 'text-primary font-semibold' : 'text-fg-soft'}`}>
                   {item.name}
                 </span>
               </motion.div>
