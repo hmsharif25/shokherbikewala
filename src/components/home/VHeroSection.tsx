@@ -4,7 +4,6 @@ import {
   Instagram,
   MessageCircle,
   Music2,
-  Bike,
 } from 'lucide-react'
 import { useRef } from 'react'
 import { useStore } from '@/context/StoreContext'
@@ -101,17 +100,13 @@ export default function VHeroSection() {
               }}
             />
 
-            {/* Logo or fallback icon */}
+            {/* Brand logo */}
             <div className="absolute inset-0 flex items-center justify-center">
-              {brandSettings.logo_url ? (
-                <img
-                  src={brandSettings.logo_url}
-                  alt={brandSettings.brand_name}
-                  className="w-14 h-14 sm:w-20 sm:h-20 object-contain drop-shadow-[0_0_12px_rgba(255,106,26,0.3)]"
-                />
-              ) : (
-                <Bike className="w-10 h-10 sm:w-14 sm:h-14 text-primary drop-shadow-[0_0_12px_rgba(255,106,26,0.4)]" />
-              )}
+              <img
+                src={brandSettings.logo_url || '/logo.png'}
+                alt={brandSettings.brand_name}
+                className="w-16 h-16 sm:w-22 sm:h-22 object-contain drop-shadow-[0_0_16px_rgba(255,106,26,0.35)]"
+              />
             </div>
 
             {/* Shine sweep */}
