@@ -31,7 +31,7 @@ export default function CategoriesPage() {
                   <motion.div
                     whileHover={{ y: -8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="group v-cat-card relative rounded-2xl overflow-hidden h-40 sm:h-64 cursor-pointer"
+                    className="group v-cat-card sb-neon-card relative rounded-2xl overflow-hidden h-40 sm:h-64 cursor-pointer"
                   >
                     <img
                       src={category.image_url}

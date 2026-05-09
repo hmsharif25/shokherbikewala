@@ -8,6 +8,7 @@ import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import HomePage from '@/pages/HomePage'
 import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
+import ScrollProgress from '@/components/ui/ScrollProgress'
 import SEO from '@/components/seo/SEO'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
@@ -102,6 +103,7 @@ function App() {
           <Router>
             <ScrollToTop />
             <SEO />
+            <ScrollProgress />
             <PageLoader />
             <GamingBackdrop />
             <AppRoutes />

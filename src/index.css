@@ -2663,13 +2663,16 @@ html {
 /* ---------- Velocity scroll-reveal helpers ---------- */
 .v-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(28px) scale(0.97);
+  filter: blur(4px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .v-reveal.in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
 }
 
 /* ---------- Marquee ticker for promo banner ---------- */
@@ -6646,4 +6649,537 @@ html {
 /* Floating WhatsApp enhanced glow in dark mode */
 :root[data-theme='dark'] .v-whatsapp-boost {
   box-shadow: 0 0 24px rgba(37, 211, 102, 0.35);
+}
+
+/* =================== GAMING ANIMATION SYSTEM =================== */
+
+/* ── Scroll progress bar ── */
+.sb-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6a1a, #00d4ff, #ffd700, #ff6a1a);
+  background-size: 300% 100%;
+  animation: sb-progress-gradient 4s linear infinite;
+  transform-origin: left;
+  z-index: 9999;
+  box-shadow: 0 0 12px rgba(255, 106, 26, 0.6), 0 0 24px rgba(0, 212, 255, 0.3);
+}
+
+@keyframes sb-progress-gradient {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* ── Typewriter cursor ── */
+.sb-typewriter-cursor {
+  font-weight: 100;
+  color: rgb(var(--c-primary));
+  margin-left: 1px;
+}
+.sb-blink {
+  animation: sb-cursor-blink 0.8s step-end infinite;
+}
+@keyframes sb-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ── Shimmer gradient text ── */
+.sb-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--c-primary)) 0%,
+    #ffd700 25%,
+    #00d4ff 50%,
+    #ffd700 75%,
+    rgb(var(--c-primary)) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: sb-shimmer-move 3s linear infinite;
+}
+
+@keyframes sb-shimmer-move {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── TiltCard ── */
+.sb-tilt-card {
+  position: relative;
+  will-change: transform;
+}
+.sb-tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 2;
+}
+
+/* ── Enhanced section reveal with gaming flair ── */
+.sb-gaming-reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sb-gaming-reveal.in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Neon border pulse for cards ── */
+.sb-neon-card {
+  position: relative;
+  overflow: hidden;
+}
+.sb-neon-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 106, 26, 0.4),
+    rgba(0, 212, 255, 0.2),
+    rgba(255, 215, 0, 0.3),
+    rgba(255, 106, 26, 0.4)
+  );
+  background-size: 300% 300%;
+  animation: sb-neon-border-sweep 4s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.sb-neon-card:hover::before {
+  opacity: 1;
+}
+
+@keyframes sb-neon-border-sweep {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ── Floating animation variants ── */
+.sb-float-slow {
+  animation: sb-float-y 6s ease-in-out infinite;
+}
+.sb-float-fast {
+  animation: sb-float-y 3s ease-in-out infinite;
+}
+.sb-float-rotate {
+  animation: sb-float-rotate 8s ease-in-out infinite;
+}
+
+@keyframes sb-float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+@keyframes sb-float-rotate {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%      { transform: translateY(-8px) rotate(2deg); }
+  50%      { transform: translateY(0) rotate(0deg); }
+  75%      { transform: translateY(8px) rotate(-2deg); }
+}
+
+/* ── Gaming card hover glow ── */
+.sb-card-glow {
+  transition: box-shadow 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+}
+.sb-card-glow:hover {
+  box-shadow:
+    0 0 20px rgba(255, 106, 26, 0.15),
+    0 20px 40px -15px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 106, 26, 0.3) !important;
+  transform: translateY(-4px);
+}
+
+/* ── Scanline overlay for sections ── */
+.sb-scanline-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 106, 26, 0.015) 2px,
+    rgba(255, 106, 26, 0.015) 4px
+  );
+  animation: sb-scanline-drift 10s linear infinite;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+@keyframes sb-scanline-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 60px; }
+}
+
+/* ── Gaming flicker for headings ── */
+.sb-flicker {
+  animation: sb-text-flicker 4s ease-in-out infinite;
+}
+@keyframes sb-text-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 4px rgba(255, 106, 26, 0.4),
+      0 0 12px rgba(255, 106, 26, 0.2);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+/* ── Pulsing dot for status indicators ── */
+.sb-pulse-dot {
+  position: relative;
+}
+.sb-pulse-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -16px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+  transform: translateY(-50%);
+  animation: sb-dot-pulse 1.5s ease-in-out infinite;
+}
+@keyframes sb-dot-pulse {
+  0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+  50%      { opacity: 0.5; transform: translateY(-50%) scale(0.7); }
+}
+
+/* ── Energy line divider ── */
+.sb-energy-divider {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 106, 26, 0.5), rgba(0, 212, 255, 0.4), transparent);
+  overflow: hidden;
+}
+.sb-energy-divider::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: sb-energy-sweep 2.5s linear infinite;
+}
+@keyframes sb-energy-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Particle spark burst ── */
+.sb-spark-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ── Enhanced product card with gaming border ── */
+.sb-product-card {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s ease;
+}
+.sb-product-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow:
+    0 24px 48px -16px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 106, 26, 0.2);
+}
+
+/* ── Gaming badge ── */
+.sb-gaming-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(var(--c-primary));
+  background: rgba(255, 106, 26, 0.08);
+  border: 1px solid rgba(255, 106, 26, 0.2);
+}
+.sb-gaming-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--c-primary));
+  box-shadow: 0 0 8px rgba(255, 106, 26, 0.6);
+  animation: sb-dot-pulse 1.5s ease-in-out infinite;
+}
+
+/* ── Hex grid pattern overlay ── */
+.sb-hex-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z' fill='%23ff6a1a' fill-opacity='1'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+/* ── Loading skeleton with gaming shimmer ── */
+.sb-skeleton-gaming {
+  background: linear-gradient(
+    110deg,
+    rgb(var(--c-surface-soft)) 30%,
+    rgb(var(--c-surface-hover)) 50%,
+    rgb(var(--c-surface-soft)) 70%
+  );
+  background-size: 200% 100%;
+  animation: sb-skeleton-sweep 1.8s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes sb-skeleton-sweep {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Stagger children animation ── */
+.sb-stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: sb-stagger-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.sb-stagger-children > *:nth-child(1)  { animation-delay: 0.05s; }
+.sb-stagger-children > *:nth-child(2)  { animation-delay: 0.10s; }
+.sb-stagger-children > *:nth-child(3)  { animation-delay: 0.15s; }
+.sb-stagger-children > *:nth-child(4)  { animation-delay: 0.20s; }
+.sb-stagger-children > *:nth-child(5)  { animation-delay: 0.25s; }
+.sb-stagger-children > *:nth-child(6)  { animation-delay: 0.30s; }
+.sb-stagger-children > *:nth-child(7)  { animation-delay: 0.35s; }
+.sb-stagger-children > *:nth-child(8)  { animation-delay: 0.40s; }
+.sb-stagger-children > *:nth-child(9)  { animation-delay: 0.45s; }
+.sb-stagger-children > *:nth-child(10) { animation-delay: 0.50s; }
+
+@keyframes sb-stagger-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Parallax floating elements ── */
+.sb-parallax-float {
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+}
+
+/* ── Corner brackets for gaming panels ── */
+.sb-corner-brackets {
+  position: relative;
+}
+.sb-corner-brackets::before,
+.sb-corner-brackets::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: rgba(255, 106, 26, 0.4);
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+.sb-corner-brackets::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.sb-corner-brackets::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+.sb-corner-brackets:hover::before,
+.sb-corner-brackets:hover::after {
+  border-color: rgba(255, 106, 26, 0.8);
+}
+
+/* ── Glowing underline for nav/links ── */
+.sb-glow-underline {
+  position: relative;
+}
+.sb-glow-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgb(var(--c-primary)), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sb-glow-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Ambient glow orb for backgrounds ── */
+.sb-ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: sb-orb-drift 12s ease-in-out infinite alternate;
+}
+@keyframes sb-orb-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(20px, -15px) scale(1.05); }
+  66%  { transform: translate(-10px, 10px) scale(0.95); }
+  100% { transform: translate(5px, -5px) scale(1); }
+}
+
+/* ── Ripple effect on click ── */
+.sb-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.sb-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 106, 26, 0.3), transparent 70%);
+  transform: scale(0);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+.sb-ripple:active::after {
+  transform: scale(2.5);
+  transition: transform 0s;
+}
+
+/* ── Enhanced page transition ── */
+.sb-page-enter {
+  animation: sb-page-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes sb-page-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* ── Hover glow for interactive elements ── */
+.sb-interactive-glow {
+  transition: all 0.3s ease;
+}
+.sb-interactive-glow:hover {
+  filter: drop-shadow(0 0 8px rgba(255, 106, 26, 0.4));
+}
+
+/* ── Scale bounce on view ── */
+.sb-bounce-in {
+  animation: sb-bounce-scale 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes sb-bounce-scale {
+  0%   { opacity: 0; transform: scale(0.85); }
+  60%  { transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── Cyber line decoration ── */
+.sb-cyber-line {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.3) 15%,
+    rgba(255, 106, 26, 0.5) 50%,
+    rgba(0, 212, 255, 0.3) 85%,
+    transparent 100%
+  );
+  position: relative;
+}
+.sb-cyber-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(var(--c-primary));
+  box-shadow: 0 0 12px rgba(255, 106, 26, 0.6);
+  animation: sb-cyber-dot-travel 4s ease-in-out infinite;
+}
+@keyframes sb-cyber-dot-travel {
+  0%, 100% { left: 10%; }
+  50%      { left: 90%; }
+}
+
+/* ── Electricity/lightning effect ── */
+.sb-electricity {
+  position: relative;
+}
+.sb-electricity::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.4) 10%,
+    transparent 20%,
+    rgba(255, 106, 26, 0.4) 30%,
+    transparent 40%,
+    rgba(0, 212, 255, 0.4) 50%,
+    transparent 60%,
+    rgba(255, 106, 26, 0.4) 70%,
+    transparent 80%,
+    rgba(0, 212, 255, 0.4) 90%,
+    transparent 100%
+  );
+  animation: sb-electric-rotate 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.sb-electricity:hover::before {
+  opacity: 1;
+}
+@keyframes sb-electric-rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── Motion blur on fast transitions ── */
+.sb-motion-blur {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sb-motion-blur:hover {
+  filter: blur(0px);
+  transform: translateX(4px);
 }

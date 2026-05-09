@@ -22,11 +22,13 @@ function iconFor(slug: string) {
 }
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 40, scale: 0.92, filter: 'blur(6px)' },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: 0.08 * i, duration: 0.6, ease: 'easeOut' as const },
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { delay: 0.1 * i, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 }
 
@@ -64,7 +66,7 @@ export default function VCategoriesGrid() {
               >
                 <Link
                   to={`/products?category=${cat.slug}`}
-                  className="sb-simple-card group flex flex-col items-center text-center p-4 sm:p-5 h-full block"
+                  className="sb-simple-card sb-neon-card sb-card-glow group flex flex-col items-center text-center p-4 sm:p-5 h-full block"
                 >
                   {/* Icon chip */}
                   <span className="sb-mini-icon absolute top-3 left-3 z-10">
