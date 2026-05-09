@@ -3003,3 +3003,31 @@ html {
 .v-reveal.in.v-reveal-left,
 .v-reveal.in.v-reveal-right { transform: translate(0, 0); }
 .v-reveal.in.v-reveal-zoom { transform: scale(1); }
+
+/* ---------- Mobile bottom tab bar (5-up reference style) ----------
+ * Sticky white (light) / dark glass strip across the bottom on phones,
+ * matching the reference mobile mockup exactly.
+ */
+.v-tabbar {
+  background: rgb(var(--c-bg) / 0.95);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border-top: 1px solid rgb(var(--c-line) / 0.7);
+  box-shadow:
+    0 -10px 30px -12px rgba(17, 24, 39, 0.10),
+    0 -2px 8px -2px rgba(255, 90, 0, 0.06);
+}
+:root[data-theme='dark'] .v-tabbar {
+  background: rgba(15, 15, 22, 0.9);
+  border-top-color: rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 -14px 30px -14px rgba(0, 0, 0, 0.55),
+    0 -2px 10px -2px rgba(255, 90, 0, 0.10);
+}
+
+/* Reserve space below all pages so the tab bar never covers content. */
+@media (max-width: 767.98px) {
+  body {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+}

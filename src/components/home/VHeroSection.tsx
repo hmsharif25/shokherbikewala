@@ -53,10 +53,9 @@ export default function VHeroSection() {
   const pool = featured.length >= 4 ? featured : products
   const pinned = pool.slice(0, 4)
 
-  // Brand-configured hero image with a tasteful sportbike fallback.
-  const heroImage =
-    brandSettings.hero_image_url ||
-    'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1600&q=80'
+  // Brand-configured hero image; defaults to the Velocity-style white
+  // sportbike that ships with the project (matches the reference).
+  const heroImage = brandSettings.hero_image_url || '/brand/hero-bike.png'
 
   const brandName = brandSettings.brand_name || 'Shokher Bike Wala'
   const brandTagline =
