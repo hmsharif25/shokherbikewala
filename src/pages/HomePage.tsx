@@ -11,10 +11,7 @@ const VFeaturedProducts = lazy(
   () => import('@/components/home/VFeaturedProducts')
 )
 const VBrandStory = lazy(() => import('@/components/home/VBrandStory'))
-const VPromoBanner = lazy(() => import('@/components/home/VPromoBanner'))
-const VCommunity = lazy(() => import('@/components/home/VCommunity'))
 const VTestimonials = lazy(() => import('@/components/home/VTestimonials'))
-const VFAQ = lazy(() => import('@/components/home/VFAQ'))
 
 /**
  * Velocity homepage — premium futuristic motorbike accessories
@@ -29,7 +26,7 @@ export default function HomePage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative"
+      className="relative sb-home-flow"
     >
       <VHeroSection />
       <LazySection>
@@ -42,16 +39,7 @@ export default function HomePage() {
         <VBrandStory />
       </LazySection>
       <LazySection>
-        <VPromoBanner />
-      </LazySection>
-      <LazySection>
-        <VCommunity />
-      </LazySection>
-      <LazySection>
         <VTestimonials />
-      </LazySection>
-      <LazySection>
-        <VFAQ />
       </LazySection>
     </motion.div>
   )

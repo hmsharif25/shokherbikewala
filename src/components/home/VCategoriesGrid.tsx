@@ -35,23 +35,22 @@ export default function VCategoriesGrid() {
   const visible = categories.slice(0, 5)
 
   return (
-    <section className="v-premium-section v-premium-categories relative py-20 sm:py-24 overflow-hidden">
+    <section className="sb-clean-section sb-clean-categories relative py-16 sm:py-20 overflow-hidden">
       <div className="absolute inset-0 v-dot-field opacity-30 pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <VReveal className="text-center mb-12 sm:mb-16">
-          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Premium Categories</span>
+          <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Shop Categories</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            SHOP BY <em>RIDER SYSTEM</em>
+            Simple <em>Rider Gear</em>
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Helmet, gloves, jackets, exhausts, and bike lights arranged like a
-            futuristic rider loadout for every screen size.
+            Essential rider categories in a clean premium layout — fast to scan, easy to shop.
           </p>
         </VReveal>
 
-        <div className="v-category-scroll grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+        <div className="sb-simple-grid sb-category-scroll grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {visible.map((cat, i) => {
             const Icon = iconFor(cat.slug)
             return (
@@ -65,33 +64,33 @@ export default function VCategoriesGrid() {
               >
                 <Link
                   to={`/products?category=${cat.slug}`}
-                  className="v-cat-card v-card-sheen group flex flex-col items-center text-center p-4 sm:p-6 h-full block"
+                  className="sb-simple-card group flex flex-col items-center text-center p-4 sm:p-5 h-full block"
                 >
                   {/* Icon chip */}
-                  <span className="absolute top-3 left-3 z-10 w-9 h-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <span className="sb-mini-icon absolute top-3 left-3 z-10">
                     <Icon className="w-4 h-4" />
                   </span>
 
-                  <div className="relative z-[1] aspect-square w-full overflow-hidden mb-4 sm:mb-5">
+                  <div className="relative z-[1] aspect-square w-full overflow-hidden mb-3 sm:mb-4">
                     <img
                       src={cat.image_url}
                       alt={cat.name}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_15px_30px_rgba(255,90,0,0.25)]"
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_14px_24px_rgba(255,90,0,0.16)]"
                     />
                   </div>
 
-                  <h3 className="relative z-[1] font-headline font-bold text-fg text-sm sm:text-lg mb-1 tracking-wide uppercase">
+                  <h3 className="relative z-[1] font-headline font-bold text-fg text-sm sm:text-base mb-1 tracking-wide uppercase">
                     {cat.name}
                   </h3>
 
                   {/* Tagline (synthetic) */}
-                  <p className="relative z-[1] text-fg-soft text-xs sm:text-sm leading-snug font-ui mb-3 sm:mb-4 line-clamp-2">
+                  <p className="relative z-[1] text-fg-soft text-xs sm:text-sm leading-snug font-ui mb-3 line-clamp-2">
                     {taglineFor(cat.slug)}
                   </p>
 
-                  <div className="relative z-[1] mt-auto inline-flex items-center gap-1.5 text-primary text-xs sm:text-sm font-ui font-bold uppercase tracking-[0.2em] group-hover:gap-3 transition-all">
+                  <div className="relative z-[1] mt-auto inline-flex items-center gap-1.5 text-primary text-xs font-ui font-bold uppercase tracking-[0.16em] group-hover:gap-2.5 transition-all">
                     Explore
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
