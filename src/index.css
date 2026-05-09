@@ -2754,6 +2754,74 @@ html {
     radial-gradient(ellipse at center, rgba(255, 122, 31, 0.65) 0%, rgba(255, 122, 31, 0.18) 36%, transparent 62%);
 }
 
+/* ---------- Orbital rings (image-less hero) ----------
+ * Three slowly-rotating concentric orange rings used as the visual
+ * anchor of the image-less hero. Replaces what the bike + showroom
+ * ring used to do without introducing any imagery.
+ */
+.v-orbital-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 9999px;
+  border: 1px dashed rgba(255, 122, 31, 0.28);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: v-orbital-spin 36s linear infinite;
+}
+.v-orbital-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgb(var(--c-primary));
+  box-shadow: 0 0 12px 2px rgba(255, 122, 31, 0.7);
+  transform: translateY(-50%);
+}
+.v-orbital-ring--xl {
+  width: min(120vmin, 1100px);
+  height: min(120vmin, 1100px);
+  border-color: rgba(255, 122, 31, 0.18);
+  animation-duration: 60s;
+}
+.v-orbital-ring--lg {
+  width: min(85vmin, 800px);
+  height: min(85vmin, 800px);
+  border-color: rgba(255, 122, 31, 0.24);
+  animation-duration: 44s;
+  animation-direction: reverse;
+}
+.v-orbital-ring--md {
+  width: min(58vmin, 550px);
+  height: min(58vmin, 550px);
+  border-color: rgba(255, 122, 31, 0.32);
+  animation-duration: 32s;
+}
+:root[data-theme='dark'] .v-orbital-ring--xl {
+  border-color: rgba(255, 122, 31, 0.22);
+}
+:root[data-theme='dark'] .v-orbital-ring--lg {
+  border-color: rgba(255, 122, 31, 0.3);
+}
+:root[data-theme='dark'] .v-orbital-ring--md {
+  border-color: rgba(255, 122, 31, 0.42);
+}
+
+@keyframes v-orbital-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-orbital-ring {
+    animation: none;
+  }
+}
+
 /* ---------- Brand wordmark (hero) ----------
  * Stylised SHOKHER BIKE WALA — wide spaced Orbitron with a small
  * orange dot accent, used directly under the eyebrow.
