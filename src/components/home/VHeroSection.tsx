@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import {
+  ChevronDown,
   Facebook,
   Instagram,
   MessageCircle,
@@ -22,7 +23,7 @@ export default function VHeroSection() {
   return (
     <section
       ref={ref}
-      className="sb-cinematic-hero relative min-h-[100dvh] overflow-x-clip overflow-y-visible pt-24 pb-12 sm:pt-28 sm:pb-16"
+      className="sb-cinematic-hero relative min-h-[100dvh] overflow-x-clip overflow-y-visible pt-20 pb-8 sm:pt-28 sm:pb-16"
     >
       {/* Atmospheric background layers */}
       <div className="sb-hero-bg" />
@@ -82,7 +83,7 @@ export default function VHeroSection() {
           />
 
           {/* Main icon container */}
-          <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden">
+          <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden">
             {/* Glass background */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl border border-white/10 rounded-full" />
 
@@ -101,7 +102,7 @@ export default function VHeroSection() {
               <img
                 src={brandSettings.logo_url || '/logo.png'}
                 alt={brandSettings.brand_name}
-                className="w-16 h-16 sm:w-22 sm:h-22 object-contain drop-shadow-[0_0_16px_rgba(255,106,26,0.35)]"
+                className="w-20 h-20 sm:w-22 sm:h-22 object-contain drop-shadow-[0_0_20px_rgba(255,106,26,0.4)]"
               />
             </div>
 
@@ -223,7 +224,26 @@ export default function VHeroSection() {
           ))}
         </motion.div>
 
-
+        {/* Animated scroll-down indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="mt-8 sm:mt-10 flex flex-col items-center gap-1"
+        >
+          <span className="text-[9px] font-ui uppercase tracking-[0.25em] text-fg-soft/50">Scroll</span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="w-5 h-5 text-primary/60" />
+          </motion.div>
+          <motion.div
+            className="w-px h-8 bg-gradient-to-b from-primary/40 to-transparent"
+            animate={{ scaleY: [0.5, 1, 0.5], opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
 
       </motion.div>
     </section>
