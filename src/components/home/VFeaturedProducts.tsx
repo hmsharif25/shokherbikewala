@@ -1,33 +1,18 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, ArrowRight, Star, ChevronDown, Heart } from 'lucide-react'
+import { ShoppingCart, ArrowRight, Star, Heart } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
-type SortBy = 'featured' | 'price-asc' | 'price-desc'
-
 export default function VFeaturedProducts() {
   const { products, categories, brandSettings } = useStore()
-  const [activeSlug, setActiveSlug] = useState<string>('all')
-  const [sortBy, setSortBy] = useState<SortBy>('featured')
-  const [sortOpen, setSortOpen] = useState(false)
-
-  // Top 6 categories appear as filter pills
-  const visibleCategories = useMemo(() => categories.slice(0, 6), [categories])
 
   const filtered = useMemo(() => {
-    let pool = products.filter((p) => p.featured || p.in_stock)
-    if (activeSlug !== 'all') {
-      const cat = categories.find((c) => c.slug === activeSlug)
-      if (cat) pool = pool.filter((p) => p.category_id === cat.id)
-    }
-    const priceOf = (p: typeof products[number]) => p.discount_price ?? p.price
-    if (sortBy === 'price-asc') pool = [...pool].sort((a, b) => priceOf(a) - priceOf(b))
-    else if (sortBy === 'price-desc') pool = [...pool].sort((a, b) => priceOf(b) - priceOf(a))
-    else pool = [...pool].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+    const pool = [...products.filter((p) => p.featured || p.in_stock)]
+      .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
     return pool.slice(0, 8)
-  }, [products, categories, activeSlug, sortBy])
+  }, [products])
 
   return (
     <section className="sb-clean-section sb-clean-products relative py-16 sm:py-20 overflow-hidden">
@@ -45,66 +30,6 @@ export default function VFeaturedProducts() {
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
             Handpicked high-performance gear for riders who demand the best.
           </p>
-        </VReveal>
-
-        {/* Filter pills + sort */}
-        <VReveal className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8 sm:mb-10">
-          <div className="flex flex-wrap gap-2 sm:gap-3 -mx-1 sm:mx-0 overflow-x-auto pb-1 lg:pb-0 lg:overflow-visible scrollbar-hide">
-            <button
-              onClick={() => setActiveSlug('all')}
-              className={`v-tab ${activeSlug === 'all' ? 'active' : ''}`}
-            >
-              All Products
-            </button>
-            {visibleCategories.map((c) => (
-              <button
-                key={c.slug}
-                onClick={() => setActiveSlug(c.slug)}
-                className={`v-tab ${activeSlug === c.slug ? 'active' : ''}`}
-              >
-                {c.name}
-              </button>
-            ))}
-          </div>
-
-          <div className="relative self-start lg:self-auto">
-            <button
-              onClick={() => setSortOpen((v) => !v)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-line bg-bg/60 hover:border-primary/40 text-sm font-ui font-medium text-fg-muted hover:text-fg transition-colors"
-            >
-              Sort by:&nbsp;
-              <span className="text-fg font-semibold">
-                {sortBy === 'featured' ? 'Featured' : sortBy === 'price-asc' ? 'Price ↑' : 'Price ↓'}
-              </span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <AnimatePresence>
-              {sortOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute right-0 top-full mt-2 w-44 v-capsule rounded-xl p-1 z-30"
-                >
-                  {(['featured', 'price-asc', 'price-desc'] as SortBy[]).map((opt) => (
-                    <button
-                      key={opt}
-                      onClick={() => {
-                        setSortBy(opt)
-                        setSortOpen(false)
-                      }}
-                      className={`block w-full text-left px-3 py-2 rounded-lg text-sm font-ui transition-colors ${
-                        sortBy === opt ? 'bg-primary/10 text-primary' : 'text-fg-muted hover:bg-bg-2 hover:text-fg'
-                      }`}
-                    >
-                      {opt === 'featured' ? 'Featured' : opt === 'price-asc' ? 'Price: Low to High' : 'Price: High to Low'}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </VReveal>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
