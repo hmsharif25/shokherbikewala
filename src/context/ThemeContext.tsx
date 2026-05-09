@@ -16,7 +16,7 @@ interface ThemeContextValue {
 }
 
 const STORAGE_KEY = 'sbw_theme'
-const DEFAULT_THEME: Theme = 'light'
+const DEFAULT_THEME: Theme = 'dark'
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 

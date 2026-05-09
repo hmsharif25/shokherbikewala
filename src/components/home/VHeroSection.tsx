@@ -86,6 +86,14 @@ export default function VHeroSection() {
       <div className="sb-hero-bg" />
       <div className="sb-hero-lines" />
       <div className="sb-hero-floor" aria-hidden="true" />
+      {/* Gaming accent line at bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px z-20"
+        style={{
+          background: 'linear-gradient(90deg, transparent 5%, rgba(255,106,26,0.5) 30%, rgba(0,212,255,0.3) 50%, rgba(255,106,26,0.5) 70%, transparent 95%)',
+        }}
+        aria-hidden="true"
+      />
 
       <motion.div
         style={{ y, opacity }}

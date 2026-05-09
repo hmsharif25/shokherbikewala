@@ -54,6 +54,16 @@ export default function PageLoader() {
             }`}
           />
 
+          {isDark && (
+            <>
+              <div className="boot-bracket boot-bracket-tl" />
+              <div className="boot-bracket boot-bracket-tr" />
+              <div className="boot-bracket boot-bracket-bl" />
+              <div className="boot-bracket boot-bracket-br" />
+              <div className="boot-grid absolute inset-0" />
+            </>
+          )}
+
           <div className="sb-loader-shell relative flex flex-col items-center gap-6 px-6 max-w-sm w-full">
             <motion.div
               initial={{ scale: 0.85, opacity: 0 }}
@@ -64,11 +74,21 @@ export default function PageLoader() {
               <motion.div
                 aria-hidden
                 animate={{ rotate: 360 }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                 className={`absolute inset-0 rounded-full border ${
-                  isDark ? 'border-primary/30' : 'border-primary/25'
+                  isDark ? 'border-primary/40' : 'border-primary/25'
                 }`}
+                style={isDark ? { boxShadow: '0 0 20px rgba(255, 106, 26, 0.2)' } : undefined}
               />
+              {isDark && (
+                <motion.div
+                  aria-hidden
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+                  className="absolute -inset-1 rounded-full border border-cyan/20"
+                  style={{ boxShadow: '0 0 14px rgba(0, 212, 255, 0.1)' }}
+                />
+              )}
               <div className="absolute inset-2 rounded-full bg-primary/5 flex items-center justify-center">
                 <img
                   src="/logo.png"
@@ -86,8 +106,8 @@ export default function PageLoader() {
               >
                 Shokher Bikewala
               </div>
-              <div className={`text-xs mt-1 ${isDark ? 'text-gray-400' : 'text-fg-soft'}`}>
-                Loading premium ride gear
+              <div className={`text-xs mt-1 font-racing tracking-[0.2em] uppercase ${isDark ? 'text-cyan/60' : 'text-fg-soft'}`}>
+                {isDark ? 'INITIALIZING SYSTEM...' : 'Loading premium ride gear'}
               </div>
             </div>
 
@@ -99,10 +119,20 @@ export default function PageLoader() {
               >
                 <motion.div
                   className="h-full bg-primary"
-                  style={{ width: `${pct}%` }}
+                  style={{
+                    width: `${pct}%`,
+                    boxShadow: isDark ? '0 0 12px rgba(255, 106, 26, 0.6)' : undefined,
+                  }}
                   transition={{ ease: 'linear' }}
                 />
               </div>
+              {isDark && (
+                <div className="text-right mt-1">
+                  <span className="font-racing text-[10px] tracking-[0.25em] text-primary/60">
+                    {pct}%
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
