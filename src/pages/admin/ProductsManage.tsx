@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Pencil, Trash2, X, Save, Package } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Product } from '@/types'
+import ImageUpload from '@/components/ui/ImageUpload'
 
 export default function ProductsManage() {
   const { products, categories, addProduct, updateProduct, deleteProduct } = useStore()
@@ -14,13 +15,13 @@ export default function ProductsManage() {
     price: '',
     discount_price: '',
     category_id: '',
-    images: '',
+    images: [] as string[],
     in_stock: true,
     featured: false,
   })
 
   const openAdd = () => {
-    setForm({ name: '', description: '', price: '', discount_price: '', category_id: categories[0]?.id || '', images: '', in_stock: true, featured: false })
+    setForm({ name: '', description: '', price: '', discount_price: '', category_id: categories[0]?.id || '', images: [], in_stock: true, featured: false })
     setEditingProduct(null)
     setIsAdding(true)
   }
@@ -32,7 +33,7 @@ export default function ProductsManage() {
       price: product.price.toString(),
       discount_price: product.discount_price?.toString() || '',
       category_id: product.category_id,
-      images: product.images.join(', '),
+      images: product.images,
       in_stock: product.in_stock,
       featured: product.featured,
     })
@@ -49,7 +50,7 @@ export default function ProductsManage() {
       price: parseFloat(form.price) || 0,
       discount_price: form.discount_price ? parseFloat(form.discount_price) : null,
       category_id: form.category_id,
-      images: form.images.split(',').map(s => s.trim()).filter(Boolean),
+      images: form.images.filter(Boolean),
       in_stock: form.in_stock,
       featured: form.featured,
       created_at: editingProduct?.created_at || new Date().toISOString(),
@@ -159,12 +160,13 @@ export default function ProductsManage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm text-gray-300 mb-1">Image URLs (comma separated)</label>
-                  <input
+                  <ImageUpload
+                    label="Product images"
+                    folder="products"
+                    multiple
                     value={form.images}
-                    onChange={e => setForm({ ...form, images: e.target.value })}
-                    placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    onChange={(v) => setForm({ ...form, images: Array.isArray(v) ? v : v ? [v] : [] })}
+                    hint="First image is shown as the main thumbnail."
                   />
                 </div>
                 <div className="flex items-center gap-6">
