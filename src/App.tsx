@@ -1,32 +1,44 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { lazy, Suspense, useEffect } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import FloatingWhatsApp from '@/components/layout/FloatingWhatsApp'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
 import HomePage from '@/pages/HomePage'
-import ProductsPage from '@/pages/ProductsPage'
-import ProductDetailPage from '@/pages/ProductDetailPage'
-import CategoriesPage from '@/pages/CategoriesPage'
-import AboutPage from '@/pages/AboutPage'
-import ContactPage from '@/pages/ContactPage'
-import CheckoutPage from '@/pages/CheckoutPage'
-import TrackOrderPage from '@/pages/TrackOrderPage'
-import AuthPage from '@/pages/AuthPage'
-import AdminLoginPage from '@/pages/admin/LoginPage'
-import AdminDashboard from '@/pages/admin/AdminDashboard'
-import ProductsManage from '@/pages/admin/ProductsManage'
-import CategoriesManage from '@/pages/admin/CategoriesManage'
-import BrandSettings from '@/pages/admin/BrandSettings'
-import TestimonialsManage from '@/pages/admin/TestimonialsManage'
-import HeroManage from '@/pages/admin/HeroManage'
-import OrdersManage from '@/pages/admin/OrdersManage'
 import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { ThemeProvider } from '@/context/ThemeContext'
-import { useEffect } from 'react'
+
+// Route-level code splitting — every non-home page is fetched
+// lazily on demand. This keeps the initial JS bundle small (only
+// the hero / home shell needs to ship for first paint).
+const ProductsPage = lazy(() => import('@/pages/ProductsPage'))
+const ProductDetailPage = lazy(() => import('@/pages/ProductDetailPage'))
+const CategoriesPage = lazy(() => import('@/pages/CategoriesPage'))
+const AboutPage = lazy(() => import('@/pages/AboutPage'))
+const ContactPage = lazy(() => import('@/pages/ContactPage'))
+const CheckoutPage = lazy(() => import('@/pages/CheckoutPage'))
+const TrackOrderPage = lazy(() => import('@/pages/TrackOrderPage'))
+const AuthPage = lazy(() => import('@/pages/AuthPage'))
+const AdminLoginPage = lazy(() => import('@/pages/admin/LoginPage'))
+const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
+const ProductsManage = lazy(() => import('@/pages/admin/ProductsManage'))
+const CategoriesManage = lazy(() => import('@/pages/admin/CategoriesManage'))
+const BrandSettings = lazy(() => import('@/pages/admin/BrandSettings'))
+const TestimonialsManage = lazy(() => import('@/pages/admin/TestimonialsManage'))
+const HeroManage = lazy(() => import('@/pages/admin/HeroManage'))
+const OrdersManage = lazy(() => import('@/pages/admin/OrdersManage'))
+
+function RouteFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -60,16 +72,18 @@ function PublicLayout() {
     <>
       <Navbar />
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:slug" element={<ProductDetailPage />} />
-          <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/track" element={<TrackOrderPage />} />
-        </Routes>
+        <Suspense fallback={<RouteFallback />}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:slug" element={<ProductDetailPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/track" element={<TrackOrderPage />} />
+          </Routes>
+        </Suspense>
       </AnimatePresence>
       <Footer />
       <FloatingWhatsApp />
@@ -97,26 +111,28 @@ function App() {
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/admin/login" element={<AdminLoginPage />} />
-      <Route
-        path="/admin"
-        element={
-          <AdminGuard>
-            <AdminDashboard />
-          </AdminGuard>
-        }
-      >
-        <Route path="products" element={<ProductsManage />} />
-        <Route path="categories" element={<CategoriesManage />} />
-        <Route path="testimonials" element={<TestimonialsManage />} />
-        <Route path="hero" element={<HeroManage />} />
-        <Route path="orders" element={<OrdersManage />} />
-        <Route path="settings" element={<BrandSettings />} />
-      </Route>
-      <Route path="/*" element={<PublicLayout />} />
-    </Routes>
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminGuard>
+              <AdminDashboard />
+            </AdminGuard>
+          }
+        >
+          <Route path="products" element={<ProductsManage />} />
+          <Route path="categories" element={<CategoriesManage />} />
+          <Route path="testimonials" element={<TestimonialsManage />} />
+          <Route path="hero" element={<HeroManage />} />
+          <Route path="orders" element={<OrdersManage />} />
+          <Route path="settings" element={<BrandSettings />} />
+        </Route>
+        <Route path="/*" element={<PublicLayout />} />
+      </Routes>
+    </Suspense>
   )
 }
 

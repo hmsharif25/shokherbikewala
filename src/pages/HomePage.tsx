@@ -1,19 +1,27 @@
+import { lazy } from 'react'
 import { motion } from 'framer-motion'
 import VHeroSection from '@/components/home/VHeroSection'
-import VCategoriesGrid from '@/components/home/VCategoriesGrid'
-import VFeaturedProducts from '@/components/home/VFeaturedProducts'
-import VBrandStory from '@/components/home/VBrandStory'
-import VPromoBanner from '@/components/home/VPromoBanner'
-import VNewArrivals from '@/components/home/VNewArrivals'
-import VCommunity from '@/components/home/VCommunity'
-import VTestimonials from '@/components/home/VTestimonials'
-import VFAQ from '@/components/home/VFAQ'
+import LazySection from '@/components/home/LazySection'
+
+// Hero is the only section that ships with the initial home bundle
+// — every section below is fetched on demand as the user scrolls,
+// so first paint is just the hero shell.
+const VCategoriesGrid = lazy(() => import('@/components/home/VCategoriesGrid'))
+const VFeaturedProducts = lazy(
+  () => import('@/components/home/VFeaturedProducts')
+)
+const VBrandStory = lazy(() => import('@/components/home/VBrandStory'))
+const VPromoBanner = lazy(() => import('@/components/home/VPromoBanner'))
+const VNewArrivals = lazy(() => import('@/components/home/VNewArrivals'))
+const VCommunity = lazy(() => import('@/components/home/VCommunity'))
+const VTestimonials = lazy(() => import('@/components/home/VTestimonials'))
+const VFAQ = lazy(() => import('@/components/home/VFAQ'))
 
 /**
  * Velocity homepage — premium futuristic motorbike accessories
- * showroom. Sections follow the brief order: hero, categories,
- * featured, brand story, promo, new arrivals, community,
- * testimonials, FAQ. The premium footer renders globally in App.
+ * showroom. The hero ships with the initial bundle; every other
+ * section is mounted only as it scrolls into view (LazySection +
+ * React.lazy) so first paint is fast on slow networks.
  */
 export default function HomePage() {
   return (
@@ -25,14 +33,30 @@ export default function HomePage() {
       className="relative"
     >
       <VHeroSection />
-      <VCategoriesGrid />
-      <VFeaturedProducts />
-      <VBrandStory />
-      <VPromoBanner />
-      <VNewArrivals />
-      <VCommunity />
-      <VTestimonials />
-      <VFAQ />
+      <LazySection>
+        <VCategoriesGrid />
+      </LazySection>
+      <LazySection>
+        <VFeaturedProducts />
+      </LazySection>
+      <LazySection>
+        <VBrandStory />
+      </LazySection>
+      <LazySection>
+        <VPromoBanner />
+      </LazySection>
+      <LazySection>
+        <VNewArrivals />
+      </LazySection>
+      <LazySection>
+        <VCommunity />
+      </LazySection>
+      <LazySection>
+        <VTestimonials />
+      </LazySection>
+      <LazySection>
+        <VFAQ />
+      </LazySection>
     </motion.div>
   )
 }
