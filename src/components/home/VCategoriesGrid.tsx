@@ -31,7 +31,7 @@ const cardVariants = {
 }
 
 export default function VCategoriesGrid() {
-  const { categories } = useStore()
+  const { categories, homeSections } = useStore()
   const visible = categories.slice(0, 5)
 
   return (
@@ -43,11 +43,10 @@ export default function VCategoriesGrid() {
         <VReveal className="text-center mb-12 sm:mb-16">
           <span className="v-eyebrow-long mb-5 sm:mb-6 mx-auto justify-center">Featured Categories</span>
           <h2 className="v-headline text-3xl sm:text-5xl md:text-6xl mt-3 mb-4">
-            GEAR UP. <em>RIDE BETTER.</em>
+            {homeSections.categories.heading}
           </h2>
           <p className="text-fg-muted max-w-xl mx-auto font-ui text-base">
-            Premium motorcycle accessories engineered for performance, safety
-            and style. Choose from our top categories.
+            {homeSections.categories.subheading}
           </p>
         </VReveal>
 

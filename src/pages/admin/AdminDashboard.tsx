@@ -22,6 +22,7 @@ import {
   ArrowUpRight,
   Phone,
   RefreshCw,
+  LayoutList,
 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
@@ -35,6 +36,7 @@ const sidebarLinks = [
   { name: 'Categories', path: '/admin/categories', icon: Grid3X3 },
   { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquareQuote },
   { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
+  { name: 'Home Sections', path: '/admin/sections', icon: LayoutList },
   { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
   { name: 'Settings', path: '/admin/settings', icon: Settings },
 ]
