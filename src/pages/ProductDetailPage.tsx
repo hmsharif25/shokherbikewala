@@ -83,7 +83,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <PageTransition className="v-shop-page min-h-screen pt-4 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
+    <PageTransition className="v-shop-page min-h-screen pt-4 sm:pt-28 pb-32 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-6 sm:mb-8">
           <Link
@@ -301,6 +301,47 @@ export default function ProductDetailPage() {
               </motion.button>
             </div>
           </AnimatedSection>
+        </div>
+
+        {/* Mobile sticky purchase bar — keeps the primary actions
+            within thumb reach as the user scrolls through specs and
+            related items. Hidden on md+ where the inline buttons
+            stay visible. */}
+        <div className="v-mobile-cta-bar md:hidden" aria-label="Quick purchase actions">
+          <div className="v-mobile-cta-bar-inner">
+            <button
+              type="button"
+              onClick={() => {
+                addItem(product, 1)
+                setJustAdded(true)
+                window.setTimeout(() => setJustAdded(false), 1400)
+              }}
+              className="v-mobile-cta-secondary"
+            >
+              {justAdded ? (
+                <>
+                  <Check className="w-4 h-4 text-primary" />
+                  Added
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="w-4 h-4" />
+                  Add to Cart
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                addItem(product, 1)
+                navigate('/checkout')
+              }}
+              className="v-mobile-cta-primary"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              Buy Now
+            </button>
+          </div>
         </div>
 
         {/* Related Products */}

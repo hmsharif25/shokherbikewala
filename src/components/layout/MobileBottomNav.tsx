@@ -49,11 +49,11 @@ const MORE_LINKS: MoreLink[] = [
     gradient: 'linear-gradient(135deg, rgba(34,211,238,0.22), rgba(6,182,212,0.05))',
   },
   {
-    name: 'Cart',
-    path: '/cart',
-    icon: ShoppingCart,
-    accent: 'text-fuchsia-300',
-    gradient: 'linear-gradient(135deg, rgba(232,121,249,0.22), rgba(192,38,211,0.05))',
+    name: 'Track',
+    path: '/track',
+    icon: PackageSearch,
+    accent: 'text-sky-300',
+    gradient: 'linear-gradient(135deg, rgba(56,189,248,0.22), rgba(2,132,199,0.05))',
   },
   {
     name: 'About',
@@ -69,13 +69,6 @@ const MORE_LINKS: MoreLink[] = [
     accent: 'text-emerald-300',
     gradient: 'linear-gradient(135deg, rgba(52,211,153,0.22), rgba(16,185,129,0.05))',
   },
-  {
-    name: 'Track',
-    path: '/track',
-    icon: PackageSearch,
-    accent: 'text-sky-300',
-    gradient: 'linear-gradient(135deg, rgba(56,189,248,0.22), rgba(2,132,199,0.05))',
-  },
 ]
 
 type TabItem = {
@@ -85,14 +78,16 @@ type TabItem = {
 }
 
 /**
- * Velocity mobile bottom nav — clean four-tab bar:
- * HOME / SHOP / PROFILE / MORE. The active tab gets an animated
- * orange underline.
+ * Velocity mobile bottom nav — clean five-tab bar:
+ * HOME / SHOP / CART / PROFILE / MORE. The active tab gets an
+ * animated orange underline. Cart is promoted to a primary tab so
+ * shoppers can always reach checkout in one tap, with a badge
+ * showing the current item count.
  *
  * Tapping "More" opens a glass action sheet with all secondary
- * destinations (Categories, Search, Cart, About, Contact, Track,
- * WhatsApp). The sheet is what replaces the previous burger menu in
- * the top navbar.
+ * destinations (Categories, Search, Track, About, Contact). The
+ * sheet is what replaces the previous burger menu in the top
+ * navbar.
  */
 export default function MobileBottomNav() {
   const location = useLocation()
@@ -123,6 +118,7 @@ export default function MobileBottomNav() {
   const tabs: TabItem[] = [
     { name: 'Home', path: '/', icon: Home },
     { name: 'Shop', path: '/products', icon: ShoppingBag },
+    { name: 'Cart', path: '/cart', icon: ShoppingCart },
     profileItem,
   ]
 
@@ -139,7 +135,7 @@ export default function MobileBottomNav() {
         aria-label="Mobile navigation"
         className="md:hidden fixed inset-x-3 bottom-3 z-[60] v-tabbar rounded-[1.7rem]"
       >
-        <ul className="grid grid-cols-4 px-1 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom,0.5rem))]">
+        <ul className="grid grid-cols-5 px-1 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom,0.5rem))]">
           {tabs.map((item) => {
             const active = isActive(item.path)
             const Icon = item.icon
@@ -152,14 +148,21 @@ export default function MobileBottomNav() {
                 >
                   <motion.div
                     whileTap={{ scale: 0.9 }}
-                    className="v-mobile-nav-action flex flex-col items-center gap-0.5"
+                    className="v-mobile-nav-action flex flex-col items-center gap-0.5 relative"
                   >
-                    <Icon
-                      className={`w-5 h-5 transition-colors ${
-                        active ? 'text-primary' : 'text-fg-soft'
-                      }`}
-                      strokeWidth={active ? 2.5 : 2}
-                    />
+                    <span className="relative">
+                      <Icon
+                        className={`w-5 h-5 transition-colors ${
+                          active ? 'text-primary' : 'text-fg-soft'
+                        }`}
+                        strokeWidth={active ? 2.5 : 2}
+                      />
+                      {item.name === 'Cart' && cartCount > 0 && (
+                        <span className="v-cart-pill" aria-hidden>
+                          {cartCount > 99 ? '99+' : cartCount}
+                        </span>
+                      )}
+                    </span>
                     <span
                       className={`text-[10px] font-ui font-semibold tracking-wider uppercase transition-colors ${
                         active ? 'text-primary' : 'text-fg-soft'
@@ -201,9 +204,6 @@ export default function MobileBottomNav() {
                       moreActive ? 'text-primary' : 'text-fg-soft'
                     }`}
                   />
-                )}
-                {!moreOpen && cartCount > 0 && (
-                  <span className="v-cart-pill">{cartCount}</span>
                 )}
               </motion.div>
               <span
@@ -309,9 +309,6 @@ export default function MobileBottomNav() {
                             className={`w-5 h-5 ${m.accent} transition-transform duration-200 group-hover:scale-110`}
                             strokeWidth={2.1}
                           />
-                          {m.path === '/cart' && cartCount > 0 && (
-                            <span className="v-cart-pill">{cartCount}</span>
-                          )}
                         </span>
                         <span className="text-[10.5px] font-ui font-bold uppercase tracking-[0.12em] text-fg">
                           {m.name}
