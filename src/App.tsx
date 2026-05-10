@@ -13,6 +13,7 @@ import SEO from '@/components/seo/SEO'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { CartProvider } from '@/context/CartContext'
 
 // Route-level code splitting — every non-home page is fetched
 // lazily on demand. This keeps the initial JS bundle small (only
@@ -23,6 +24,7 @@ const CategoriesPage = lazy(() => import('@/pages/CategoriesPage'))
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const CheckoutPage = lazy(() => import('@/pages/CheckoutPage'))
+const CartPage = lazy(() => import('@/pages/CartPage'))
 const TrackOrderPage = lazy(() => import('@/pages/TrackOrderPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
 const AdminLoginPage = lazy(() => import('@/pages/admin/LoginPage'))
@@ -87,6 +89,7 @@ function PublicLayout() {
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/track" element={<TrackOrderPage />} />
           </Routes>
@@ -104,6 +107,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <StoreProvider>
+          <CartProvider>
           <Router>
             <ScrollToTop />
             <SEO />
@@ -112,6 +116,7 @@ function App() {
             <GamingBackdrop />
             <AppRoutes />
           </Router>
+          </CartProvider>
         </StoreProvider>
       </AuthProvider>
     </ThemeProvider>

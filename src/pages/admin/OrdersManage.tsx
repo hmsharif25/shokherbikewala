@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Trash2,
   Eye,
   X,
   Phone,
+  Mail,
+  MapPin,
+  StickyNote,
+  ShoppingBag,
   MessageSquare,
   Clock,
   CheckCircle,
@@ -26,6 +30,94 @@ const statusConfig = {
   contacted: { label: 'Contacted', color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30', icon: Clock },
   completed: { label: 'Completed', color: 'bg-green-500/10 text-green-400 border-green-500/30', icon: CheckCircle },
   cancelled: { label: 'Cancelled', color: 'bg-red-500/10 text-red-400 border-red-500/30', icon: XCircle },
+}
+
+interface ParsedOrderItem {
+  index: number
+  name: string
+  qty: number
+  subtotal: string
+}
+
+interface ParsedOrder {
+  items: ParsedOrderItem[]
+  total: string | null
+  totalQty: string | null
+  email: string | null
+  address: string | null
+  city: string | null
+  area: string | null
+  notes: string | null
+  /** Lines that didn't match any known prefix — show them as-is. */
+  remaining: string[]
+}
+
+/**
+ * Parse the structured checkout message into individual fields so we
+ * can render every customer detail in its own row. The message format
+ * is the one produced by `CheckoutPage.buildMessage`. We fall back to
+ * just rendering the raw text if nothing matches.
+ */
+function parseOrderMessage(raw: string): ParsedOrder {
+  const out: ParsedOrder = {
+    items: [],
+    total: null,
+    totalQty: null,
+    email: null,
+    address: null,
+    city: null,
+    area: null,
+    notes: null,
+    remaining: [],
+  }
+  if (!raw) return out
+  const lines = raw.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
+  // Item lines look like: "1. Helmet × 2 — ৳1,200"
+  const itemRe = /^(\d+)\.\s+(.+?)\s+[×x]\s+(\d+)\s*[\u2014-]\s*(.+)$/
+  const totalRe = /^Total:\s*(.+?)(?:\s*\((\d+)\s*items?\))?$/i
+  for (const line of lines) {
+    const im = line.match(itemRe)
+    if (im) {
+      out.items.push({
+        index: Number(im[1]),
+        name: im[2].trim(),
+        qty: Number(im[3]),
+        subtotal: im[4].trim(),
+      })
+      continue
+    }
+    const tm = line.match(totalRe)
+    if (tm) {
+      out.total = tm[1].trim()
+      if (tm[2]) out.totalQty = tm[2]
+      continue
+    }
+    if (/^Email:\s*/i.test(line)) {
+      out.email = line.replace(/^Email:\s*/i, '').trim() || null
+      continue
+    }
+    if (/^Address:\s*/i.test(line)) {
+      out.address = line.replace(/^Address:\s*/i, '').trim() || null
+      continue
+    }
+    if (/^City:\s*/i.test(line)) {
+      out.city = line.replace(/^City:\s*/i, '').trim() || null
+      continue
+    }
+    if (/^Area\s*\/?\s*Thana:?\s*/i.test(line)) {
+      out.area = line.replace(/^Area\s*\/?\s*Thana:?\s*/i, '').trim() || null
+      continue
+    }
+    if (/^Notes:\s*/i.test(line)) {
+      out.notes = line.replace(/^Notes:\s*/i, '').trim() || null
+      continue
+    }
+    // Skip section / greeting headers we already render visually.
+    if (/^(Hi!|Name:|Phone:|—|\u2014)/i.test(line)) continue
+    if (/^[-—\u2014\s]+Customer info[-—\u2014\s]+$/i.test(line)) continue
+    out.remaining.push(line)
+  }
+  return out
 }
 
 export default function OrdersManage() {
@@ -161,9 +253,11 @@ export default function OrdersManage() {
                       </span>
                     </div>
                     <p className="text-fg-muted text-xs mb-1 truncate">
-                      <span className="text-fg-soft">Product:</span> {inquiry.product_name}
+                      <span className="text-fg-soft">Items:</span> {inquiry.product_name || '—'}
                     </p>
-                    <p className="text-fg-soft text-xs line-clamp-1">{inquiry.message}</p>
+                    <p className="text-fg-soft text-xs line-clamp-1">
+                      {inquiry.message?.split(/\r?\n/).find((l) => /^Address:/i.test(l)) || inquiry.message}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -236,30 +330,7 @@ export default function OrdersManage() {
                 </button>
               </div>
 
-              <div className="space-y-3">
-                <div>
-                  <p className="text-fg-soft text-xs mb-0.5">Customer</p>
-                  <p className="text-fg font-medium">{viewingInquiry.customer_name}</p>
-                </div>
-                <div>
-                  <p className="text-fg-soft text-xs mb-0.5">Phone</p>
-                  <a href={`tel:${viewingInquiry.phone}`} className="text-cyan hover:underline">
-                    {viewingInquiry.phone}
-                  </a>
-                </div>
-                <div>
-                  <p className="text-fg-soft text-xs mb-0.5">Product</p>
-                  <p className="text-fg">{viewingInquiry.product_name}</p>
-                </div>
-                <div>
-                  <p className="text-fg-soft text-xs mb-0.5">Message</p>
-                  <p className="text-fg-muted text-sm whitespace-pre-line">{viewingInquiry.message}</p>
-                </div>
-                <div>
-                  <p className="text-fg-soft text-xs mb-0.5">Date</p>
-                  <p className="text-fg-muted text-sm">{new Date(viewingInquiry.created_at).toLocaleString()}</p>
-                </div>
-              </div>
+              <InquiryDetails inquiry={viewingInquiry} />
 
               <div className="flex gap-2 pt-2">
                 <motion.a
@@ -285,6 +356,148 @@ export default function OrdersManage() {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  )
+}
+
+function InfoRow({
+  icon,
+  label,
+  value,
+  href,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  href?: string
+}) {
+  return (
+    <div className="flex items-start gap-2.5 py-1">
+      <span className="mt-0.5 text-fg-soft flex-shrink-0">{icon}</span>
+      <div className="min-w-0 flex-1">
+        <p className="text-fg-soft text-[10px] uppercase tracking-wider mb-0.5">{label}</p>
+        {href ? (
+          <a
+            href={href}
+            className="text-fg text-sm font-medium hover:text-primary break-words"
+          >
+            {value}
+          </a>
+        ) : (
+          <p className="text-fg text-sm font-medium break-words whitespace-pre-line">{value}</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function InquiryDetails({ inquiry }: { inquiry: Inquiry }) {
+  const parsed = useMemo(() => parseOrderMessage(inquiry.message ?? ''), [inquiry.message])
+  const hasStructured =
+    parsed.items.length > 0 ||
+    parsed.address ||
+    parsed.email ||
+    parsed.city ||
+    parsed.area ||
+    parsed.notes ||
+    parsed.total
+
+  return (
+    <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+      <div className="rounded-xl bg-surface-soft border border-line p-3 space-y-1">
+        <InfoRow
+          icon={<MessageSquare className="w-3.5 h-3.5" />}
+          label="Customer"
+          value={inquiry.customer_name}
+        />
+        <InfoRow
+          icon={<Phone className="w-3.5 h-3.5" />}
+          label="Phone"
+          value={inquiry.phone}
+          href={`tel:${inquiry.phone}`}
+        />
+        {parsed.email && (
+          <InfoRow
+            icon={<Mail className="w-3.5 h-3.5" />}
+            label="Email"
+            value={parsed.email}
+            href={`mailto:${parsed.email}`}
+          />
+        )}
+        {parsed.address && (
+          <InfoRow
+            icon={<MapPin className="w-3.5 h-3.5" />}
+            label="Address"
+            value={parsed.address}
+          />
+        )}
+        {(parsed.city || parsed.area) && (
+          <InfoRow
+            icon={<MapPin className="w-3.5 h-3.5" />}
+            label="City / Area"
+            value={[parsed.city, parsed.area].filter(Boolean).join(' — ')}
+          />
+        )}
+        {parsed.notes && (
+          <InfoRow
+            icon={<StickyNote className="w-3.5 h-3.5" />}
+            label="Notes"
+            value={parsed.notes}
+          />
+        )}
+      </div>
+
+      {parsed.items.length > 0 && (
+        <div className="rounded-xl bg-surface-soft border border-line p-3 space-y-2">
+          <p className="text-fg-soft text-[10px] uppercase tracking-wider flex items-center gap-1.5">
+            <ShoppingBag className="w-3.5 h-3.5" />
+            Items ordered
+          </p>
+          <ul className="space-y-1.5">
+            {parsed.items.map((it) => (
+              <li
+                key={it.index}
+                className="flex items-center justify-between gap-3 text-sm"
+              >
+                <span className="text-fg flex-1 min-w-0">
+                  <span className="text-fg-soft mr-1.5">{it.index}.</span>
+                  {it.name}
+                  <span className="text-fg-soft ml-1.5">× {it.qty}</span>
+                </span>
+                <span className="text-primary font-semibold whitespace-nowrap">
+                  {it.subtotal}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {parsed.total && (
+            <div className="border-t border-line pt-2 flex items-center justify-between text-sm">
+              <span className="text-fg-soft">Total</span>
+              <span className="text-fg font-bold">{parsed.total}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {parsed.remaining.length > 0 && (
+        <div>
+          <p className="text-fg-soft text-[10px] uppercase tracking-wider mb-1">More</p>
+          <p className="text-fg-muted text-sm whitespace-pre-line">
+            {parsed.remaining.join('\n')}
+          </p>
+        </div>
+      )}
+
+      {!hasStructured && inquiry.message && (
+        <div>
+          <p className="text-fg-soft text-[10px] uppercase tracking-wider mb-1">Message</p>
+          <p className="text-fg-muted text-sm whitespace-pre-line">{inquiry.message}</p>
+        </div>
+      )}
+
+      <div className="text-fg-soft text-[10px] text-right">
+        Submitted {new Date(inquiry.created_at).toLocaleString()}
+      </div>
     </div>
   )
 }

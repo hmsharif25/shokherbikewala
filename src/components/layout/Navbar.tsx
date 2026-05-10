@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useStore } from '@/context/StoreContext'
+import { useCart } from '@/context/CartContext'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 
 const navLinks = [
@@ -36,9 +37,8 @@ export default function Navbar() {
   const navigate = useNavigate()
   const { user, isAdmin, signOut } = useAuth()
   const { products } = useStore()
-
-  // Show a small badge on cart matching favourite items in localStorage (best-effort).
-  const cartCount = products.filter((p) => p.featured).length // visual placeholder
+  const { totalQty: cartCount } = useCart()
+  void products
 
   useEffect(() => {
     let lastY = window.scrollY
@@ -176,13 +176,13 @@ export default function Navbar() {
               )}
 
               <Link
-                to="/checkout"
-                aria-label="Cart"
+                to="/cart"
+                aria-label={`Cart (${cartCount} items)`}
                 className="hidden sm:inline-flex v-icon-btn relative"
               >
                 <ShoppingBag className="w-4 h-4" />
                 {cartCount > 0 && (
-                  <span className="v-badge-dot">{cartCount}</span>
+                  <span className="v-cart-pill">{cartCount}</span>
                 )}
               </Link>
 
