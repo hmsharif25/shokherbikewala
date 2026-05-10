@@ -1,4 +1,11 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'framer-motion'
 import {
   ChevronDown,
   Facebook,
@@ -6,24 +13,65 @@ import {
   MessageCircle,
   Music2,
 } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useStore } from '@/context/StoreContext'
+
+/**
+ * Returns true on touch / coarse-pointer devices (phones, tablets).
+ *
+ * The scroll-driven parallax is disabled there because iOS Safari
+ * rubber-band scrolling and URL-bar collapse cause the same scrollY
+ * to map to different y/opacity values mid-scroll, which shows up as
+ * a visible jitter ("shake") on the hero.
+ */
+function useIsTouchDevice() {
+  const [isTouch, setIsTouch] = useState(false)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mql = window.matchMedia('(hover: none) and (pointer: coarse)')
+    const update = () => setIsTouch(mql.matches)
+    update()
+    mql.addEventListener?.('change', update)
+    return () => mql.removeEventListener?.('change', update)
+  }, [])
+  return isTouch
+}
 
 export default function VHeroSection() {
   const { brandSettings } = useStore()
   const ref = useRef<HTMLElement>(null)
+  const prefersReducedMotion = useReducedMotion()
+  const isTouch = useIsTouchDevice()
+  // Skip the scroll-linked parallax on phones/tablets and when the user
+  // has requested reduced motion. This is what causes the iOS hero shake.
+  const disableParallax = isTouch || !!prefersReducedMotion
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
   })
-  const y = useTransform(scrollYProgress, [0, 1], [0, -40])
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.25])
-
+  // Smooth scroll progress on desktop so any residual jitter from the
+  // browser is absorbed by spring damping.
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.4,
+  })
+  const yDesktop = useTransform(smoothProgress, [0, 1], [0, -40])
+  const opacityDesktop = useTransform(smoothProgress, [0, 0.85], [1, 0.25])
+  // Static motion values when parallax is disabled — keeps the GPU layer
+  // promotion identical so we never re-mount the wrapper across devices.
+  const yStatic = useTransform(scrollYProgress, () => 0)
+  const opacityStatic = useTransform(scrollYProgress, () => 1)
+  const y: MotionValue<number> = disableParallax ? yStatic : yDesktop
+  const opacity: MotionValue<number> = disableParallax
+    ? opacityStatic
+    : opacityDesktop
 
   return (
     <section
       ref={ref}
-      className="sb-cinematic-hero relative min-h-[100dvh] overflow-x-clip overflow-y-visible pt-20 pb-8 sm:pt-28 sm:pb-16"
+      className="sb-cinematic-hero relative min-h-[100svh] overflow-x-clip overflow-y-visible pt-20 pb-8 sm:pt-28 sm:pb-16"
     >
       {/* Atmospheric background layers */}
       <div className="sb-hero-floor" aria-hidden="true" />
@@ -37,8 +85,14 @@ export default function VHeroSection() {
       />
 
       <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[calc(100dvh-8rem)]"
+        style={{
+          y,
+          opacity,
+          willChange: disableParallax ? 'auto' : 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          transform: 'translateZ(0)',
+        }}
+        className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[calc(100svh-8rem)]"
       >
         {/* Premium brand icon */}
         <motion.div
