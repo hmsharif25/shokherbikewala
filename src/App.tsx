@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import FloatingWhatsApp from '@/components/layout/FloatingWhatsApp'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
+import MobileTopBar from '@/components/layout/MobileTopBar'
 import HomePage from '@/pages/HomePage'
 import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
@@ -80,6 +81,7 @@ function PublicLayout() {
   return (
     <div className="v-public-site">
       <Navbar />
+      <MobileTopBar />
       <AnimatePresence mode="wait">
         <Suspense fallback={<RouteFallback />}>
           <Routes location={location} key={location.pathname}>
