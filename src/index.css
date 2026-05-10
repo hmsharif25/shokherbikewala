@@ -3070,6 +3070,184 @@ html {
   backdrop-filter: blur(4px);
 }
 
+/* ---------- Premium "More" sheet ----------
+ * A unique, brand-tinted action drawer that opens from the mobile
+ * bottom nav. Replaces the simple grid that used to live here.
+ */
+.v-more-sheet { padding: 0; }
+
+.v-more-header {
+  border-bottom: 1px solid rgb(var(--c-line) / 0.45);
+  background:
+    linear-gradient(135deg, rgba(255, 122, 31, 0.10), rgba(0, 183, 229, 0.08) 60%, transparent),
+    rgb(var(--c-bg-2) / 0.55);
+}
+:root[data-theme='dark'] .v-more-header {
+  background:
+    linear-gradient(135deg, rgba(255, 122, 31, 0.18), rgba(0, 183, 229, 0.10) 60%, transparent),
+    rgba(20, 20, 32, 0.55);
+  border-bottom-color: rgba(255, 106, 26, 0.12);
+}
+.v-more-header-glow {
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgba(255, 122, 31, 0.18), transparent 60%),
+    radial-gradient(100% 60% at 100% 0%, rgba(0, 183, 229, 0.16), transparent 65%);
+  opacity: 0.85;
+}
+
+.v-more-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.85rem;
+  color: #ff7a1f;
+  background: linear-gradient(135deg, rgba(255, 122, 31, 0.22), rgba(255, 90, 0, 0.06));
+  border: 1px solid rgba(255, 122, 31, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 6px 18px -10px rgba(255, 90, 0, 0.55);
+}
+
+/* Theme toggle (sun / moon) inside the sheet header */
+.v-more-theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 3.6rem;
+  height: 2.1rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background: rgb(var(--c-bg-2) / 0.85);
+  border: 1px solid rgb(var(--c-line) / 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+:root[data-theme='dark'] .v-more-theme-toggle {
+  background: rgba(20, 20, 32, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.v-more-theme-toggle:hover { border-color: rgba(255, 122, 31, 0.45); }
+.v-more-theme-toggle:focus-visible {
+  outline: none;
+  border-color: rgba(255, 122, 31, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 122, 31, 0.18);
+}
+.v-more-theme-track {
+  position: absolute;
+  inset: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.45rem;
+  color: rgb(var(--c-fg-soft));
+  pointer-events: none;
+}
+.v-more-theme-sun { color: #f59e0b; }
+.v-more-theme-moon { color: #c084fc; }
+.v-more-theme-thumb {
+  position: relative;
+  z-index: 1;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: rgb(var(--c-bg) / 0.95);
+  border: 1px solid rgb(var(--c-line) / 0.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  box-shadow: 0 4px 12px -4px rgba(17, 24, 39, 0.35);
+  transition: margin 0.2s ease;
+}
+.v-more-theme-toggle[data-state='light'] .v-more-theme-thumb {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Tile grid */
+.v-more-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 0.4rem 0.9rem;
+  border-radius: 1.1rem;
+  background: rgb(var(--c-bg-2) / 0.75);
+  border: 1px solid rgb(var(--c-line) / 0.5);
+  color: rgb(var(--c-fg));
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.v-more-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 55%);
+  pointer-events: none;
+  z-index: -1;
+}
+.v-more-tile:hover,
+.v-more-tile:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 122, 31, 0.45);
+  box-shadow: 0 18px 36px -22px rgba(255, 90, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  outline: none;
+}
+.v-more-tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(var(--c-line) / 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Big WhatsApp call-to-action */
+.v-more-cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: 1.15rem;
+  color: white;
+  background: linear-gradient(135deg, #18a558 0%, #25d366 50%, #128c7e 100%);
+  box-shadow: 0 18px 38px -16px rgba(18, 140, 126, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.v-more-cta:hover { transform: translateY(-1px); }
+.v-more-cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  flex-shrink: 0;
+}
+.v-more-cta-pulse {
+  position: absolute;
+  right: -1.5rem;
+  top: 50%;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 65%);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
 /* ---------- Floating count chip on FAB ---------- */
 .v-fab-chip {
   position: absolute;
