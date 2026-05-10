@@ -4,10 +4,10 @@ import { Plus, Pencil, Trash2, X, Save, Package, Loader2 } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Product } from '@/types'
 import ImageUpload from '@/components/ui/ImageUpload'
-import { insertProductRemote, updateProductRemote, deleteProductRemote } from '@/lib/db'
+import { insertProductRemote, updateProductRemote, deleteProductRemote, loadRemotePublic } from '@/lib/db'
 
 export default function ProductsManage() {
-  const { products, categories, addProduct, updateProduct, deleteProduct } = useStore()
+  const { products, categories, addProduct, updateProduct, deleteProduct, setCategories } = useStore()
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [isAdding, setIsAdding] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -63,11 +63,11 @@ export default function ProductsManage() {
     }
 
     if (editingProduct) {
-      const res = await updateProductRemote(editingProduct.id, payload)
+      const res = await updateProductRemote(editingProduct.id, payload, categories)
       if (res.error) { setError(res.error); setSaving(false); return }
       updateProduct(editingProduct.id, res.product ?? { ...editingProduct, ...payload })
     } else {
-      const res = await insertProductRemote(payload)
+      const res = await insertProductRemote(payload, categories)
       if (res.error) { setError(res.error); setSaving(false); return }
       if (res.product) {
         addProduct(res.product)
@@ -78,6 +78,9 @@ export default function ProductsManage() {
     setSaving(false)
     setIsAdding(false)
     setEditingProduct(null)
+    loadRemotePublic().then(remote => {
+      if (remote.categories && remote.categories.length > 0) setCategories(remote.categories)
+    })
   }
 
   const handleDelete = async (id: string) => {

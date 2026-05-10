@@ -202,18 +202,46 @@ export async function submitInquiry(input: {
 
 /* ── Product CRUD ── */
 
-export async function insertProductRemote(input: {
-  name: string
-  slug: string
-  description: string
-  price: number
-  discount_price: number | null
-  category_id: string
-  images: string[]
-  in_stock: boolean
-  featured: boolean
-}): Promise<{ error: string | null; product?: Product }> {
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+async function resolveCategoryId(
+  categoryId: string,
+  categories: { id: string; name: string; slug: string; image_url: string }[],
+): Promise<string | null> {
+  if (!categoryId) return null
+  if (UUID_RE.test(categoryId)) return categoryId
+  const demo = categories.find(c => c.id === categoryId)
+  if (!demo) return null
+  const { data: existing } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('slug', demo.slug)
+    .maybeSingle()
+  if (existing) return existing.id
+  const { data: created } = await supabase
+    .from('categories')
+    .insert({ name: demo.name, slug: demo.slug, image_url: demo.image_url })
+    .select('id')
+    .single()
+  return created?.id ?? null
+}
+
+export async function insertProductRemote(
+  input: {
+    name: string
+    slug: string
+    description: string
+    price: number
+    discount_price: number | null
+    category_id: string
+    images: string[]
+    in_stock: boolean
+    featured: boolean
+  },
+  categories: { id: string; name: string; slug: string; image_url: string }[] = [],
+): Promise<{ error: string | null; product?: Product }> {
   if (!isSupabaseConfigured()) return { error: null }
+  const resolvedCategoryId = await resolveCategoryId(input.category_id, categories)
   const { data, error } = await supabase
     .from('products')
     .insert({
@@ -222,7 +250,7 @@ export async function insertProductRemote(input: {
       description: input.description,
       price: input.price,
       discount_price: input.discount_price,
-      category_id: input.category_id || null,
+      category_id: resolvedCategoryId,
       images: input.images,
       in_stock: input.in_stock,
       featured: input.featured,
@@ -246,8 +274,10 @@ export async function updateProductRemote(
     in_stock: boolean
     featured: boolean
   },
+  categories: { id: string; name: string; slug: string; image_url: string }[] = [],
 ): Promise<{ error: string | null; product?: Product }> {
   if (!isSupabaseConfigured()) return { error: null }
+  const resolvedCategoryId = await resolveCategoryId(input.category_id, categories)
   const { data, error } = await supabase
     .from('products')
     .update({
@@ -256,7 +286,7 @@ export async function updateProductRemote(
       description: input.description,
       price: input.price,
       discount_price: input.discount_price,
-      category_id: input.category_id || null,
+      category_id: resolvedCategoryId,
       images: input.images,
       in_stock: input.in_stock,
       featured: input.featured,
