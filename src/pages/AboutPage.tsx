@@ -8,7 +8,7 @@ export default function AboutPage() {
   const { siteConfig } = useStore()
   const pages = siteConfig.pages
   return (
-    <PageTransition className="v-shop-page min-h-screen pt-24 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
+    <PageTransition className="v-shop-page min-h-screen pt-4 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center mb-12 sm:mb-16">
           <motion.span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-racing tracking-widest mb-4 border border-primary/20 uppercase">

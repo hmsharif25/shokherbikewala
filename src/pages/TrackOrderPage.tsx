@@ -95,7 +95,7 @@ export default function TrackOrderPage() {
   const phoneDigits = (brandSettings.whatsapp || '').replace(/[^0-9]/g, '')
 
   return (
-    <PageTransition className="min-h-screen pt-20 sm:pt-24 pb-24 md:pb-16 bg-bg">
+    <PageTransition className="min-h-screen pt-4 sm:pt-24 pb-24 md:pb-16 bg-bg">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
         <AnimatedSection className="mb-6">
           <Link

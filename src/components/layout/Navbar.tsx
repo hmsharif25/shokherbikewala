@@ -75,7 +75,7 @@ export default function Navbar() {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: hidden ? -100 : 0, opacity: hidden ? 0 : 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-[padding] duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 max-sm:!hidden transition-[padding] duration-500 ${
           scrolled ? 'pt-2' : 'pt-3 sm:pt-4'
         }`}
       >
