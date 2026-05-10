@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Pencil, Trash2, X, Save, Package } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Save, Package, Loader2 } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Product } from '@/types'
 import ImageUpload from '@/components/ui/ImageUpload'
+import { insertProductRemote, updateProductRemote, deleteProductRemote } from '@/lib/db'
 
 export default function ProductsManage() {
   const { products, categories, addProduct, updateProduct, deleteProduct } = useStore()
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [isAdding, setIsAdding] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: '',
     description: '',
@@ -41,9 +44,13 @@ export default function ProductsManage() {
     setIsAdding(true)
   }
 
-  const handleSave = () => {
-    const newProduct: Product = {
-      id: editingProduct?.id || Date.now().toString(),
+  const handleSave = async () => {
+    if (!form.name.trim()) { setError('Product name is required.'); return }
+    if (!form.price || parseFloat(form.price) <= 0) { setError('Price must be greater than 0.'); return }
+    setError(null)
+    setSaving(true)
+
+    const payload = {
       name: form.name,
       slug: form.name.toLowerCase().replace(/\s+/g, '-'),
       description: form.description,
@@ -53,20 +60,30 @@ export default function ProductsManage() {
       images: form.images.filter(Boolean),
       in_stock: form.in_stock,
       featured: form.featured,
-      created_at: editingProduct?.created_at || new Date().toISOString(),
     }
 
     if (editingProduct) {
-      updateProduct(editingProduct.id, newProduct)
+      const res = await updateProductRemote(editingProduct.id, payload)
+      if (res.error) { setError(res.error); setSaving(false); return }
+      updateProduct(editingProduct.id, res.product ?? { ...editingProduct, ...payload })
     } else {
-      addProduct(newProduct)
+      const res = await insertProductRemote(payload)
+      if (res.error) { setError(res.error); setSaving(false); return }
+      if (res.product) {
+        addProduct(res.product)
+      } else {
+        addProduct({ id: Date.now().toString(), ...payload, created_at: new Date().toISOString() })
+      }
     }
+    setSaving(false)
     setIsAdding(false)
     setEditingProduct(null)
   }
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
+      const res = await deleteProductRemote(id)
+      if (res.error) { setError(res.error); return }
       deleteProduct(id)
     }
   }
@@ -191,18 +208,25 @@ export default function ProductsManage() {
                 </div>
               </div>
 
+              {error && (
+                <div className="mt-4 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+                  {error}
+                </div>
+              )}
+
               <div className="flex gap-3 mt-6">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-lg text-sm"
+                  disabled={saving}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-lg text-sm disabled:opacity-50"
                 >
-                  <Save className="w-4 h-4" />
-                  {editingProduct ? 'Update' : 'Add Product'}
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  {saving ? 'Saving...' : editingProduct ? 'Update' : 'Add Product'}
                 </motion.button>
                 <button
-                  onClick={() => setIsAdding(false)}
+                  onClick={() => { setIsAdding(false); setError(null) }}
                   className="px-5 py-2.5 text-gray-400 hover:text-fg text-sm transition-colors"
                 >
                   Cancel

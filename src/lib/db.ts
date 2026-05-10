@@ -200,6 +200,82 @@ export async function submitInquiry(input: {
   return { error: error?.message ?? null, id: data?.id }
 }
 
+/* ── Product CRUD ── */
+
+export async function insertProductRemote(input: {
+  name: string
+  slug: string
+  description: string
+  price: number
+  discount_price: number | null
+  category_id: string
+  images: string[]
+  in_stock: boolean
+  featured: boolean
+}): Promise<{ error: string | null; product?: Product }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { data, error } = await supabase
+    .from('products')
+    .insert({
+      name: input.name,
+      slug: input.slug,
+      description: input.description,
+      price: input.price,
+      discount_price: input.discount_price,
+      category_id: input.category_id || null,
+      images: input.images,
+      in_stock: input.in_stock,
+      featured: input.featured,
+    })
+    .select('*')
+    .single()
+  if (error) return { error: error.message }
+  return { error: null, product: mapProduct(data) }
+}
+
+export async function updateProductRemote(
+  id: string,
+  input: {
+    name: string
+    slug: string
+    description: string
+    price: number
+    discount_price: number | null
+    category_id: string
+    images: string[]
+    in_stock: boolean
+    featured: boolean
+  },
+): Promise<{ error: string | null; product?: Product }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { data, error } = await supabase
+    .from('products')
+    .update({
+      name: input.name,
+      slug: input.slug,
+      description: input.description,
+      price: input.price,
+      discount_price: input.discount_price,
+      category_id: input.category_id || null,
+      images: input.images,
+      in_stock: input.in_stock,
+      featured: input.featured,
+    })
+    .eq('id', id)
+    .select('*')
+    .single()
+  if (error) return { error: error.message }
+  return { error: null, product: mapProduct(data) }
+}
+
+export async function deleteProductRemote(
+  id: string,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase.from('products').delete().eq('id', id)
+  return { error: error?.message ?? null }
+}
+
 export async function updateInquiryStatusRemote(
   id: number,
   status: Inquiry['status'],
