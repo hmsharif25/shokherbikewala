@@ -26,7 +26,7 @@ export default function ProductsPage() {
   }, [search, selectedCategory, products])
 
   return (
-    <PageTransition className="v-shop-page min-h-screen pt-24 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
+    <PageTransition className="v-shop-page min-h-screen pt-4 sm:pt-28 pb-20 md:pb-16 speed-lines-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-8 sm:mb-10">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-4">
