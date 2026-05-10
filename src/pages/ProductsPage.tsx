@@ -1,13 +1,17 @@
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
-import { Search, SlidersHorizontal, ShoppingBag, Star, Tag, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Search, SlidersHorizontal, ShoppingCart, Star, Tag, X, Zap, Check } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
 import { useStore } from '@/context/StoreContext'
-import { useSearchParams, Link } from 'react-router-dom'
+import { useCart } from '@/context/CartContext'
+import { useSearchParams, Link, useNavigate } from 'react-router-dom'
 
 export default function ProductsPage() {
-  const { products, categories, brandSettings } = useStore()
+  const { products, categories } = useStore()
+  const { addItem } = useCart()
+  const navigate = useNavigate()
+  const [justAdded, setJustAdded] = useState<string | null>(null)
   const [searchParams] = useSearchParams()
   const categorySlug = searchParams.get('category')
   const [search, setSearch] = useState('')
@@ -117,6 +121,21 @@ export default function ProductsPage() {
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
           {filteredProducts.map((product, i) => {
             const category = categories.find((c) => c.id === product.category_id)
+            const handleAdd = (e: React.MouseEvent) => {
+              e.preventDefault()
+              e.stopPropagation()
+              addItem(product, 1)
+              setJustAdded(product.id)
+              window.setTimeout(() => {
+                setJustAdded((cur) => (cur === product.id ? null : cur))
+              }, 1100)
+            }
+            const handleBuyNow = (e: React.MouseEvent) => {
+              e.preventDefault()
+              e.stopPropagation()
+              addItem(product, 1)
+              navigate('/checkout')
+            }
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
                 <Link to={`/products/${product.slug}`}>
@@ -147,7 +166,7 @@ export default function ProductsPage() {
                       )}
                     </div>
 
-                    <div className="p-2.5 sm:p-4">
+                    <div className="p-2.5 sm:p-4 flex flex-col">
                       <div className="flex items-center gap-0.5 mb-1 sm:mb-2">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star key={star} className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-gold text-gold" />
@@ -157,34 +176,63 @@ export default function ProductsPage() {
                         {product.name}
                       </h3>
                       <p className="text-fg-muted text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          {product.discount_price ? (
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
-                              <span className="text-sm sm:text-lg font-display font-bold text-primary">
-                                ৳{product.discount_price.toLocaleString()}
-                              </span>
-                              <span className="text-[10px] sm:text-xs text-fg-soft line-through">
-                                ৳{product.price.toLocaleString()}
-                              </span>
-                            </div>
-                          ) : (
+                      <div className="mb-2 sm:mb-3">
+                        {product.discount_price ? (
+                          <div className="flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-2">
                             <span className="text-sm sm:text-lg font-display font-bold text-primary">
+                              ৳{product.discount_price.toLocaleString()}
+                            </span>
+                            <span className="text-[10px] sm:text-xs text-fg-soft line-through">
                               ৳{product.price.toLocaleString()}
                             </span>
-                          )}
-                        </div>
-                        <motion.a
-                          href={`${brandSettings.whatsapp}?text=Hi! I'm interested in ${product.name}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={(e) => e.stopPropagation()}
-                          className="p-1.5 sm:p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all"
+                          </div>
+                        ) : (
+                          <span className="text-sm sm:text-lg font-display font-bold text-primary">
+                            ৳{product.price.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-auto flex items-center gap-1.5 sm:gap-2">
+                        <motion.button
+                          type="button"
+                          aria-label={`Add ${product.name} to cart`}
+                          onClick={handleAdd}
+                          whileTap={{ scale: 0.92 }}
+                          className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-bg-2 border border-line text-fg-muted hover:text-primary hover:border-primary/40 grid place-items-center flex-shrink-0 transition-colors"
                         >
-                          <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                        </motion.a>
+                          <AnimatePresence mode="wait" initial={false}>
+                            {justAdded === product.id ? (
+                              <motion.span
+                                key="added"
+                                initial={{ scale: 0.6, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.6, opacity: 0 }}
+                                className="text-primary inline-flex"
+                              >
+                                <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                              </motion.span>
+                            ) : (
+                              <motion.span
+                                key="cart"
+                                initial={{ scale: 0.6, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.6, opacity: 0 }}
+                                className="inline-flex"
+                              >
+                                <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                              </motion.span>
+                            )}
+                          </AnimatePresence>
+                        </motion.button>
+                        <motion.button
+                          type="button"
+                          onClick={handleBuyNow}
+                          whileTap={{ scale: 0.97 }}
+                          className="flex-1 inline-flex items-center justify-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-white bg-gradient-to-r from-primary to-primary-600 hover:shadow-[0_10px_22px_-8px_rgba(255,90,0,0.55)] transition-all"
+                        >
+                          <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                          Buy Now
+                        </motion.button>
                       </div>
                     </div>
                   </motion.div>

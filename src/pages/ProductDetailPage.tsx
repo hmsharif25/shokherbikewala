@@ -4,6 +4,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   ShoppingBag,
+  ShoppingCart,
+  Check,
   Star,
   Tag,
   Shield,
@@ -18,12 +20,15 @@ import {
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import PageTransition from '@/components/ui/PageTransition'
 import { useStore } from '@/context/StoreContext'
+import { useCart } from '@/context/CartContext'
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const { products, categories, brandSettings } = useStore()
+  const { addItem } = useCart()
   const [selectedImage, setSelectedImage] = useState(0)
+  const [justAdded, setJustAdded] = useState(false)
 
   const product = products.find((p) => p.slug === slug)
 
@@ -253,14 +258,40 @@ export default function ProductDetailPage() {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex-1 flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-lg hover:shadow-lg hover:shadow-green-500/30 transition-shadow font-racing tracking-wide"
+                className="flex-1 flex items-center justify-center gap-2.5 px-6 py-4 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-xl text-base sm:text-lg hover:shadow-lg hover:shadow-green-500/30 transition-shadow font-racing tracking-wide"
               >
                 <MessageCircle className="w-5 h-5" />
                 Order via WhatsApp
               </motion.a>
               <motion.button
                 type="button"
-                onClick={() => navigate(`/checkout?product=${product.slug}`)}
+                onClick={() => {
+                  addItem(product, 1)
+                  setJustAdded(true)
+                  window.setTimeout(() => setJustAdded(false), 1400)
+                }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center justify-center gap-2 px-5 py-4 bg-bg-2 border border-line text-fg hover:text-primary hover:border-primary/40 font-bold rounded-xl transition-colors font-racing tracking-wide"
+              >
+                {justAdded ? (
+                  <>
+                    <Check className="w-5 h-5 text-primary" />
+                    Added
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
+                  </>
+                )}
+              </motion.button>
+              <motion.button
+                type="button"
+                onClick={() => {
+                  addItem(product, 1)
+                  navigate('/checkout')
+                }}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-shadow animate-pulse-glow font-racing tracking-wide"

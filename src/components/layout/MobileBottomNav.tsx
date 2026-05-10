@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useTheme } from '@/context/ThemeContext'
+import { useCart } from '@/context/CartContext'
 
 type MoreLink = {
   name: string
@@ -49,7 +50,7 @@ const MORE_LINKS: MoreLink[] = [
   },
   {
     name: 'Cart',
-    path: '/checkout',
+    path: '/cart',
     icon: ShoppingCart,
     accent: 'text-fuchsia-300',
     gradient: 'linear-gradient(135deg, rgba(232,121,249,0.22), rgba(192,38,211,0.05))',
@@ -97,6 +98,7 @@ export default function MobileBottomNav() {
   const location = useLocation()
   const { user, isAdmin } = useAuth()
   const { theme, toggleTheme } = useTheme()
+  const { totalQty: cartCount } = useCart()
   const [moreOpen, setMoreOpen] = useState(false)
 
   // Lock body scroll while the More sheet is open.
@@ -180,7 +182,7 @@ export default function MobileBottomNav() {
           <li>
             <button
               type="button"
-              aria-label="More"
+              aria-label={`More${cartCount > 0 ? ` (${cartCount} in cart)` : ''}`}
               aria-expanded={moreOpen}
               onClick={() => setMoreOpen((v) => !v)}
               className="relative flex flex-col items-center justify-center gap-1 py-1.5 w-full"
@@ -189,7 +191,7 @@ export default function MobileBottomNav() {
                 whileTap={{ scale: 0.9 }}
                 animate={{ rotate: moreOpen ? 90 : 0 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="v-mobile-nav-action flex items-center justify-center"
+                className="v-mobile-nav-action flex items-center justify-center relative"
               >
                 {moreOpen ? (
                   <X className="w-5 h-5 text-primary" strokeWidth={2.5} />
@@ -199,6 +201,9 @@ export default function MobileBottomNav() {
                       moreActive ? 'text-primary' : 'text-fg-soft'
                     }`}
                   />
+                )}
+                {!moreOpen && cartCount > 0 && (
+                  <span className="v-cart-pill">{cartCount}</span>
                 )}
               </motion.div>
               <span
@@ -293,17 +298,20 @@ export default function MobileBottomNav() {
                     >
                       <Link
                         to={m.path}
-                        className="v-more-tile group"
+                        className="v-more-tile group relative"
                         onClick={() => setMoreOpen(false)}
                       >
                         <span
-                          className="v-more-tile-icon"
+                          className="v-more-tile-icon relative"
                           style={{ background: m.gradient }}
                         >
                           <m.icon
                             className={`w-5 h-5 ${m.accent} transition-transform duration-200 group-hover:scale-110`}
                             strokeWidth={2.1}
                           />
+                          {m.path === '/cart' && cartCount > 0 && (
+                            <span className="v-cart-pill">{cartCount}</span>
+                          )}
                         </span>
                         <span className="text-[10.5px] font-ui font-bold uppercase tracking-[0.12em] text-fg">
                           {m.name}

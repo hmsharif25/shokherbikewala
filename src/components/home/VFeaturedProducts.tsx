@@ -1,12 +1,16 @@
-import { useMemo, useRef } from 'react'
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ShoppingCart, ArrowRight, Star, Heart, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useMemo, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ShoppingCart, ArrowRight, Star, Heart, ChevronLeft, ChevronRight, Check, Zap } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
+import { useCart } from '@/context/CartContext'
 
 export default function VFeaturedProducts() {
-  const { products, categories, brandSettings, homeSections } = useStore()
+  const { products, categories, homeSections } = useStore()
+  const { addItem } = useCart()
+  const navigate = useNavigate()
+  const [justAdded, setJustAdded] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const filtered = useMemo(() => {
@@ -144,19 +148,55 @@ export default function VFeaturedProducts() {
 
                     <div className="mt-auto flex items-center gap-2">
                       <button
-                        aria-label="Quick view cart"
-                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-bg-2 border border-line text-fg-muted hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors flex-shrink-0"
+                        type="button"
+                        aria-label={`Add ${product.name} to cart`}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          addItem(product, 1)
+                          setJustAdded(product.id)
+                          window.setTimeout(() => {
+                            setJustAdded((cur) => (cur === product.id ? null : cur))
+                          }, 1100)
+                        }}
+                        className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-bg-2 border border-line text-fg-muted hover:text-primary hover:border-primary/40 flex items-center justify-center transition-colors flex-shrink-0"
                       >
-                        <ShoppingCart className="w-4 h-4" />
+                        <AnimatePresence mode="wait" initial={false}>
+                          {justAdded === product.id ? (
+                            <motion.span
+                              key="added"
+                              initial={{ scale: 0.6, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.6, opacity: 0 }}
+                              className="text-primary"
+                            >
+                              <Check className="w-4 h-4" />
+                            </motion.span>
+                          ) : (
+                            <motion.span
+                              key="cart"
+                              initial={{ scale: 0.6, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.6, opacity: 0 }}
+                            >
+                              <ShoppingCart className="w-4 h-4" />
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
                       </button>
-                      <a
-                        href={`${brandSettings.whatsapp}?text=${encodeURIComponent(`Hi! I'm interested in ${product.name} (৳${price.toLocaleString()})`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center text-xs sm:text-sm font-ui font-bold uppercase tracking-[0.18em] py-2.5 rounded-xl text-white bg-gradient-to-r from-[#ff7a1f] to-[#ff5a00] hover:shadow-[0_12px_28px_-8px_rgba(255,90,0,0.55)] transition-all hover:-translate-y-0.5"
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          addItem(product, 1)
+                          navigate('/checkout')
+                        }}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-ui font-bold uppercase tracking-[0.18em] py-2.5 rounded-xl text-white bg-gradient-to-r from-[#ff7a1f] to-[#ff5a00] hover:shadow-[0_12px_28px_-8px_rgba(255,90,0,0.55)] transition-all hover:-translate-y-0.5"
                       >
-Add to Cart
-                      </a>
+                        <Zap className="w-3.5 h-3.5" />
+                        Buy Now
+                      </button>
                     </div>
                   </div>
                 </motion.div>
