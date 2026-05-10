@@ -1,14 +1,21 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Pencil, Trash2, X, Save, Grid3X3 } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Save, Grid3X3, Loader2 } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Category } from '@/types'
 import ImageUpload from '@/components/ui/ImageUpload'
+import {
+  insertCategoryRemote,
+  updateCategoryRemote,
+  deleteCategoryRemote,
+} from '@/lib/db'
 
 export default function CategoriesManage() {
   const { categories, addCategory, updateCategory, deleteCategory } = useStore()
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
   const [isAdding, setIsAdding] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', image_url: '' })
 
   const openAdd = () => {
@@ -23,34 +30,67 @@ export default function CategoriesManage() {
     setIsAdding(true)
   }
 
-  const handleSave = () => {
-    const newCat: Category = {
-      id: editingCategory?.id || Date.now().toString(),
-      name: form.name,
-      slug: form.name.toLowerCase().replace(/\s+/g, '-'),
+  const handleSave = async () => {
+    if (!form.name.trim()) {
+      setError('Category name is required.')
+      return
+    }
+    setError(null)
+    setSaving(true)
+
+    const slug = form.name.toLowerCase().trim().replace(/\s+/g, '-')
+    const payload = {
+      name: form.name.trim(),
+      slug,
       image_url: form.image_url,
-      created_at: editingCategory?.created_at || new Date().toISOString(),
     }
 
     if (editingCategory) {
-      updateCategory(editingCategory.id, newCat)
+      const res = await updateCategoryRemote(editingCategory.id, payload)
+      if (res.error) {
+        setError(res.error)
+        setSaving(false)
+        return
+      }
+      const next: Category = res.category ?? {
+        ...editingCategory,
+        ...payload,
+      }
+      updateCategory(editingCategory.id, next)
     } else {
-      addCategory(newCat)
+      const res = await insertCategoryRemote(payload)
+      if (res.error) {
+        setError(res.error)
+        setSaving(false)
+        return
+      }
+      const next: Category = res.category ?? {
+        id: Date.now().toString(),
+        ...payload,
+        created_at: new Date().toISOString(),
+      }
+      addCategory(next)
     }
+
+    setSaving(false)
     setIsAdding(false)
     setEditingCategory(null)
   }
 
-  const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this category?')) {
-      deleteCategory(id)
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this category?')) return
+    const res = await deleteCategoryRemote(id)
+    if (res.error) {
+      setError(res.error)
+      return
     }
+    deleteCategory(id)
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="min-w-0">
           <h1 className="text-2xl font-display font-bold text-fg mb-1">Categories</h1>
           <p className="text-gray-400 text-sm">{categories.length} categories in your store</p>
         </div>
@@ -58,7 +98,7 @@ export default function CategoriesManage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={openAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan to-cyan-600 text-white font-medium rounded-xl text-sm"
+          className="flex flex-shrink-0 items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan to-cyan-600 text-white font-medium rounded-xl text-sm whitespace-nowrap shadow-lg shadow-cyan/30 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           Add Category
@@ -101,18 +141,36 @@ export default function CategoriesManage() {
                 />
               </div>
 
+              {error && (
+                <div className="mt-4 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+                  {error}
+                </div>
+              )}
+
               <div className="flex gap-3 mt-6">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-cyan text-white font-medium rounded-lg text-sm"
+                  disabled={saving}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-cyan text-white font-medium rounded-lg text-sm disabled:opacity-50"
                 >
-                  <Save className="w-4 h-4" />
-                  {editingCategory ? 'Update' : 'Add Category'}
+                  {saving ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                  {saving
+                    ? 'Saving...'
+                    : editingCategory
+                      ? 'Update'
+                      : 'Add Category'}
                 </motion.button>
                 <button
-                  onClick={() => setIsAdding(false)}
+                  onClick={() => {
+                    setIsAdding(false)
+                    setError(null)
+                  }}
                   className="px-5 py-2.5 text-gray-400 hover:text-fg text-sm transition-colors"
                 >
                   Cancel

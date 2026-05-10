@@ -41,7 +41,10 @@ export async function uploadImage(
   }
 
   const folder = (options.folder || 'misc').replace(/^\/+|\/+$/g, '')
-  const path = `${folder}/${Date.now()}-${safeName(file.name)}`
+  // Add a small random suffix so two near-simultaneous uploads of the
+  // same filename don't collide on the millisecond timestamp.
+  const rand = Math.random().toString(36).slice(2, 8)
+  const path = `${folder}/${Date.now()}-${rand}-${safeName(file.name)}`
 
   const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
     cacheControl: '3600',
@@ -50,11 +53,27 @@ export async function uploadImage(
   })
 
   if (error) {
-    throw new Error(error.message || 'Upload failed')
+    throw new Error(friendlyStorageError(error.message))
   }
 
   const { data } = supabase.storage.from(BUCKET).getPublicUrl(path)
   return { url: data.publicUrl, path }
+}
+
+/** Translate raw Supabase storage errors into actionable messages. */
+function friendlyStorageError(message: string | undefined): string {
+  const m = (message || '').toLowerCase()
+  if (!message) return 'Upload failed.'
+  if (m.includes('bucket') && m.includes('not found')) {
+    return 'Storage bucket "assets" is missing. Run supabase/migrations/0002_storage.sql in the Supabase SQL editor, then retry.'
+  }
+  if (m.includes('row-level security') || m.includes('not authorized') || m.includes('unauthorized')) {
+    return 'Image upload requires admin access. Sign in with an admin email (e.g. hmsharif2002@gmail.com) and try again.'
+  }
+  if (m.includes('payload too large') || m.includes('too large')) {
+    return 'Image is too large. Please upload a file under 8 MB.'
+  }
+  return message
 }
 
 /** Try to extract the storage path from a public URL we previously returned. */
