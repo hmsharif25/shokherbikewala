@@ -204,6 +204,8 @@ export async function submitInquiry(input: {
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+export const isUuid = (v: string) => UUID_RE.test(v)
+
 async function resolveCategoryId(
   categoryId: string,
   categories: { id: string; name: string; slug: string; image_url: string }[],
@@ -302,7 +304,82 @@ export async function deleteProductRemote(
   id: string,
 ): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured()) return { error: null }
+  // Demo / locally-created products use timestamp-style ids (e.g. '1' or
+  // '1700000000000') that can't exist in Supabase (the column is uuid).
+  // Skip the round-trip and let the caller remove it from local state.
+  if (!UUID_RE.test(id)) return { error: null }
   const { error } = await supabase.from('products').delete().eq('id', id)
+  return { error: error?.message ?? null }
+}
+
+/* ── Category CRUD ── */
+
+export async function insertCategoryRemote(input: {
+  name: string
+  slug: string
+  image_url: string
+}): Promise<{ error: string | null; category?: Category }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  // If a row with this slug already exists, reuse it instead of failing on
+  // the unique constraint. Lets admins re-add a category they previously
+  // deleted only locally.
+  const { data: existing } = await supabase
+    .from('categories')
+    .select('*')
+    .eq('slug', input.slug)
+    .maybeSingle()
+  if (existing) {
+    const { data: updated, error } = await supabase
+      .from('categories')
+      .update({ name: input.name, image_url: input.image_url })
+      .eq('id', existing.id)
+      .select('*')
+      .single()
+    if (error) return { error: error.message }
+    return { error: null, category: mapCategory(updated) }
+  }
+  const { data, error } = await supabase
+    .from('categories')
+    .insert({
+      name: input.name,
+      slug: input.slug,
+      image_url: input.image_url,
+    })
+    .select('*')
+    .single()
+  if (error) return { error: error.message }
+  return { error: null, category: mapCategory(data) }
+}
+
+export async function updateCategoryRemote(
+  id: string,
+  input: { name: string; slug: string; image_url: string },
+): Promise<{ error: string | null; category?: Category }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  // Demo categories don't yet exist in Supabase — promote them via insert.
+  if (!UUID_RE.test(id)) return insertCategoryRemote(input)
+  const { data, error } = await supabase
+    .from('categories')
+    .update({
+      name: input.name,
+      slug: input.slug,
+      image_url: input.image_url,
+    })
+    .eq('id', id)
+    .select('*')
+    .single()
+  if (error) return { error: error.message }
+  return { error: null, category: mapCategory(data) }
+}
+
+export async function deleteCategoryRemote(
+  id: string,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  // Demo ids (e.g. '1') aren't valid Supabase uuids — nothing to delete
+  // remotely; the caller will drop it from local state.
+  if (!UUID_RE.test(id)) return { error: null }
+  const { error } = await supabase.from('categories').delete().eq('id', id)
   return { error: error?.message ?? null }
 }
 
