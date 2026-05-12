@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Mail, Eye, EyeOff, User, ArrowLeft, Sparkles, Shield, ShoppingBag } from 'lucide-react'
+import { Lock, Mail, Eye, EyeOff, User, ArrowLeft, Sparkles, Shield, ShoppingBag, KeyRound } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useNavigate, Link } from 'react-router-dom'
 import ParticleBackground from '@/components/ui/ParticleBackground'
@@ -28,8 +28,11 @@ export default function AuthPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [forgotMode, setForgotMode] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
   const navigate = useNavigate()
-  const { signInWithEmail, signUpWithEmail, signInWithGoogle, configured } = useAuth()
+  const { signInWithEmail, signUpWithEmail, signInWithGoogle, configured, resetPassword } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -208,109 +211,224 @@ export default function AuthPage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <AnimatePresence>
-              {isSignUp && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  <label className="block text-sm font-medium text-fg-muted mb-1.5 font-racing">Full Name</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Your full name"
-                      autoComplete="name"
-                      className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
-                    />
+          <AnimatePresence mode="wait">
+            {forgotMode ? (
+              <motion.div
+                key="forgot"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.25 }}
+              >
+                {resetSent ? (
+                  <div className="text-center py-4">
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center">
+                      <Mail className="w-6 h-6 text-green-400" />
+                    </div>
+                    <h3 className="text-lg font-bold text-fg mb-2 font-racing">Check Your Email</h3>
+                    <p className="text-fg-muted text-sm mb-6 font-racing">
+                      We sent a password reset link to <span className="text-primary">{email}</span>. Click the link in the email to set a new password.
+                    </p>
+                    <button
+                      onClick={() => { setForgotMode(false); setResetSent(false); setError('') }}
+                      className="text-sm text-fg-muted hover:text-primary transition-colors font-racing"
+                    >
+                      ← Back to sign in
+                    </button>
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                ) : (
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault()
+                      setResetLoading(true)
+                      setError('')
+                      const { error: err } = await resetPassword(email)
+                      if (err) {
+                        setError(friendlyAuthError(err))
+                      } else {
+                        setResetSent(true)
+                      }
+                      setResetLoading(false)
+                    }}
+                    className="space-y-4"
+                  >
+                    <div className="text-center mb-2">
+                      <KeyRound className="w-8 h-8 text-primary mx-auto mb-2" />
+                      <p className="text-fg-muted text-sm font-racing">
+                        Enter your email and we'll send you a link to reset your password.
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-fg-muted mb-1.5 font-racing">Email</label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="you@example.com"
+                          autoComplete="email"
+                          required
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
+                        />
+                      </div>
+                    </div>
+                    <motion.button
+                      type="submit"
+                      disabled={resetLoading}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-3.5 bg-gradient-to-r from-primary via-primary to-primary-600 text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow disabled:opacity-60 font-racing tracking-wide flex items-center justify-center gap-2"
+                    >
+                      {resetLoading ? (
+                        <>
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Sending…
+                        </>
+                      ) : (
+                        <>
+                          <Mail className="w-4 h-4" />
+                          Send Reset Link
+                        </>
+                      )}
+                    </motion.button>
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        onClick={() => { setForgotMode(false); setError('') }}
+                        className="text-sm text-fg-muted hover:text-primary transition-colors font-racing"
+                      >
+                        ← Back to sign in
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="auth-forms"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.25 }}
+              >
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <AnimatePresence>
+                    {isSignUp && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                      >
+                        <label className="block text-sm font-medium text-fg-muted mb-1.5 font-racing">Full Name</label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
+                          <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Your full name"
+                            autoComplete="name"
+                            className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
-            <div>
-              <label className="block text-sm font-medium text-fg-muted mb-1.5 font-racing">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
-                  required
-                />
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium text-fg-muted mb-1.5 font-racing">Email</label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        autoComplete="email"
+                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
+                        required
+                      />
+                    </div>
+                  </div>
 
-            <div>
-              <label className="block text-sm font-medium text-fg-muted mb-1.5 font-racing">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 6 characters"
-                  autoComplete={isSignUp ? 'new-password' : 'current-password'}
-                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
-                  required
-                  minLength={6}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-soft hover:text-fg-muted"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-sm font-medium text-fg-muted font-racing">Password</label>
+                      {!isSignUp && configured && (
+                        <button
+                          type="button"
+                          onClick={() => { setForgotMode(true); setError(''); setSuccess('') }}
+                          className="text-xs text-primary hover:text-primary-400 transition-colors font-racing"
+                        >
+                          Forgot password?
+                        </button>
+                      )}
+                    </div>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-fg-soft" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="At least 6 characters"
+                        autoComplete={isSignUp ? 'new-password' : 'current-password'}
+                        className="w-full pl-11 pr-11 py-3 rounded-xl bg-bg-2 border border-line text-fg placeholder-fg-soft focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
+                        required
+                        minLength={6}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-fg-soft hover:text-fg-muted"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  </div>
 
-            <motion.button
-              type="submit"
-              disabled={loading}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-3.5 bg-gradient-to-r from-primary via-primary to-primary-600 text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow disabled:opacity-60 font-racing tracking-wide flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Please wait…
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  {isSignUp ? 'Create Account' : 'Sign In'}
-                </>
-              )}
-            </motion.button>
-          </form>
+                  <motion.button
+                    type="submit"
+                    disabled={loading}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-3.5 bg-gradient-to-r from-primary via-primary to-primary-600 text-white font-bold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow disabled:opacity-60 font-racing tracking-wide flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Please wait…
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-4 h-4" />
+                        {isSignUp ? 'Create Account' : 'Sign In'}
+                      </>
+                    )}
+                  </motion.button>
+                </form>
 
-          <div className="mt-6 flex items-center justify-between gap-3 text-xs">
-            <button
-              onClick={() => {
-                setIsSignUp(!isSignUp)
-                setError('')
-                setSuccess('')
-              }}
-              className="text-fg-muted hover:text-primary transition-colors font-racing"
-            >
-              {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-            </button>
-            <Link
-              to="/track"
-              className="text-cyan hover:underline font-racing"
-            >
-              Track order →
-            </Link>
-          </div>
+                <div className="mt-6 flex items-center justify-between gap-3 text-xs">
+                  <button
+                    onClick={() => {
+                      setIsSignUp(!isSignUp)
+                      setError('')
+                      setSuccess('')
+                    }}
+                    className="text-fg-muted hover:text-primary transition-colors font-racing"
+                  >
+                    {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+                  </button>
+                  <Link
+                    to="/track"
+                    className="text-cyan hover:underline font-racing"
+                  >
+                    Track order →
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </div>

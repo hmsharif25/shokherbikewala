@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft, Lock as LockIcon } from 'lucide-react'
+import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft, Lock as LockIcon, KeyRound } from 'lucide-react'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth, ADMIN_EMAIL_LIST } from '@/context/AuthContext'
@@ -24,8 +24,11 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [forgotMode, setForgotMode] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
   const navigate = useNavigate()
-  const { signInWithEmail, signOut, isAdmin, user } = useAuth()
+  const { signInWithEmail, signOut, isAdmin, user, resetPassword } = useAuth()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -166,74 +169,191 @@ export default function AdminLoginPage() {
             )}
           </AnimatePresence>
 
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5 font-racing tracking-wide">
-                Admin Email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@example.com"
-                  autoComplete="username"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-black/40 border border-red-500/20 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500/40 transition-all"
-                />
-              </div>
-            </div>
+          <AnimatePresence mode="wait">
+            {forgotMode ? (
+              <motion.div
+                key="forgot"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.25 }}
+              >
+                {resetSent ? (
+                  <div className="text-center py-4">
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center">
+                      <Mail className="w-6 h-6 text-green-400" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2 font-racing">Check Your Email</h3>
+                    <p className="text-gray-400 text-sm mb-6 font-racing">
+                      We sent a password reset link to <span className="text-cyan">{email}</span>. Click the link in the email to set a new password.
+                    </p>
+                    <button
+                      onClick={() => { setForgotMode(false); setResetSent(false); setError('') }}
+                      className="text-sm text-gray-400 hover:text-cyan transition-colors font-racing"
+                    >
+                      ← Back to sign in
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault()
+                      setResetLoading(true)
+                      setError('')
+                      const { error: err } = await resetPassword(email)
+                      if (err) {
+                        setError(friendlyAuthError(err))
+                      } else {
+                        setResetSent(true)
+                      }
+                      setResetLoading(false)
+                    }}
+                    className="space-y-5"
+                  >
+                    <div className="text-center mb-2">
+                      <KeyRound className="w-8 h-8 text-cyan mx-auto mb-2" />
+                      <p className="text-gray-400 text-sm font-racing">
+                        Enter your admin email and we'll send you a link to reset your password.
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-1.5 font-racing tracking-wide">
+                        Admin Email
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="admin@example.com"
+                          autoComplete="username"
+                          required
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-black/40 border border-red-500/20 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500/40 transition-all"
+                        />
+                      </div>
+                    </div>
+                    <motion.button
+                      type="submit"
+                      disabled={resetLoading}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-3.5 bg-gradient-to-r from-cyan via-cyan-500 to-cyan-600 text-white font-bold rounded-xl shadow-lg shadow-cyan/30 hover:shadow-cyan/50 transition-shadow disabled:opacity-60 font-racing tracking-widest uppercase flex items-center justify-center gap-2"
+                    >
+                      {resetLoading ? (
+                        <>
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Sending…
+                        </>
+                      ) : (
+                        <>
+                          <Mail className="w-4 h-4" />
+                          Send Reset Link
+                        </>
+                      )}
+                    </motion.button>
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        onClick={() => { setForgotMode(false); setError('') }}
+                        className="text-sm text-gray-400 hover:text-cyan transition-colors font-racing"
+                      >
+                        ← Back to sign in
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="login"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.25 }}
+              >
+                <form onSubmit={handleLogin} className="space-y-5">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1.5 font-racing tracking-wide">
+                      Admin Email
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="admin@example.com"
+                        autoComplete="username"
+                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-black/40 border border-red-500/20 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500/40 transition-all"
+                      />
+                    </div>
+                  </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5 font-racing tracking-wide">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter admin password"
-                  autoComplete="current-password"
-                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-black/40 border border-red-500/20 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500/40 transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-sm font-medium text-gray-300 font-racing tracking-wide">
+                        Password
+                      </label>
+                      {isSupabaseConfigured() && (
+                        <button
+                          type="button"
+                          onClick={() => { setForgotMode(true); setError('') }}
+                          className="text-xs text-cyan hover:text-cyan-400 transition-colors font-racing"
+                        >
+                          Forgot password?
+                        </button>
+                      )}
+                    </div>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter admin password"
+                        autoComplete="current-password"
+                        className="w-full pl-11 pr-11 py-3 rounded-xl bg-black/40 border border-red-500/20 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-500/40 transition-all"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                  </div>
 
-            <motion.button
-              type="submit"
-              disabled={loading}
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-3.5 bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-shadow disabled:opacity-60 font-racing tracking-widest uppercase flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Authenticating…
-                </>
-              ) : (
-                <>
-                  <ShieldCheck className="w-4 h-4" />
-                  Sign In
-                </>
-              )}
-            </motion.button>
-          </form>
+                  <motion.button
+                    type="submit"
+                    disabled={loading}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-3.5 bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-shadow disabled:opacity-60 font-racing tracking-widest uppercase flex items-center justify-center gap-2"
+                  >
+                    {loading ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        Authenticating…
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-4 h-4" />
+                        Sign In
+                      </>
+                    )}
+                  </motion.button>
+                </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-[10px] text-gray-600 font-racing tracking-widest uppercase">
-              All login attempts are logged
-            </p>
-          </div>
+                <div className="mt-6 text-center">
+                  <p className="text-[10px] text-gray-600 font-racing tracking-widest uppercase">
+                    All login attempts are logged
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </div>

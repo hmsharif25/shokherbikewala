@@ -27,6 +27,7 @@ const CheckoutPage = lazy(() => import('@/pages/CheckoutPage'))
 const CartPage = lazy(() => import('@/pages/CartPage'))
 const TrackOrderPage = lazy(() => import('@/pages/TrackOrderPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
+const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'))
 const AdminLoginPage = lazy(() => import('@/pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const ProductsManage = lazy(() => import('@/pages/admin/ProductsManage'))
@@ -128,6 +129,7 @@ function AppRoutes() {
     <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route
           path="/admin"

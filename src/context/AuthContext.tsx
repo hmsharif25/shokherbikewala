@@ -20,6 +20,8 @@ interface AuthContextType {
   ) => Promise<{ error: string | null; needsConfirm?: boolean }>
   signInWithGoogle: () => Promise<{ error: string | null }>
   signOut: () => Promise<void>
+  resetPassword: (email: string) => Promise<{ error: string | null }>
+  updatePassword: (newPassword: string) => Promise<{ error: string | null }>
   isAdmin: boolean
 }
 
@@ -174,6 +176,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }
 
+  const resetPassword = async (email: string) => {
+    const cleanEmail = normalizeEmail(email)
+    if (!configured) {
+      return { error: 'Password reset is not available in demo mode. Configure Supabase for real auth.' }
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+    return { error: error?.message || null }
+  }
+
+  const updatePassword = async (newPassword: string) => {
+    if (!configured) {
+      return { error: 'Password update is not available in demo mode.' }
+    }
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    return { error: error?.message || null }
+  }
+
   const isAdmin = user ? isAdminEmail(user.email) : false
 
   return (
@@ -186,6 +207,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signUpWithEmail,
         signInWithGoogle,
         signOut,
+        resetPassword,
+        updatePassword,
         isAdmin,
       }}
     >
