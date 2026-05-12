@@ -21,29 +21,33 @@ export default function AnimatedSection({
   })
 
   const directionOffset = {
-    up: { y: 60, x: 0 },
-    down: { y: -60, x: 0 },
-    left: { x: 60, y: 0 },
-    right: { x: -60, y: 0 },
-    none: { x: 0, y: 0 },
+    up: { y: 60, x: 0, rotateX: 8 },
+    down: { y: -60, x: 0, rotateX: -8 },
+    left: { x: 60, y: 0, rotateY: -6 },
+    right: { x: -60, y: 0, rotateY: 6 },
+    none: { x: 0, y: 0, rotateX: 0, rotateY: 0 },
   }
+
+  const offset = directionOffset[direction]
 
   return (
     <motion.div
       ref={ref}
       initial={{
         opacity: 0,
-        ...directionOffset[direction],
+        scale: 0.93,
+        ...offset,
       }}
       animate={
         inView
-          ? { opacity: 1, x: 0, y: 0 }
-          : { opacity: 0, ...directionOffset[direction] }
+          ? { opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0 }
+          : { opacity: 0, scale: 0.93, ...offset }
       }
       transition={{
-        duration: 0.7,
+        type: 'spring',
+        stiffness: 120,
+        damping: 20,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
       }}
       className={className}
     >

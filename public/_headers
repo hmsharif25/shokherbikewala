@@ -1,0 +1,42 @@
+# Cloudflare Pages cache + security headers.
+# Mirrors the per-asset rules previously kept in vercel.json so the
+# site has the same cache behaviour on both hosts during migration.
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Vite hashes filenames under /assets/, so they're safe to cache for a
+# year with `immutable`. Same goes for any standalone .js / .css.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images / icons: short cache + stale-while-revalidate so updates are
+# picked up within a day but stay fast.
+*.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+*.jpg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+*.webp
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+*.ico
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/site.webmanifest
+  Cache-Control: public, max-age=86400
+  Content-Type: application/manifest+json
+
+# Baseline security headers for all responses.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

@@ -1,22 +1,33 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Bike } from 'lucide-react'
-import { demoBrandSettings } from '@/data/demo-data'
+import { Save, Bike, RotateCcw } from 'lucide-react'
+import { useStore } from '@/context/StoreContext'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import ImageUpload from '@/components/ui/ImageUpload'
 
 export default function BrandSettings() {
-  const [settings, setSettings] = useState(demoBrandSettings)
+  const store = useStore()
+  const [settings, setSettings] = useState(store.brandSettings)
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
+    store.setBrandSettings(settings)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleReset = () => {
+    if (confirm('Reset all data to defaults? This will clear all your changes.')) {
+      store.resetAll()
+      setSettings(store.brandSettings)
+      window.location.reload()
+    }
   }
 
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-display font-bold text-white mb-1">Brand Settings</h1>
+        <h1 className="text-2xl font-display font-bold text-fg mb-1">Brand Settings</h1>
         <p className="text-gray-400 text-sm">Customize your store&apos;s brand identity</p>
       </div>
 
@@ -49,24 +60,18 @@ export default function BrandSettings() {
                 className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Logo URL</label>
-              <input
-                value={settings.logo_url}
-                onChange={e => setSettings({ ...settings, logo_url: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-300 mb-1">Hero Image URL</label>
-              <input
-                value={settings.hero_image_url}
-                onChange={e => setSettings({ ...settings, hero_image_url: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
+            <ImageUpload
+              label="Logo"
+              folder="brand"
+              value={settings.logo_url}
+              onChange={(v) => setSettings({ ...settings, logo_url: typeof v === 'string' ? v : v[0] || '' })}
+            />
+            <ImageUpload
+              label="Hero image"
+              folder="brand"
+              value={settings.hero_image_url}
+              onChange={(v) => setSettings({ ...settings, hero_image_url: typeof v === 'string' ? v : v[0] || '' })}
+            />
           </div>
 
           <div className="pt-4 border-t border-white/5">
@@ -116,6 +121,15 @@ export default function BrandSettings() {
             >
               <Save className="w-4 h-4" />
               Save Settings
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleReset}
+              className="flex items-center gap-2 px-6 py-2.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 font-medium rounded-lg text-sm transition-colors"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Reset All Data
             </motion.button>
             {saved && (
               <motion.span

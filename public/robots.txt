@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /auth
+Disallow: /checkout
+Disallow: /track
+
+Sitemap: https://www.shokherbikewala.com/sitemap.xml

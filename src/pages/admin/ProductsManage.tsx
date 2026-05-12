@@ -1,26 +1,30 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Pencil, Trash2, X, Save, Package } from 'lucide-react'
-import { demoProducts, demoCategories } from '@/data/demo-data'
+import { Plus, Pencil, Trash2, X, Save, Package, Loader2 } from 'lucide-react'
+import { useStore } from '@/context/StoreContext'
 import { Product } from '@/types'
+import ImageUpload from '@/components/ui/ImageUpload'
+import { insertProductRemote, updateProductRemote, deleteProductRemote, loadRemotePublic } from '@/lib/db'
 
 export default function ProductsManage() {
-  const [products, setProducts] = useState<Product[]>(demoProducts)
+  const { products, categories, addProduct, updateProduct, deleteProduct, setCategories } = useStore()
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [isAdding, setIsAdding] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: '',
     description: '',
     price: '',
     discount_price: '',
     category_id: '',
-    images: '',
+    images: [] as string[],
     in_stock: true,
     featured: false,
   })
 
   const openAdd = () => {
-    setForm({ name: '', description: '', price: '', discount_price: '', category_id: demoCategories[0]?.id || '', images: '', in_stock: true, featured: false })
+    setForm({ name: '', description: '', price: '', discount_price: '', category_id: categories[0]?.id || '', images: [], in_stock: true, featured: false })
     setEditingProduct(null)
     setIsAdding(true)
   }
@@ -32,7 +36,7 @@ export default function ProductsManage() {
       price: product.price.toString(),
       discount_price: product.discount_price?.toString() || '',
       category_id: product.category_id,
-      images: product.images.join(', '),
+      images: product.images,
       in_stock: product.in_stock,
       featured: product.featured,
     })
@@ -40,48 +44,65 @@ export default function ProductsManage() {
     setIsAdding(true)
   }
 
-  const handleSave = () => {
-    const newProduct: Product = {
-      id: editingProduct?.id || Date.now().toString(),
+  const handleSave = async () => {
+    if (!form.name.trim()) { setError('Product name is required.'); return }
+    if (!form.price || parseFloat(form.price) <= 0) { setError('Price must be greater than 0.'); return }
+    setError(null)
+    setSaving(true)
+
+    const payload = {
       name: form.name,
       slug: form.name.toLowerCase().replace(/\s+/g, '-'),
       description: form.description,
       price: parseFloat(form.price) || 0,
       discount_price: form.discount_price ? parseFloat(form.discount_price) : null,
       category_id: form.category_id,
-      images: form.images.split(',').map(s => s.trim()).filter(Boolean),
+      images: form.images.filter(Boolean),
       in_stock: form.in_stock,
       featured: form.featured,
-      created_at: editingProduct?.created_at || new Date().toISOString(),
     }
 
     if (editingProduct) {
-      setProducts(products.map(p => p.id === editingProduct.id ? newProduct : p))
+      const res = await updateProductRemote(editingProduct.id, payload, categories)
+      if (res.error) { setError(res.error); setSaving(false); return }
+      updateProduct(editingProduct.id, res.product ?? { ...editingProduct, ...payload })
     } else {
-      setProducts([newProduct, ...products])
+      const res = await insertProductRemote(payload, categories)
+      if (res.error) { setError(res.error); setSaving(false); return }
+      if (res.product) {
+        addProduct(res.product)
+      } else {
+        addProduct({ id: Date.now().toString(), ...payload, created_at: new Date().toISOString() })
+      }
     }
+    setSaving(false)
     setIsAdding(false)
     setEditingProduct(null)
+    loadRemotePublic().then(remote => {
+      if (remote.categories && remote.categories.length > 0) setCategories(remote.categories)
+    })
   }
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
-      setProducts(products.filter(p => p.id !== id))
+      const res = await deleteProductRemote(id)
+      if (res.error) { setError(res.error); return }
+      deleteProduct(id)
     }
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-white mb-1">Products</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-display font-bold text-fg mb-1">Products</h1>
           <p className="text-gray-400 text-sm">{products.length} products in your store</p>
         </div>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={openAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary to-primary-600 text-white font-medium rounded-xl text-sm"
+          className="flex flex-shrink-0 items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary to-primary-600 text-white font-medium rounded-xl text-sm whitespace-nowrap shadow-lg shadow-primary/30 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           Add Product
@@ -101,7 +122,7 @@ export default function ProductsManage() {
                 <h2 className="text-lg font-bold text-white">
                   {editingProduct ? 'Edit Product' : 'Add New Product'}
                 </h2>
-                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-white">
+                <button onClick={() => setIsAdding(false)} className="text-gray-400 hover:text-fg">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -113,7 +134,7 @@ export default function ProductsManage() {
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
                     placeholder="Product name"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
@@ -121,9 +142,9 @@ export default function ProductsManage() {
                   <select
                     value={form.category_id}
                     onChange={e => setForm({ ...form, category_id: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   >
-                    {demoCategories.map(cat => (
+                    {categories.map(cat => (
                       <option key={cat.id} value={cat.id} className="bg-dark-50">{cat.name}</option>
                     ))}
                   </select>
@@ -135,7 +156,7 @@ export default function ProductsManage() {
                     value={form.price}
                     onChange={e => setForm({ ...form, price: e.target.value })}
                     placeholder="0"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div>
@@ -145,7 +166,7 @@ export default function ProductsManage() {
                     value={form.discount_price}
                     onChange={e => setForm({ ...form, discount_price: e.target.value })}
                     placeholder="Leave empty for no discount"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -155,16 +176,17 @@ export default function ProductsManage() {
                     value={form.description}
                     onChange={e => setForm({ ...form, description: e.target.value })}
                     placeholder="Product description"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm text-gray-300 mb-1">Image URLs (comma separated)</label>
-                  <input
+                  <ImageUpload
+                    label="Product images"
+                    folder="products"
+                    multiple
                     value={form.images}
-                    onChange={e => setForm({ ...form, images: e.target.value })}
-                    placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                    className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    onChange={(v) => setForm({ ...form, images: Array.isArray(v) ? v : v ? [v] : [] })}
+                    hint="First image is shown as the main thumbnail."
                   />
                 </div>
                 <div className="flex items-center gap-6">
@@ -189,19 +211,26 @@ export default function ProductsManage() {
                 </div>
               </div>
 
+              {error && (
+                <div className="mt-4 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+                  {error}
+                </div>
+              )}
+
               <div className="flex gap-3 mt-6">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-lg text-sm"
+                  disabled={saving}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-medium rounded-lg text-sm disabled:opacity-50"
                 >
-                  <Save className="w-4 h-4" />
-                  {editingProduct ? 'Update' : 'Add Product'}
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  {saving ? 'Saving...' : editingProduct ? 'Update' : 'Add Product'}
                 </motion.button>
                 <button
-                  onClick={() => setIsAdding(false)}
-                  className="px-5 py-2.5 text-gray-400 hover:text-white text-sm transition-colors"
+                  onClick={() => { setIsAdding(false); setError(null) }}
+                  className="px-5 py-2.5 text-gray-400 hover:text-fg text-sm transition-colors"
                 >
                   Cancel
                 </button>
@@ -225,7 +254,7 @@ export default function ProductsManage() {
             </thead>
             <tbody>
               {products.map(product => {
-                const category = demoCategories.find(c => c.id === product.category_id)
+                const category = categories.find(c => c.id === product.category_id)
                 return (
                   <motion.tr
                     key={product.id}

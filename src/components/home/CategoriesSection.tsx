@@ -1,62 +1,68 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Grid3X3 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
-import { demoCategories } from '@/data/demo-data'
+import { useStore } from '@/context/StoreContext'
 
 export default function CategoriesSection() {
+  const { categories: demoCategories } = useStore()
   return (
-    <section className="relative py-24">
-      <div className="absolute inset-0 bg-gradient-to-b from-dark via-surface/30 to-dark" />
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+    <section className="relative py-14 sm:py-24">
+      <div className="absolute inset-0 bg-gradient-to-b from-bg via-bg-2 to-bg" />
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/25 to-transparent" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
-          <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gold/10 text-gold text-sm font-semibold mb-4 border border-gold/20">
-            BROWSE BY TYPE
-          </motion.span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-4">
-            <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Shop by{' '}
-            </span>
-            <span className="bg-gradient-to-r from-gold to-primary bg-clip-text text-transparent">
-              Category
-            </span>
+        <div className="divider-glow mb-10 sm:mb-14 rounded-full" />
+
+        <AnimatedSection className="text-center mb-10 sm:mb-16">
+          <span className="section-eyebrow gold mb-3 sm:mb-4">
+            <Grid3X3 className="w-3 h-3" />
+            Browse By Type
+          </span>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mt-3 mb-3 sm:mb-4">
+            <span className="text-gradient-headline">Shop by </span>
+            <span className="text-gradient-primary">Category</span>
           </h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
+          <p className="text-fg-muted max-w-xl mx-auto font-racing tracking-wide">
             Find the perfect accessories for your ride
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
           {demoCategories.map((category, i) => (
             <AnimatedSection key={category.id} delay={i * 0.08}>
               <Link to={`/products?category=${category.slug}`}>
                 <motion.div
-                  whileHover={{ scale: 1.03 }}
+                  whileHover={{ y: -6 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative group rounded-2xl overflow-hidden cursor-pointer h-48 md:h-56"
+                  transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+                  className="tile-premium group relative h-40 sm:h-56 md:h-64"
                 >
                   <img
                     src={category.image_url}
                     alt={category.name}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent group-hover:from-primary/80 group-hover:via-dark/40 transition-all duration-500" />
+                  <div className="tile-overlay absolute inset-0" />
 
-                  <div className="absolute inset-0 flex flex-col justify-end p-5">
-                    <motion.h3
-                      className="text-white font-display font-bold text-lg md:text-xl mb-1"
-                    >
+                  {/* HUD corner brackets */}
+                  <span className="hud-corner absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="hud-corner absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="hud-corner absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="hud-corner absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                  <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6">
+                    <span className="text-[10px] sm:text-xs text-white/70 font-racing tracking-[0.25em] uppercase mb-1">
+                      Category
+                    </span>
+                    <h3 className="text-white font-display font-bold text-base sm:text-xl md:text-2xl mb-1 text-glow drop-shadow-md">
                       {category.name}
-                    </motion.h3>
-                    <div className="flex items-center gap-1 text-sm text-gray-300 group-hover:text-white transition-colors">
+                    </h3>
+                    <div className="flex items-center gap-1.5 text-sm text-white/85 group-hover:text-white transition-colors font-racing tracking-wide">
                       <span>Explore</span>
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
-
-                  <div className="absolute inset-0 border border-white/0 group-hover:border-primary/30 rounded-2xl transition-all duration-500" />
                 </motion.div>
               </Link>
             </AnimatedSection>

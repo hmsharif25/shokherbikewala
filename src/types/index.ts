@@ -31,3 +31,81 @@ export interface BrandSettings {
   tiktok: string
   instagram: string
 }
+
+export interface Testimonial {
+  id: number
+  name: string
+  rating: number
+  text: string
+  product: string
+}
+
+export interface SectionConfig {
+  visible: boolean
+  heading: string
+  subheading: string
+}
+
+export interface HomeSections {
+  hero: SectionConfig
+  categories: SectionConfig
+  featuredProducts: SectionConfig
+  brandStory: SectionConfig
+  promoBanner: SectionConfig
+  community: SectionConfig
+  testimonials: SectionConfig
+  faq: SectionConfig
+}
+
+export interface Inquiry {
+  id: number
+  customer_name: string
+  phone: string
+  product_name: string
+  message: string
+  status: 'new' | 'contacted' | 'completed' | 'cancelled'
+  created_at: string
+}
+
+export interface FAQItem {
+  id: string
+  question: string
+  answer: string
+}
+
+export interface FooterConfig {
+  trustBadges: Array<{ title: string; sub: string }>
+  shopLinks: Array<{ name: string; path: string }>
+  companyLinks: Array<{ name: string; path: string }>
+  supportLinks: Array<{ name: string; path: string }>
+  newsletterEnabled: boolean
+  copyrightText: string
+}
+
+export interface SEOSettings {
+  siteTitle: string
+  siteDescription: string
+  siteKeywords: string[]
+  ogImage: string
+  googleVerification: string
+  bingVerification: string
+}
+
+export interface PageContent {
+  aboutHeading: string
+  aboutDescription: string
+  aboutMission: string
+  aboutVision: string
+  contactHeading: string
+  contactDescription: string
+  contactEmail: string
+  contactPhone: string
+  contactAddress: string
+}
+
+export interface SiteConfig {
+  faqItems: FAQItem[]
+  footer: FooterConfig
+  seo: SEOSettings
+  pages: PageContent
+}
