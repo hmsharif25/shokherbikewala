@@ -159,7 +159,7 @@ export default function Navbar() {
 
               {user ? (
                 <Link
-                  to={isAdmin ? '/admin' : '/auth'}
+                  to={isAdmin ? '/admin' : '/profile'}
                   aria-label="Profile"
                   className="hidden sm:inline-flex v-icon-btn"
                 >

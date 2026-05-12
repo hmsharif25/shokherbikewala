@@ -28,6 +28,7 @@ const CheckoutPage = lazy(() => import('@/pages/CheckoutPage'))
 const CartPage = lazy(() => import('@/pages/CartPage'))
 const TrackOrderPage = lazy(() => import('@/pages/TrackOrderPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
 const AdminLoginPage = lazy(() => import('@/pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const ProductsManage = lazy(() => import('@/pages/admin/ProductsManage'))
@@ -94,6 +95,7 @@ function PublicLayout() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/track" element={<TrackOrderPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </Suspense>
       </AnimatePresence>

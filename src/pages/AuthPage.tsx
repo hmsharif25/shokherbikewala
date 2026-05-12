@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Lock, Mail, Eye, EyeOff, User, ArrowLeft, Sparkles, Shield, ShoppingBag } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
@@ -29,7 +29,13 @@ export default function AuthPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const navigate = useNavigate()
-  const { signInWithEmail, signUpWithEmail, signInWithGoogle, configured } = useAuth()
+  const { signInWithEmail, signUpWithEmail, signInWithGoogle, configured, user, isAdmin } = useAuth()
+
+  useEffect(() => {
+    if (user) {
+      navigate(isAdmin ? '/admin' : '/profile', { replace: true })
+    }
+  }, [user, isAdmin, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
