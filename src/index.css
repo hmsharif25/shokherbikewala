@@ -3376,6 +3376,18 @@ html {
 .v-reveal.in.v-reveal-right { transform: translate(0, 0) scale(1); }
 .v-reveal.in.v-reveal-zoom { transform: scale(1); }
 
+/* ---------- Safari iOS bottom nav fix ----------
+ * Wraps the tab bar in a fixed container pinned to bottom: 0
+ * with translate3d(0,0,0) to prevent Safari viewport bounce
+ * from moving the nav to the middle of the screen.
+ */
+.v-tabbar-safari-fix {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 /* ---------- Mobile bottom tab bar (5-up reference style) ----------
  * Sticky white (light) / dark glass strip across the bottom on phones,
  * matching the reference mobile mockup exactly.
@@ -7710,3 +7722,4 @@ html {
   transform: scale(0.97);
   box-shadow: 0 8px 16px -10px rgba(255, 90, 0, 0.55);
 }
+
