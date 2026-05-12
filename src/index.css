@@ -7173,6 +7173,30 @@ html {
   100% { opacity: 0.6; }
 }
 
+/* iOS Safari composites the hero behind one GPU layer. The huge
+   140%-sized nebula transform combined with star twinkle inside
+   that layer repaints constantly, and when the URL bar shows/hides
+   during scroll the whole composited surface shifts subtly — read
+   as "shake" on iPhone. Freeze every ambient hero background loop
+   on touch + reduced-motion contexts. The static endpoint values
+   still leave the section visually rich. */
+@media (hover: none) and (pointer: coarse) {
+  .sb-hex-pattern::before,
+  .sb-hex-pattern::after,
+  .sb-flicker,
+  .sb-shimmer-text {
+    animation: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb-hex-pattern::before,
+  .sb-hex-pattern::after,
+  .sb-flicker,
+  .sb-shimmer-text {
+    animation: none !important;
+  }
+}
+
 /* ── Loading skeleton with gaming shimmer ── */
 .sb-skeleton-gaming {
   background: linear-gradient(
