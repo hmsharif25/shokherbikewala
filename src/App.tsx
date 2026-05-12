@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import FloatingWhatsApp from '@/components/layout/FloatingWhatsApp'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
+import MobileTopBar from '@/components/layout/MobileTopBar'
 import HomePage from '@/pages/HomePage'
 import PageLoader from '@/components/ui/PageLoader'
 import GamingBackdrop from '@/components/ui/GamingBackdrop'
@@ -28,6 +29,7 @@ const CartPage = lazy(() => import('@/pages/CartPage'))
 const TrackOrderPage = lazy(() => import('@/pages/TrackOrderPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
 const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'))
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
 const AdminLoginPage = lazy(() => import('@/pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const ProductsManage = lazy(() => import('@/pages/admin/ProductsManage'))
@@ -81,6 +83,7 @@ function PublicLayout() {
   return (
     <div className="v-public-site">
       <Navbar />
+      <MobileTopBar />
       <AnimatePresence mode="wait">
         <Suspense fallback={<RouteFallback />}>
           <Routes location={location} key={location.pathname}>
@@ -93,6 +96,7 @@ function PublicLayout() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/track" element={<TrackOrderPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </Suspense>
       </AnimatePresence>

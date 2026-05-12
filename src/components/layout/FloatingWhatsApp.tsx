@@ -23,6 +23,7 @@ export default function FloatingWhatsApp() {
   const { brandSettings } = useStore()
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const isProductDetail = location.pathname.startsWith('/products/')
   const [pastHero, setPastHero] = useState(!isHome)
 
   useEffect(() => {
@@ -54,7 +55,11 @@ export default function FloatingWhatsApp() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"
-          className="fixed right-4 sm:right-6 z-[55] bottom-[calc(5.25rem+env(safe-area-inset-bottom,0.5rem))] md:bottom-6"
+          className={`fixed right-4 sm:right-6 z-[55] md:bottom-6 ${
+            isProductDetail
+              ? 'bottom-[calc(9.25rem+env(safe-area-inset-bottom,0.5rem))]'
+              : 'bottom-[calc(5.25rem+env(safe-area-inset-bottom,0.5rem))]'
+          }`}
           initial={{ scale: 0, opacity: 0, y: 16 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.6, opacity: 0, y: 12 }}
