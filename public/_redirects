@@ -1,0 +1,10 @@
+# Cloudflare Pages SPA fallback.
+#
+# React Router handles routing on the client. Without this rule, a
+# direct hit to /products/some-slug or /admin would return 404 because
+# no static file exists at that path. The wildcard tells Cloudflare to
+# serve index.html for every path that doesn't match a real file,
+# preserving the URL so the router can take over.
+#
+# https://developers.cloudflare.com/pages/configuration/redirects/
+/*    /index.html   200
