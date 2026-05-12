@@ -6,6 +6,7 @@ import {
   Package,
   Grid3X3,
   Settings,
+  KeyRound,
   LogOut,
   Bike,
   Menu,
@@ -65,6 +66,7 @@ const sidebarGroups = [
       { name: 'SEO Settings', path: '/admin/seo', icon: Search },
       { name: 'Footer', path: '/admin/footer', icon: PanelBottom },
       { name: 'Brand Settings', path: '/admin/settings', icon: Settings },
+      { name: 'Change Password', path: '/admin/change-password', icon: KeyRound },
     ],
   },
 ]
