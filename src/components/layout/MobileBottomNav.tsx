@@ -113,7 +113,7 @@ export default function MobileBottomNav() {
 
   const profileItem: TabItem = isAdmin
     ? { name: 'Admin', path: '/admin', icon: ShieldCheck }
-    : { name: 'Profile', path: user ? '/auth' : '/auth', icon: User }
+    : { name: 'Profile', path: user ? '/profile' : '/auth', icon: User }
 
   const tabs: TabItem[] = [
     { name: 'Home', path: '/', icon: Home },
