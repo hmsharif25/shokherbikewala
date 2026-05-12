@@ -133,9 +133,11 @@ export default function MobileBottomNav() {
     <>
       <nav
         aria-label="Mobile navigation"
-        className="md:hidden fixed inset-x-3 bottom-3 z-[60] v-tabbar rounded-[1.7rem]"
+        className="md:hidden fixed inset-x-0 bottom-0 z-[60] v-tabbar-safari-fix"
+        style={{ transform: 'translate3d(0,0,0)' }}
       >
-        <ul className="grid grid-cols-5 px-1 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom,0.5rem))]">
+        <div className="mx-3 mb-[max(0.5rem,env(safe-area-inset-bottom,0.5rem))] v-tabbar rounded-[1.7rem]">
+        <ul className="grid grid-cols-5 px-1 pt-2 pb-2">
           {tabs.map((item) => {
             const active = isActive(item.path)
             const Icon = item.icon
@@ -223,6 +225,7 @@ export default function MobileBottomNav() {
             </button>
           </li>
         </ul>
+        </div>
       </nav>
 
       {/* "More" action sheet — redesigned premium drawer with a
