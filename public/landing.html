@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#dc5a14" />
+
+  <!-- SEO -->
+  <title>প্রিমিয়াম বাইক হেলমেট ও অ্যাকসেসরিজ | Shokher Bike Wala</title>
+  <meta name="description" content="প্রিমিয়াম মোটরবাইক হেলমেট ও অ্যাকসেসরিজ। ক্যাশ অন ডেলিভারি, ফ্রি হোম ডেলিভারি, ১০০% অরিজিনাল প্রোডাক্ট। সারা বাংলাদেশে দ্রুত ডেলিভারি।" />
+  <meta name="keywords" content="bike helmet, motorcycle accessories, bangladesh, COD, shokher bike wala, প্রিমিয়াম হেলমেট" />
+  <meta property="og:title" content="প্রিমিয়াম বাইক হেলমেট ও অ্যাকসেসরিজ" />
+  <meta property="og:description" content="সীমিত সময়ের বিশেষ অফার - ৫০% ডিসকাউন্ট! এখনই অর্ডার করুন।" />
+  <meta property="og:type" content="product" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Google Fonts: Hind Siliguri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind config (custom colors + font) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#fff4ec',
+              100: '#ffe5d2',
+              200: '#ffc69e',
+              300: '#ff9d63',
+              400: '#f57536',
+              500: '#dc5a14', /* Primary */
+              600: '#c14b0e',
+              700: '#9a3a0c',
+              800: '#7a2f0d',
+              900: '#5e260c',
+            },
+          },
+          fontFamily: {
+            hind: ['"Hind Siliguri"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 10px 30px -10px rgba(220,90,20,0.35)',
+            premium: '0 20px 50px -20px rgba(220,90,20,0.55)',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
+            pulseRing: { '0%': { transform: 'scale(.95)', opacity: .8 }, '70%': { transform: 'scale(1.4)', opacity: 0 }, '100%': { transform: 'scale(1.4)', opacity: 0 } },
+            shine: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+            fadeUp: { '0%': { opacity: 0, transform: 'translateY(20px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+            slideDown: { '0%': { opacity: 0, transform: 'translateY(-20px) scale(.96)' }, '100%': { opacity: 1, transform: 'translateY(0) scale(1)' } },
+          },
+          animation: {
+            float: 'float 3.5s ease-in-out infinite',
+            pulseRing: 'pulseRing 1.8s cubic-bezier(.21,.6,.5,.95) infinite',
+            shine: 'shine 2.4s linear infinite',
+            fadeUp: 'fadeUp .7s ease-out both',
+            fadeIn: 'fadeIn .5s ease-out both',
+            slideDown: 'slideDown .35s ease-out both',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Internal CSS: glassmorphism, gradients, custom helpers -->
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Hind Siliguri', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+    /* Glassmorphism card */
+    .glass {
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .glass-dark {
+      background: rgba(20,20,20,0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Hero gradient blob */
+    .hero-gradient {
+      background:
+        radial-gradient(60% 80% at 20% 10%, rgba(220,90,20,0.18) 0%, transparent 60%),
+        radial-gradient(50% 60% at 90% 30%, rgba(245,117,54,0.15) 0%, transparent 60%),
+        linear-gradient(180deg, #fff7f0 0%, #ffffff 60%);
+    }
+
+    /* Shine button effect */
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+      background-image: linear-gradient(90deg, #dc5a14 0%, #f57536 50%, #dc5a14 100%);
+      background-size: 200% 100%;
+    }
+    .btn-shine:hover { animation: shine 1.8s linear infinite; }
+
+    /* Star ratings */
+    .stars { color: #fbbf24; }
+
+    /* Scroll-reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Lightbox */
+    .lightbox { display: none; }
+    .lightbox.open { display: flex; }
+
+    /* Hide scrollbar on mobile sticky bar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+
+    /* Accordion */
+    .faq-item[open] summary .faq-icon { transform: rotate(45deg); }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary { list-style: none; }
+
+    /* Bouncing CTA arrow */
+    .arrow-bounce { animation: float 2s ease-in-out infinite; }
+
+    /* Premium product image frame */
+    .product-frame {
+      background:
+        radial-gradient(circle at 50% 35%, rgba(220,90,20,0.18) 0%, transparent 60%),
+        linear-gradient(135deg, #ffffff 0%, #fff4ec 100%);
+      border: 1px solid rgba(220,90,20,0.15);
+    }
+
+    /* Tag */
+    .tag {
+      background: linear-gradient(135deg, #dc5a14, #f57536);
+      color: #fff;
+    }
+
+    /* Custom radio cards */
+    .opt-card input:checked + label {
+      border-color: #dc5a14;
+      background: linear-gradient(135deg, #fff4ec 0%, #ffe5d2 100%);
+      box-shadow: 0 6px 18px -8px rgba(220,90,20,0.45);
+    }
+    .opt-card label { transition: all .2s ease; }
+
+    /* Loader spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Hide number input arrows */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
+
+  <!-- ====== Facebook Pixel (placeholder ID — replace with real ID) ====== -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID_HERE');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID_HERE&ev=PageView&noscript=1" alt="" />
+  </noscript>
+</head>
+
+<body class="font-hind text-slate-800 bg-white antialiased">
+
+  <!-- ============================ HEADER ============================ -->
+  <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-white/85 backdrop-blur-md border-b border-slate-200/70 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 lg:h-20">
+
+        <!-- Logo -->
+        <a href="#home" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-105 transition">
+            <i class="fa-solid fa-motorcycle text-lg"></i>
+          </div>
+          <div class="leading-tight">
+            <div class="font-bold text-slate-900 text-base sm:text-lg">শখের বাইক ওয়ালা</div>
+            <div class="text-[10px] sm:text-xs text-brand-600 font-semibold tracking-wider uppercase">Premium Accessories</div>
+          </div>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden lg:flex items-center gap-8">
+          <a href="#home" class="text-slate-700 hover:text-brand-500 font-medium transition">হোম</a>
+          <a href="#features" class="text-slate-700 hover:text-brand-500 font-medium transition">ফিচার</a>
+          <a href="#reviews" class="text-slate-700 hover:text-brand-500 font-medium transition">রিভিউ</a>
+          <a href="#faq" class="text-slate-700 hover:text-brand-500 font-medium transition">FAQ</a>
+          <a href="#order" class="text-slate-700 hover:text-brand-500 font-medium transition">অর্ডার করুন</a>
+        </nav>
+
+        <!-- Buy Now CTA + Mobile menu button -->
+        <div class="flex items-center gap-2">
+          <button onclick="openOrderModal('header_buynow')" class="hidden sm:inline-flex btn-shine items-center gap-2 text-white font-semibold px-4 lg:px-5 py-2.5 rounded-full shadow-soft hover:shadow-premium transition">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span>এখনই কিনুন</span>
+          </button>
+          <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center hover:bg-brand-100 transition" aria-label="Open menu">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="lg:hidden hidden pb-4 animate-slideDown">
+        <nav class="flex flex-col gap-1 pt-2 border-t border-slate-100">
+          <a href="#home" class="mobile-link px-3 py-3 rounded-lg hover:bg-brand-50 text-slate-700 font-medium flex items-center gap-3">
+            <i class="fa-solid fa-house text-brand-500 w-5"></i> হোম
+          </a>
+          <a href="#features" class="mobile-link px-3 py-3 rounded-lg hover:bg-brand-50 text-slate-700 font-medium flex items-center gap-3">
+            <i class="fa-solid fa-star text-brand-500 w-5"></i> ফিচার
+          </a>
+          <a href="#reviews" class="mobile-link px-3 py-3 rounded-lg hover:bg-brand-50 text-slate-700 font-medium flex items-center gap-3">
+            <i class="fa-solid fa-comments text-brand-500 w-5"></i> রিভিউ
+          </a>
+          <a href="#faq" class="mobile-link px-3 py-3 rounded-lg hover:bg-brand-50 text-slate-700 font-medium flex items-center gap-3">
+            <i class="fa-solid fa-circle-question text-brand-500 w-5"></i> FAQ
+          </a>
+          <a href="#order" class="mobile-link px-3 py-3 rounded-lg hover:bg-brand-50 text-slate-700 font-medium flex items-center gap-3">
+            <i class="fa-solid fa-bag-shopping text-brand-500 w-5"></i> অর্ডার করুন
+          </a>
+          <button onclick="openOrderModal('mobile_menu_buynow')" class="mt-2 btn-shine text-white font-semibold px-4 py-3 rounded-xl shadow-soft">
+            <i class="fa-solid fa-bolt mr-2"></i> এখনই কিনুন
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-16 lg:pt-20">
+
+    <!-- ============================ HERO ============================ -->
+    <section id="home" class="hero-gradient relative overflow-hidden">
+      <!-- decorative blobs -->
+      <div class="absolute -top-20 -right-20 w-72 h-72 bg-brand-200/40 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-orange-200/40 rounded-full blur-3xl"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-24 relative">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+          <!-- Text -->
+          <div class="reveal order-2 lg:order-1">
+            <div class="inline-flex items-center gap-2 bg-white shadow-soft px-4 py-1.5 rounded-full mb-4 border border-brand-100">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-pulseRing absolute inline-flex h-full w-full rounded-full bg-brand-400"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+              </span>
+              <span class="text-brand-600 font-semibold text-xs sm:text-sm tracking-wide uppercase">বেস্ট সেলিং প্রোডাক্ট ২০২৫</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
+              প্রিমিয়াম
+              <span class="bg-gradient-to-r from-brand-500 to-brand-400 bg-clip-text text-transparent">বাইক হেলমেট</span>
+              ও অ্যাকসেসরিজ
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
+              ISI সার্টিফায়েড, ১০০% অরিজিনাল প্রিমিয়াম কোয়ালিটি হেলমেট। নিরাপত্তা ও স্টাইল এখন এক প্যাকেজে।
+              ক্যাশ অন ডেলিভারি সারা বাংলাদেশে — অর্ডার করার আগে দেখে নিন।
+            </p>
+
+            <!-- Discount + price -->
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <span class="tag inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-soft">
+                <i class="fa-solid fa-tag"></i> ৫০% ডিসকাউন্ট
+              </span>
+              <span class="text-3xl sm:text-4xl font-extrabold text-brand-600" id="hero-price">৳২,৪৯০</span>
+              <span class="text-lg sm:text-xl text-slate-400 line-through">৳৪,৯৮০</span>
+              <span class="text-xs sm:text-sm bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1 rounded-full">আপনি বাঁচালেন ৳২,৪৯০</span>
+            </div>
+
+            <!-- CTAs -->
+            <div class="mt-7 flex flex-col sm:flex-row gap-3">
+              <button onclick="openOrderModal('hero_order_now')" class="btn-shine inline-flex items-center justify-center gap-2 text-white font-semibold px-6 py-3.5 rounded-xl shadow-premium hover:shadow-premium hover:-translate-y-0.5 transition">
+                <i class="fa-solid fa-bolt"></i>
+                এখনই অর্ডার করুন
+              </button>
+              <a href="#features" class="inline-flex items-center justify-center gap-2 bg-white text-brand-600 border-2 border-brand-200 hover:border-brand-500 font-semibold px-6 py-3.5 rounded-xl transition">
+                <i class="fa-solid fa-circle-info"></i>
+                বিস্তারিত দেখুন
+              </a>
+            </div>
+
+            <!-- Quick trust row -->
+            <div class="mt-7 grid grid-cols-3 gap-3 max-w-md">
+              <div class="text-center">
+                <div class="font-bold text-slate-900 text-lg sm:text-xl">১০০%</div>
+                <div class="text-xs text-slate-500">অরিজিনাল</div>
+              </div>
+              <div class="text-center border-x border-slate-200">
+                <div class="font-bold text-slate-900 text-lg sm:text-xl">৭ দিন</div>
+                <div class="text-xs text-slate-500">রিটার্ন গ্যারান্টি</div>
+              </div>
+              <div class="text-center">
+                <div class="font-bold text-slate-900 text-lg sm:text-xl">২৪/৭</div>
+                <div class="text-xs text-slate-500">সাপোর্ট</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Image -->
+          <div class="reveal order-1 lg:order-2 relative">
+            <div class="absolute -top-4 -right-4 z-20">
+              <div class="bg-gradient-to-br from-brand-500 to-brand-400 text-white w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center shadow-premium animate-float">
+                <span class="font-bold text-lg sm:text-2xl leading-none">৫০%</span>
+                <span class="text-[10px] sm:text-xs font-medium">OFF</span>
+              </div>
+            </div>
+            <div class="product-frame rounded-3xl p-6 sm:p-10 shadow-premium relative">
+              <img
+                src="https://images.unsplash.com/photo-1591637333472-d9be3d99cd6c?auto=format&fit=crop&w=900&q=80"
+                alt="Premium Motorbike Helmet"
+                class="w-full h-72 sm:h-96 object-contain mx-auto"
+                loading="eager"
+              />
+              <!-- floating mini badges -->
+              <div class="absolute top-6 left-6 glass px-3 py-1.5 rounded-full text-xs font-semibold text-brand-700 shadow-soft">
+                <i class="fa-solid fa-shield-halved mr-1"></i> ISI Certified
+              </div>
+              <div class="absolute bottom-6 right-6 glass px-3 py-1.5 rounded-full text-xs font-semibold text-brand-700 shadow-soft">
+                <i class="fa-solid fa-truck mr-1"></i> Free Delivery
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ COUNTDOWN ============================ -->
+    <section class="relative -mt-6 z-10 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-5xl mx-auto bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 rounded-2xl sm:rounded-3xl text-white p-5 sm:p-8 shadow-premium overflow-hidden relative">
+        <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="grid sm:grid-cols-2 gap-5 items-center relative">
+          <div>
+            <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-1 rounded-full text-xs sm:text-sm font-semibold mb-2">
+              <i class="fa-solid fa-fire"></i> লিমিটেড টাইম অফার
+            </div>
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold">অফার শেষ হতে বাকি</h2>
+            <p class="text-white/80 text-sm sm:text-base mt-1">
+              <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+              শুধুমাত্র <span class="font-bold underline">২৩ পিস</span> স্টকে আছে — দ্রুত অর্ডার করুন!
+            </p>
+          </div>
+          <div class="flex justify-start sm:justify-end gap-2 sm:gap-3">
+            <div class="bg-white/15 backdrop-blur rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-center min-w-[58px] sm:min-w-[70px]">
+              <div id="cd-d" class="text-xl sm:text-3xl font-bold tabular-nums">00</div>
+              <div class="text-[10px] sm:text-xs uppercase tracking-wider">দিন</div>
+            </div>
+            <div class="bg-white/15 backdrop-blur rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-center min-w-[58px] sm:min-w-[70px]">
+              <div id="cd-h" class="text-xl sm:text-3xl font-bold tabular-nums">00</div>
+              <div class="text-[10px] sm:text-xs uppercase tracking-wider">ঘণ্টা</div>
+            </div>
+            <div class="bg-white/15 backdrop-blur rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-center min-w-[58px] sm:min-w-[70px]">
+              <div id="cd-m" class="text-xl sm:text-3xl font-bold tabular-nums">00</div>
+              <div class="text-[10px] sm:text-xs uppercase tracking-wider">মিনিট</div>
+            </div>
+            <div class="bg-white/15 backdrop-blur rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 text-center min-w-[58px] sm:min-w-[70px]">
+              <div id="cd-s" class="text-xl sm:text-3xl font-bold tabular-nums">00</div>
+              <div class="text-[10px] sm:text-xs uppercase tracking-wider">সেকেন্ড</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FEATURES ============================ -->
+    <section id="features" class="py-16 sm:py-20 lg:py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">কেন এটি বিশেষ?</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">প্রোডাক্ট ফিচার</h2>
+          <p class="text-slate-600 mt-3 text-sm sm:text-base">যে কারণে এই হেলমেট আপনার জন্য পারফেক্ট চয়েজ</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          
+          <div class="reveal group relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition">
+              <i class="fa-solid fa-shield-halved text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">ISI সার্টিফাইড সেফটি</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">আন্তর্জাতিক মানের সেফটি স্ট্যান্ডার্ড অনুযায়ী টেস্টেড — দুর্ঘটনায় সর্বোচ্চ সুরক্ষা।</p>
+          </div>
+          <div class="reveal group relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition">
+              <i class="fa-solid fa-feather text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">আলট্রা-লাইটওয়েট</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">মাত্র ১.২৫ কেজি ওজন — দীর্ঘ সময় পরেও কোনো ক্লান্তি অনুভব করবেন না।</p>
+          </div>
+          <div class="reveal group relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition">
+              <i class="fa-solid fa-wind text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">এয়ার ভেন্টিলেশন</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">মাল্টিপল ভেন্ট সিস্টেম, গরমে ঘাম জমে না, প্রতিটি রাইডে আরাম।</p>
+          </div>
+          <div class="reveal group relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition">
+              <i class="fa-solid fa-eye text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">এন্টি-ফগ ভাইজর</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">UV প্রোটেক্টেড ক্লিয়ার ভাইজর — বৃষ্টি বা কুয়াশায়ও পরিষ্কার দৃষ্টি।</p>
+          </div>
+          <div class="reveal group relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition">
+              <i class="fa-solid fa-bullseye text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">কুইক রিলিজ লক</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">এক হাতেই লক/আনলক করা যায় — দ্রুত এবং নিরাপদ ফিটিং।</p>
+          </div>
+          <div class="reveal group relative bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft group-hover:scale-110 transition">
+              <i class="fa-solid fa-medal text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">প্রিমিয়াম কোয়ালিটি</h3>
+            <p class="mt-2 text-sm text-slate-600 leading-relaxed">উন্নতমানের ABS শেল ও সফট কুশন — দীর্ঘদিনের টেকসই ব্যবহার।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ GALLERY ============================ -->
+    <section id="gallery" class="py-16 sm:py-20 bg-gradient-to-b from-brand-50/40 to-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">প্রোডাক্ট দেখুন</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">প্রোডাক্ট গ্যালারি</h2>
+          <p class="text-slate-600 mt-3 text-sm sm:text-base">ছবিতে ক্লিক করে বড় করে দেখুন</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1591637333472-d9be3d99cd6c?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1591637333472-d9be3d99cd6c?auto=format&fit=crop&w=600&q=80" alt="Helmet view 1" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80" alt="Helmet view 2" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=600&q=80" alt="Helmet view 3" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?auto=format&fit=crop&w=600&q=80" alt="Helmet view 4" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1623651400321-0518b8f17d80?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1623651400321-0518b8f17d80?auto=format&fit=crop&w=600&q=80" alt="Helmet view 5" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1571646034647-52e6ea84b28c?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1571646034647-52e6ea84b28c?auto=format&fit=crop&w=600&q=80" alt="Helmet view 6" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1517846693594-1e3441f33988?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1517846693594-1e3441f33988?auto=format&fit=crop&w=600&q=80" alt="Helmet view 7" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+          <div class="reveal gallery-item group relative aspect-square overflow-hidden rounded-2xl shadow-sm hover:shadow-premium cursor-pointer bg-white" data-src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1200&q=80">
+            <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80" alt="Helmet view 8" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end p-3">
+              <span class="text-white text-sm font-medium"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> বড় করে দেখুন</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ SPECIFICATIONS ============================ -->
+    <section class="py-16 sm:py-20 bg-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">টেকনিক্যাল ডিটেইলস</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">প্রোডাক্ট স্পেসিফিকেশন</h2>
+        </div>
+        <div class="reveal bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <table class="w-full text-left">
+            <tbody class="divide-y divide-slate-100 text-sm sm:text-base">
+              
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-cube text-brand-500 mr-2"></i> ম্যাটেরিয়াল</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">প্রিমিয়াম ABS শেল + ইপিএস ফোম</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-weight-hanging text-brand-500 mr-2"></i> ওজন</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">১.২৫ কেজি (আনুমানিক)</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-ruler-combined text-brand-500 mr-2"></i> সাইজ</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">M, L, XL, XXL</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-palette text-brand-500 mr-2"></i> কালার</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">কালো, সাদা, লাল, ম্যাট গ্রে</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-eye text-brand-500 mr-2"></i> ভাইজর</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">এন্টি-ফগ, UV প্রোটেক্টেড</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-wind text-brand-500 mr-2"></i> ভেন্টিলেশন</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">মাল্টিপল এয়ার ভেন্ট সিস্টেম</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-certificate text-brand-500 mr-2"></i> সার্টিফিকেশন</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">ISI / DOT Approved</td>
+              </tr>
+              <tr class="hover:bg-brand-50/40 transition">
+                <td class="py-4 px-5 sm:px-7 font-semibold text-slate-700 w-1/2"><i class="fa-solid fa-box text-brand-500 mr-2"></i> বক্সে যা থাকছে</td>
+                <td class="py-4 px-5 sm:px-7 text-slate-600">১ × হেলমেট, ১ × ক্যারি ব্যাগ, ১ × ম্যানুয়াল</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ WHY CHOOSE ============================ -->
+    <section class="py-16 sm:py-20 bg-gradient-to-br from-brand-50 via-white to-orange-50/40 relative overflow-hidden">
+      <div class="absolute -top-24 -left-24 w-72 h-72 bg-brand-200/40 rounded-full blur-3xl"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">আমাদের কেন বেছে নেবেন</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">কেন এই প্রোডাক্ট চয়েজ করবেন?</h2>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+          
+          <div class="reveal bg-white rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="mt-4 font-bold text-slate-900">১০০% অরিজিনাল</h3>
+            <p class="mt-1.5 text-sm text-slate-600 leading-relaxed">প্রতিটি প্রোডাক্ট অরিজিনাল ও কোয়ালিটি চেকড।</p>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <h3 class="mt-4 font-bold text-slate-900">৭ দিন রিটার্ন</h3>
+            <p class="mt-1.5 text-sm text-slate-600 leading-relaxed">প্রোডাক্টে সমস্যা থাকলে ৭ দিনের মধ্যে রিটার্ন।</p>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <h3 class="mt-4 font-bold text-slate-900">২৪/৭ সাপোর্ট</h3>
+            <p class="mt-1.5 text-sm text-slate-600 leading-relaxed">যেকোনো সময় কাস্টমার সার্ভিসের সাহায্য।</p>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-premium hover:-translate-y-1 transition border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-money-bill-wave"></i>
+            </div>
+            <h3 class="mt-4 font-bold text-slate-900">ক্যাশ অন ডেলিভারি</h3>
+            <p class="mt-1.5 text-sm text-slate-600 leading-relaxed">প্রোডাক্ট হাতে পেয়ে টাকা পরিশোধ।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ DELIVERY INFO ============================ -->
+    <section class="py-16 sm:py-20 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">ডেলিভারি ইনফরমেশন</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">সারা বাংলাদেশে দ্রুত ডেলিভারি</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-5 sm:gap-6">
+          <div class="reveal glass rounded-2xl p-6 shadow-soft hover:shadow-premium transition border border-brand-100">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft">
+              <i class="fa-solid fa-city text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">ঢাকা সিটির ভেতরে</h3>
+            <div class="mt-3 space-y-2 text-sm text-slate-600">
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> ডেলিভারি চার্জ: <span class="font-bold text-slate-900">৮০ টাকা</span></p>
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> সময়: ১-২ কর্মদিবস</p>
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> হোম ডেলিভারি সাপোর্টেড</p>
+            </div>
+          </div>
+          <div class="reveal glass rounded-2xl p-6 shadow-soft hover:shadow-premium transition border border-brand-100">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft">
+              <i class="fa-solid fa-truck-fast text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">ঢাকার বাইরে</h3>
+            <div class="mt-3 space-y-2 text-sm text-slate-600">
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> ডেলিভারি চার্জ: <span class="font-bold text-slate-900">১২০ টাকা</span></p>
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> সময়: ২-৪ কর্মদিবস</p>
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> ৬৪ জেলায় সাপোর্ট</p>
+            </div>
+          </div>
+          <div class="reveal glass rounded-2xl p-6 shadow-soft hover:shadow-premium transition border border-brand-100">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white shadow-soft">
+              <i class="fa-solid fa-money-bill-wave text-xl"></i>
+            </div>
+            <h3 class="mt-5 font-bold text-lg text-slate-900">ক্যাশ অন ডেলিভারি</h3>
+            <div class="mt-3 space-y-2 text-sm text-slate-600">
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> প্রোডাক্ট দেখে টাকা পরিশোধ</p>
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> ১০০% নিরাপদ পেমেন্ট</p>
+              <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> ব্যাংক বা মোবাইল ব্যাংকিং</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ TRUST BADGES ============================ -->
+    <section class="py-10 sm:py-12 bg-slate-50 border-y border-slate-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          
+          <div class="reveal flex items-center gap-3 sm:gap-4 bg-white rounded-xl p-4 shadow-sm border border-slate-100 hover:shadow-soft transition">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-lg sm:text-xl shrink-0">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <div class="font-semibold text-slate-800 text-sm sm:text-base">সিকিউর পেমেন্ট</div>
+          </div>
+          <div class="reveal flex items-center gap-3 sm:gap-4 bg-white rounded-xl p-4 shadow-sm border border-slate-100 hover:shadow-soft transition">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-lg sm:text-xl shrink-0">
+              <i class="fa-solid fa-money-bill-wave"></i>
+            </div>
+            <div class="font-semibold text-slate-800 text-sm sm:text-base">ক্যাশ অন ডেলিভারি</div>
+          </div>
+          <div class="reveal flex items-center gap-3 sm:gap-4 bg-white rounded-xl p-4 shadow-sm border border-slate-100 hover:shadow-soft transition">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-lg sm:text-xl shrink-0">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div class="font-semibold text-slate-800 text-sm sm:text-base">ফাস্ট ডেলিভারি</div>
+          </div>
+          <div class="reveal flex items-center gap-3 sm:gap-4 bg-white rounded-xl p-4 shadow-sm border border-slate-100 hover:shadow-soft transition">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-lg sm:text-xl shrink-0">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            <div class="font-semibold text-slate-800 text-sm sm:text-base">ভেরিফাইড প্রোডাক্ট</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ REVIEWS ============================ -->
+    <section id="reviews" class="py-16 sm:py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">কাস্টমার রিভিউ</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">আমাদের ক্রেতাদের মতামত</h2>
+          <div class="flex justify-center items-center gap-1 mt-3 stars text-lg">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span class="ml-2 text-slate-700 font-semibold">৪.৯ / ৫</span>
+            <span class="text-slate-500 text-sm ml-1">(২,১৩৪+ রিভিউ)</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          
+          <div class="reveal bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-premium hover:-translate-y-1 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-400 text-white flex items-center justify-center font-bold text-lg shadow-soft">র</div>
+              <div>
+                <div class="font-semibold text-slate-900">রাকিবুল ইসলাম</div>
+                <div class="text-xs text-slate-500">ঢাকা</div>
+              </div>
+            </div>
+            <div class="stars mt-3 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">&ldquo;অসাধারণ প্রোডাক্ট! কোয়ালিটি দেখে আমি অবাক। দাম অনুযায়ী একদম পারফেক্ট। সবাইকে রিকমেন্ড করব।&rdquo;</p>
+            <div class="mt-4 inline-flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i> ভেরিফাইড পারচেজ
+            </div>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-premium hover:-translate-y-1 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-400 text-white flex items-center justify-center font-bold text-lg shadow-soft">স</div>
+              <div>
+                <div class="font-semibold text-slate-900">সাদিয়া আক্তার</div>
+                <div class="text-xs text-slate-500">চট্টগ্রাম</div>
+              </div>
+            </div>
+            <div class="stars mt-3 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">&ldquo;আমার স্বামীর জন্য কিনেছিলাম। উনি অনেক খুশি, ফিটিং ও ডিজাইন দুটোই দারুণ। দ্রুত ডেলিভারি পেয়েছি।&rdquo;</p>
+            <div class="mt-4 inline-flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i> ভেরিফাইড পারচেজ
+            </div>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-premium hover:-translate-y-1 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-400 text-white flex items-center justify-center font-bold text-lg shadow-soft">আ</div>
+              <div>
+                <div class="font-semibold text-slate-900">আরিফ হোসেন</div>
+                <div class="text-xs text-slate-500">সিলেট</div>
+              </div>
+            </div>
+            <div class="stars mt-3 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">&ldquo;বাজারের অন্যান্য হেলমেটের তুলনায় অনেক ভালো। ভাইজরের কোয়ালিটি প্রিমিয়াম। ১০০% সন্তুষ্ট।&rdquo;</p>
+            <div class="mt-4 inline-flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i> ভেরিফাইড পারচেজ
+            </div>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-premium hover:-translate-y-1 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-400 text-white flex items-center justify-center font-bold text-lg shadow-soft">ত</div>
+              <div>
+                <div class="font-semibold text-slate-900">তানভীর আহমেদ</div>
+                <div class="text-xs text-slate-500">রাজশাহী</div>
+              </div>
+            </div>
+            <div class="stars mt-3 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">&ldquo;ক্যাশ অন ডেলিভারিতে পেয়েছি, প্রোডাক্ট দেখে বিল পরিশোধ করেছি। সার্ভিস সত্যিই প্রশংসনীয়।&rdquo;</p>
+            <div class="mt-4 inline-flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i> ভেরিফাইড পারচেজ
+            </div>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-premium hover:-translate-y-1 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-400 text-white flex items-center justify-center font-bold text-lg shadow-soft">ফ</div>
+              <div>
+                <div class="font-semibold text-slate-900">ফাহিম রহমান</div>
+                <div class="text-xs text-slate-500">খুলনা</div>
+              </div>
+            </div>
+            <div class="stars mt-3 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">&ldquo;এত প্রিমিয়াম একটা হেলমেট এই দামে — বিশ্বাস হচ্ছিল না। কিন্তু পেয়ে সত্যিই অভিভূত।&rdquo;</p>
+            <div class="mt-4 inline-flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i> ভেরিফাইড পারচেজ
+            </div>
+          </div>
+          <div class="reveal bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-premium hover:-translate-y-1 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-400 text-white flex items-center justify-center font-bold text-lg shadow-soft">ন</div>
+              <div>
+                <div class="font-semibold text-slate-900">নাজমুল হক</div>
+                <div class="text-xs text-slate-500">বরিশাল</div>
+              </div>
+            </div>
+            <div class="stars mt-3 text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">&ldquo;ভালো প্রোডাক্ট, কোয়ালিটি ঠিক আছে। ডেলিভারি একটু দেরিতে হয়েছিল, তবে সাপোর্ট টিম রেসপন্সিভ ছিল।&rdquo;</p>
+            <div class="mt-4 inline-flex items-center gap-1 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i> ভেরিফাইড পারচেজ
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FAQ ============================ -->
+    <section id="faq" class="py-16 sm:py-20 bg-gradient-to-b from-white to-brand-50/40">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 reveal">
+          <span class="text-brand-600 font-semibold text-sm uppercase tracking-wider">সাধারণ প্রশ্ন</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mt-2">আপনার প্রশ্ন, আমাদের উত্তর</h2>
+        </div>
+        <div class="space-y-3" id="faq-list">
+          
+          <details class="faq-item bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-soft transition reveal">
+            <summary class="cursor-pointer px-5 py-4 flex items-center justify-between gap-4">
+              <span class="font-semibold text-slate-900 text-sm sm:text-base">প্রোডাক্ট কি অরিজিনাল?</span>
+              <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center transition-transform duration-300 shrink-0"><i class="fa-solid fa-plus"></i></span>
+            </summary>
+            <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">হ্যাঁ, আমাদের সব প্রোডাক্ট ১০০% অরিজিনাল ও কোয়ালিটি চেকড। প্রতিটি হেলমেট ISI সার্টিফায়েড।</div>
+          </details>
+          <details class="faq-item bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-soft transition reveal">
+            <summary class="cursor-pointer px-5 py-4 flex items-center justify-between gap-4">
+              <span class="font-semibold text-slate-900 text-sm sm:text-base">ক্যাশ অন ডেলিভারি কি আছে?</span>
+              <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center transition-transform duration-300 shrink-0"><i class="fa-solid fa-plus"></i></span>
+            </summary>
+            <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">অবশ্যই! আপনি প্রোডাক্ট হাতে পেয়ে যাচাই করে তারপর পেমেন্ট করতে পারবেন।</div>
+          </details>
+          <details class="faq-item bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-soft transition reveal">
+            <summary class="cursor-pointer px-5 py-4 flex items-center justify-between gap-4">
+              <span class="font-semibold text-slate-900 text-sm sm:text-base">ডেলিভারি কত দিনে পাবো?</span>
+              <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center transition-transform duration-300 shrink-0"><i class="fa-solid fa-plus"></i></span>
+            </summary>
+            <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">ঢাকার ভেতরে ১-২ কর্মদিবস, ঢাকার বাইরে ২-৪ কর্মদিবসে পেয়ে যাবেন।</div>
+          </details>
+          <details class="faq-item bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-soft transition reveal">
+            <summary class="cursor-pointer px-5 py-4 flex items-center justify-between gap-4">
+              <span class="font-semibold text-slate-900 text-sm sm:text-base">রিটার্ন পলিসি কেমন?</span>
+              <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center transition-transform duration-300 shrink-0"><i class="fa-solid fa-plus"></i></span>
+            </summary>
+            <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">প্রোডাক্টে সমস্যা থাকলে ৭ দিনের মধ্যে আমাদের জানালে আমরা ফ্রি রিটার্ন/এক্সচেঞ্জ ব্যবস্থা করি।</div>
+          </details>
+          <details class="faq-item bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-soft transition reveal">
+            <summary class="cursor-pointer px-5 py-4 flex items-center justify-between gap-4">
+              <span class="font-semibold text-slate-900 text-sm sm:text-base">সাইজ কীভাবে বুঝবো?</span>
+              <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center transition-transform duration-300 shrink-0"><i class="fa-solid fa-plus"></i></span>
+            </summary>
+            <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">আপনার মাথার পরিধি মেপে আমাদের ফোনে জানালে আমরা সঠিক সাইজ সাজেস্ট করে দেব।</div>
+          </details>
+          <details class="faq-item bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-soft transition reveal">
+            <summary class="cursor-pointer px-5 py-4 flex items-center justify-between gap-4">
+              <span class="font-semibold text-slate-900 text-sm sm:text-base">পেমেন্ট অপশন কী কী?</span>
+              <span class="faq-icon w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center transition-transform duration-300 shrink-0"><i class="fa-solid fa-plus"></i></span>
+            </summary>
+            <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">ক্যাশ অন ডেলিভারি, বিকাশ, নগদ — তিনটি অপশনেই অর্ডার করতে পারবেন।</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FINAL CTA ============================ -->
+    <section id="order" class="py-16 sm:py-20 bg-gradient-to-br from-brand-600 via-brand-500 to-brand-400 text-white relative overflow-hidden">
+      <div class="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative reveal">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold">আজই অর্ডার করুন!</h2>
+        <p class="mt-3 text-white/90 text-base sm:text-lg max-w-2xl mx-auto">সীমিত সময়ের ৫০% ডিসকাউন্ট। ক্যাশ অন ডেলিভারি — পণ্য হাতে পেয়ে টাকা দিন।</p>
+        <div class="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+          <button onclick="openOrderModal('final_cta_order_now')" class="inline-flex items-center justify-center gap-2 bg-white text-brand-600 font-bold px-7 py-4 rounded-xl shadow-premium hover:-translate-y-0.5 transition">
+            <i class="fa-solid fa-bag-shopping"></i> এখনই অর্ডার করুন
+          </button>
+          <a href="https://wa.me/8801700000000" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-7 py-4 rounded-xl shadow-premium transition">
+            <i class="fa-brands fa-whatsapp text-xl"></i> WhatsApp এ অর্ডার
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FOOTER ============================ -->
+    <footer class="bg-slate-900 text-slate-300 py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-400 flex items-center justify-center text-white">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+            <div>
+              <div class="font-bold text-white">শখের বাইক ওয়ালা</div>
+              <div class="text-xs text-brand-400">Premium Accessories</div>
+            </div>
+          </div>
+          <p class="mt-4 text-sm text-slate-400 leading-relaxed">বাংলাদেশের নাম্বার-১ প্রিমিয়াম মোটরবাইক অ্যাকসেসরিজ ব্র্যান্ড। অরিজিনাল প্রোডাক্ট, COD সাপোর্ট।</p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3">যোগাযোগ</h4>
+          <p class="text-sm flex items-center gap-2"><i class="fa-solid fa-phone text-brand-400"></i> ০১৭০০-০০০০০০</p>
+          <p class="text-sm flex items-center gap-2 mt-1"><i class="fa-solid fa-envelope text-brand-400"></i> info@shokherbikewala.com</p>
+          <p class="text-sm flex items-center gap-2 mt-1"><i class="fa-solid fa-location-dot text-brand-400"></i> ঢাকা, বাংলাদেশ</p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-3">দ্রুত লিংক</h4>
+          <ul class="text-sm space-y-1.5">
+            <li><a href="#features" class="hover:text-brand-400 transition">ফিচার</a></li>
+            <li><a href="#reviews" class="hover:text-brand-400 transition">রিভিউ</a></li>
+            <li><a href="#faq" class="hover:text-brand-400 transition">FAQ</a></li>
+            <li><button onclick="openOrderModal('footer_order')" class="hover:text-brand-400 transition">অর্ডার করুন</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-800 text-xs text-slate-500 text-center">
+        © 2025 শখের বাইক ওয়ালা. All rights reserved.
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ============================ FLOATING WHATSAPP ============================ -->
+  <a href="https://wa.me/8801700000000?text=আমি%20প্রিমিয়াম%20বাইক%20হেলমেট%20অর্ডার%20করতে%20চাই" target="_blank" rel="noopener"
+     class="fixed bottom-24 sm:bottom-6 right-4 sm:right-6 z-40 group">
+    <span class="absolute inset-0 rounded-full bg-emerald-400 animate-pulseRing"></span>
+    <span class="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-premium transition">
+      <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+    </span>
+    <span class="hidden sm:block absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-xs whitespace-nowrap px-3 py-1.5 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition">
+      WhatsApp এ চ্যাট করুন
+    </span>
+  </a>
+
+  <!-- ============================ STICKY MOBILE ORDER BUTTON ============================ -->
+  <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-8px_30px_-15px_rgba(0,0,0,0.2)]">
+    <button onclick="openOrderModal('mobile_sticky_order')" class="btn-shine w-full text-white font-bold py-3.5 rounded-xl shadow-premium flex items-center justify-center gap-2">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>এখনই অর্ডার করুন — ৳২,৪৯০</span>
+    </button>
+  </div>
+
+  <!-- ============================ LIGHTBOX ============================ -->
+  <div id="lightbox" class="lightbox fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn" onclick="closeLightbox(event)">
+    <button class="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl flex items-center justify-center transition" onclick="closeLightbox(event,true)" aria-label="Close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90vh] rounded-2xl shadow-2xl" />
+  </div>
+
+  <!-- ============================ ORDER MODAL ============================ -->
+  
+  <div id="order-modal" class="hidden fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm items-start sm:items-center justify-center p-3 sm:p-4 animate-fadeIn overflow-y-auto">
+    <div class="bg-white rounded-2xl sm:rounded-3xl w-full max-w-2xl my-6 shadow-premium animate-slideDown overflow-hidden">
+      <!-- Modal header -->
+      <div class="bg-gradient-to-r from-brand-500 to-brand-400 text-white px-5 sm:px-7 py-4 sm:py-5 flex items-center justify-between">
+        <div>
+          <h3 class="text-lg sm:text-xl font-bold">অর্ডার ফর্ম</h3>
+          <p class="text-xs sm:text-sm text-white/85 mt-0.5">নিচের ফর্মটি পূরণ করে অর্ডার সম্পূর্ণ করুন</p>
+        </div>
+        <button onclick="closeOrderModal()" class="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center transition" aria-label="Close">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="order-form" class="p-5 sm:p-7 space-y-5" novalidate>
+        <!-- Product summary -->
+        <div class="bg-brand-50/60 border border-brand-100 rounded-xl p-4 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1591637333472-d9be3d99cd6c?auto=format&fit=crop&w=200&q=80" alt="" class="w-16 h-16 rounded-xl object-cover shadow-soft" />
+          <div class="flex-1">
+            <div class="text-xs uppercase tracking-wider text-brand-600 font-semibold">প্রোডাক্ট</div>
+            <div class="font-bold text-slate-900 text-sm sm:text-base" id="modal-product-name">প্রিমিয়াম বাইক হেলমেট</div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-bold text-brand-600">৳<span id="modal-unit-price">2490</span></span>
+              <span class="text-xs text-slate-400 line-through">৳৪,৯৮০</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantity + Color + Size -->
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">পরিমাণ <span class="text-red-500">*</span></label>
+            <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden">
+              <button type="button" onclick="adjustQty(-1)" class="w-10 h-11 hover:bg-slate-50 text-slate-700 font-bold">-</button>
+              <input id="qty" name="quantity" type="number" min="1" max="20" value="1" class="flex-1 text-center font-semibold focus:outline-none" />
+              <button type="button" onclick="adjustQty(1)" class="w-10 h-11 hover:bg-slate-50 text-slate-700 font-bold">+</button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">কালার <span class="text-red-500">*</span></label>
+            <select id="color" name="color" required class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
+              <option value="">নির্বাচন করুন</option>
+              <option value="কালো">কালো</option>
+              <option value="সাদা">সাদা</option>
+              <option value="লাল">লাল</option>
+              <option value="ম্যাট গ্রে">ম্যাট গ্রে</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">সাইজ <span class="text-red-500">*</span></label>
+            <select id="size" name="size" required class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition">
+              <option value="">নির্বাচন করুন</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Shipping method -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">ডেলিভারি লোকেশন <span class="text-red-500">*</span></label>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div class="opt-card">
+              <input type="radio" name="shipping" id="ship-inside" value="inside" class="peer hidden" checked />
+              <label for="ship-inside" class="cursor-pointer block bg-white border-2 border-slate-200 rounded-xl p-3.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-city text-brand-500"></i>
+                    <span class="font-semibold text-slate-800 text-sm">ঢাকার ভেতরে</span>
+                  </div>
+                  <span class="text-sm font-bold text-brand-600">৳৮০</span>
+                </div>
+              </label>
+            </div>
+            <div class="opt-card">
+              <input type="radio" name="shipping" id="ship-outside" value="outside" class="peer hidden" />
+              <label for="ship-outside" class="cursor-pointer block bg-white border-2 border-slate-200 rounded-xl p-3.5">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast text-brand-500"></i>
+                    <span class="font-semibold text-slate-800 text-sm">ঢাকার বাইরে</span>
+                  </div>
+                  <span class="text-sm font-bold text-brand-600">৳১২০</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer info -->
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">আপনার নাম <span class="text-red-500">*</span></label>
+            <input id="name" name="name" type="text" required placeholder="আপনার পুরো নাম" class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-2">মোবাইল নাম্বার <span class="text-red-500">*</span></label>
+            <input id="phone" name="phone" type="tel" required placeholder="01XXXXXXXXX" class="w-full h-11 px-3 border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">সম্পূর্ণ ঠিকানা <span class="text-red-500">*</span></label>
+          <textarea id="address" name="address" rows="2" required placeholder="বাসা / রোড / এলাকা / জেলা" class="w-full px-3 py-2.5 border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition"></textarea>
+        </div>
+
+        <!-- Payment method -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">পেমেন্ট মেথড <span class="text-red-500">*</span></label>
+          <div class="grid grid-cols-3 gap-2 sm:gap-3">
+            <div class="opt-card">
+              <input type="radio" name="payment" id="pay-cod" value="Cash on Delivery" class="peer hidden" checked />
+              <label for="pay-cod" class="cursor-pointer block bg-white border-2 border-slate-200 rounded-xl p-3 text-center">
+                <i class="fa-solid fa-money-bill-wave text-brand-500 text-xl"></i>
+                <div class="mt-1 text-xs font-semibold">ক্যাশ অন</div>
+              </label>
+            </div>
+            <div class="opt-card">
+              <input type="radio" name="payment" id="pay-bkash" value="Bkash" class="peer hidden" />
+              <label for="pay-bkash" class="cursor-pointer block bg-white border-2 border-slate-200 rounded-xl p-3 text-center">
+                <i class="fa-solid fa-mobile-screen-button text-pink-500 text-xl"></i>
+                <div class="mt-1 text-xs font-semibold">বিকাশ</div>
+              </label>
+            </div>
+            <div class="opt-card">
+              <input type="radio" name="payment" id="pay-nagad" value="Nagad" class="peer hidden" />
+              <label for="pay-nagad" class="cursor-pointer block bg-white border-2 border-slate-200 rounded-xl p-3 text-center">
+                <i class="fa-solid fa-wallet text-orange-500 text-xl"></i>
+                <div class="mt-1 text-xs font-semibold">নগদ</div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price breakdown -->
+        <div class="bg-slate-50 rounded-xl p-4 space-y-1.5 text-sm">
+          <div class="flex justify-between text-slate-600"><span>সাবটোটাল</span><span>৳<span id="sum-subtotal">2490</span></span></div>
+          <div class="flex justify-between text-slate-600"><span>ডেলিভারি চার্জ</span><span>৳<span id="sum-shipping">80</span></span></div>
+          <div class="flex justify-between text-base sm:text-lg font-bold text-slate-900 pt-2 border-t border-slate-200"><span>মোট</span><span class="text-brand-600">৳<span id="sum-total">2570</span></span></div>
+        </div>
+
+        <!-- Submit -->
+        <button id="order-submit" type="submit" class="btn-shine w-full text-white font-bold py-3.5 rounded-xl shadow-premium flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+          <span id="submit-label" class="flex items-center gap-2"><i class="fa-solid fa-bag-shopping"></i> অর্ডার কনফার্ম করুন</span>
+          <span id="submit-loading" class="hidden items-center gap-2"><span class="spinner"></span> অর্ডার পাঠানো হচ্ছে...</span>
+        </button>
+        <p class="text-xs text-slate-500 text-center"><i class="fa-solid fa-lock mr-1"></i> আপনার তথ্য সম্পূর্ণ নিরাপদ ও গোপনীয়।</p>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ============================ SUCCESS POPUP ============================ -->
+  <div id="success-popup" class="hidden fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn">
+    <div class="bg-white rounded-3xl max-w-md w-full p-7 sm:p-9 text-center shadow-premium animate-slideDown">
+      <div class="w-20 h-20 mx-auto rounded-full bg-emerald-100 flex items-center justify-center">
+        <i class="fa-solid fa-circle-check text-emerald-500 text-5xl"></i>
+      </div>
+      <h3 class="mt-5 text-2xl font-bold text-slate-900">অর্ডার সফল হয়েছে!</h3>
+      <p class="mt-2 text-slate-600 text-sm sm:text-base">ধন্যবাদ! আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব। অর্ডার কনফার্মেশনের জন্য ফোন রিসিভ করুন।</p>
+      <button onclick="closeSuccessPopup()" class="mt-6 btn-shine w-full text-white font-semibold py-3 rounded-xl shadow-soft">
+        ঠিক আছে
+      </button>
+    </div>
+  </div>
+
+  
+  <script>
+    /* ============================================================
+     * CONFIG — replace with your real endpoints/IDs in production
+     * ============================================================ */
+    const CONFIG = {
+      // Google Form: replace formResponse URL and entry IDs.
+      GOOGLE_FORM_URL: 'https://docs.google.com/forms/d/e/REPLACE_FORM_ID/formResponse',
+      GOOGLE_FORM_FIELDS: {
+        productName:   'entry.111111111',
+        quantity:      'entry.111111112',
+        color:         'entry.111111113',
+        size:          'entry.111111114',
+        shippingMethod:'entry.111111115',
+        shippingCost:  'entry.111111116',
+        totalPrice:    'entry.111111117',
+        customerName:  'entry.111111118',
+        phone:         'entry.111111119',
+        address:       'entry.111111120',
+        paymentMethod: 'entry.111111121',
+      },
+      // Telegram Bot: create a bot via @BotFather and add chat_id
+      TELEGRAM_BOT_TOKEN: 'YOUR_TELEGRAM_BOT_TOKEN',
+      TELEGRAM_CHAT_ID:   'YOUR_TELEGRAM_CHAT_ID',
+      // Product
+      PRODUCT_NAME: 'প্রিমিয়াম বাইক হেলমেট',
+      UNIT_PRICE: 2490,
+      SHIPPING_INSIDE: 80,
+      SHIPPING_OUTSIDE: 120,
+    };
+
+    /* ====================== Header scroll shadow ====================== */
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 12) {
+        header.classList.add('shadow-md');
+      } else {
+        header.classList.remove('shadow-md');
+      }
+    });
+
+    /* ====================== Mobile menu toggle ====================== */
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-xmark');
+    });
+    document.querySelectorAll('.mobile-link').forEach(a => {
+      a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    /* ====================== Scroll reveal ====================== */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ====================== Countdown timer ====================== */
+    (function () {
+      const KEY = 'sbw_offer_end';
+      let end = parseInt(localStorage.getItem(KEY) || '0', 10);
+      const now = Date.now();
+      if (!end || end < now) {
+        end = now + (2 * 24 + 14) * 60 * 60 * 1000; // ~2 days 14 hours
+        localStorage.setItem(KEY, end.toString());
+      }
+      const $d = document.getElementById('cd-d');
+      const $h = document.getElementById('cd-h');
+      const $m = document.getElementById('cd-m');
+      const $s = document.getElementById('cd-s');
+      const pad = (n) => String(n).padStart(2, '0');
+      function tick() {
+        const diff = Math.max(0, end - Date.now());
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        $d.textContent = pad(d); $h.textContent = pad(h);
+        $m.textContent = pad(m); $s.textContent = pad(s);
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    /* ====================== Gallery + Lightbox ====================== */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.addEventListener('click', () => {
+        lightboxImg.src = item.dataset.src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    function closeLightbox(ev, force) {
+      if (force || ev.target === lightbox) {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        closeOrderModal();
+      }
+    });
+
+    /* ====================== Order Modal ====================== */
+    const orderModal = document.getElementById('order-modal');
+    let viewContentTracked = false;
+    let isSubmitting = false;
+
+    function openOrderModal(source) {
+      orderModal.classList.remove('hidden');
+      orderModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      recalcTotals();
+      // Facebook Pixel events
+      if (typeof fbq === 'function') {
+        if (!viewContentTracked) {
+          fbq('track', 'ViewContent', {
+            content_name: CONFIG.PRODUCT_NAME,
+            content_type: 'product',
+            value: CONFIG.UNIT_PRICE,
+            currency: 'BDT',
+          });
+          viewContentTracked = true;
+        }
+        fbq('track', 'AddToCart', {
+          content_name: CONFIG.PRODUCT_NAME,
+          value: CONFIG.UNIT_PRICE,
+          currency: 'BDT',
+        });
+        fbq('track', 'InitiateCheckout', {
+          content_name: CONFIG.PRODUCT_NAME,
+          value: CONFIG.UNIT_PRICE,
+          currency: 'BDT',
+        });
+      }
+    }
+    function closeOrderModal() {
+      orderModal.classList.add('hidden');
+      orderModal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+    orderModal.addEventListener('click', (e) => {
+      if (e.target === orderModal) closeOrderModal();
+    });
+
+    /* ====================== Quantity & total calc ====================== */
+    const qtyInput = document.getElementById('qty');
+    function adjustQty(delta) {
+      const v = Math.max(1, Math.min(20, (parseInt(qtyInput.value, 10) || 1) + delta));
+      qtyInput.value = v;
+      recalcTotals();
+    }
+    qtyInput.addEventListener('input', recalcTotals);
+    document.querySelectorAll('input[name="shipping"]').forEach(r => r.addEventListener('change', recalcTotals));
+
+    function recalcTotals() {
+      const qty = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+      const ship = document.querySelector('input[name="shipping"]:checked').value === 'inside'
+        ? CONFIG.SHIPPING_INSIDE : CONFIG.SHIPPING_OUTSIDE;
+      const subtotal = qty * CONFIG.UNIT_PRICE;
+      const total = subtotal + ship;
+      document.getElementById('sum-subtotal').textContent = subtotal.toLocaleString('en-BD');
+      document.getElementById('sum-shipping').textContent = ship.toLocaleString('en-BD');
+      document.getElementById('sum-total').textContent = total.toLocaleString('en-BD');
+    }
+
+    /* ====================== FAQ accordion (close others) ====================== */
+    document.querySelectorAll('#faq-list .faq-item').forEach(item => {
+      item.addEventListener('toggle', () => {
+        if (item.open) {
+          document.querySelectorAll('#faq-list .faq-item').forEach(o => { if (o !== item) o.open = false; });
+        }
+      });
+    });
+
+    /* ====================== Validation helpers ====================== */
+    function showError(el, msg) {
+      el.classList.add('border-red-400', 'ring-2', 'ring-red-100');
+      let next = el.parentElement.querySelector('.field-error');
+      if (!next) {
+        next = document.createElement('p');
+        next.className = 'field-error text-xs text-red-500 mt-1';
+        el.parentElement.appendChild(next);
+      }
+      next.textContent = msg;
+    }
+    function clearError(el) {
+      el.classList.remove('border-red-400', 'ring-2', 'ring-red-100');
+      const next = el.parentElement.querySelector('.field-error');
+      if (next) next.remove();
+    }
+
+    /* ====================== Form submit ====================== */
+    const form = document.getElementById('order-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
+
+      const data = new FormData(form);
+      const color = data.get('color');
+      const size = data.get('size');
+      const name = (data.get('name') || '').toString().trim();
+      const phone = (data.get('phone') || '').toString().trim();
+      const address = (data.get('address') || '').toString().trim();
+      const shipping = data.get('shipping');
+      const payment = data.get('payment');
+      const quantity = parseInt(data.get('quantity'), 10) || 1;
+
+      // Reset errors
+      ['color','size','name','phone','address'].forEach(id => clearError(document.getElementById(id)));
+
+      let valid = true;
+      if (!color)   { showError(document.getElementById('color'), 'কালার নির্বাচন করুন'); valid = false; }
+      if (!size)    { showError(document.getElementById('size'),  'সাইজ নির্বাচন করুন');  valid = false; }
+      if (name.length < 2) { showError(document.getElementById('name'), 'নাম লিখুন'); valid = false; }
+      if (!/^01[3-9]\d{8}$/.test(phone)) { showError(document.getElementById('phone'), 'সঠিক মোবাইল নাম্বার লিখুন'); valid = false; }
+      if (address.length < 8) { showError(document.getElementById('address'), 'সম্পূর্ণ ঠিকানা লিখুন'); valid = false; }
+      if (!valid) return;
+
+      const shippingCost = shipping === 'inside' ? CONFIG.SHIPPING_INSIDE : CONFIG.SHIPPING_OUTSIDE;
+      const total = quantity * CONFIG.UNIT_PRICE + shippingCost;
+
+      const order = {
+        productName: CONFIG.PRODUCT_NAME,
+        quantity, color, size,
+        shippingMethod: shipping === 'inside' ? 'Inside Dhaka' : 'Outside Dhaka',
+        shippingCost, totalPrice: total,
+        customerName: name, phone, address,
+        paymentMethod: payment,
+      };
+
+      // UI loading state
+      isSubmitting = true;
+      const btn = document.getElementById('order-submit');
+      btn.disabled = true;
+      document.getElementById('submit-label').classList.add('hidden');
+      document.getElementById('submit-loading').classList.remove('hidden');
+      document.getElementById('submit-loading').classList.add('flex');
+
+      try {
+        // Send in parallel — both are no-cors / async fire-and-forget style
+        await Promise.allSettled([
+          submitToGoogleForm(order),
+          notifyTelegram(order),
+        ]);
+
+        // Facebook Pixel: Purchase
+        if (typeof fbq === 'function') {
+          fbq('track', 'Purchase', {
+            value: total, currency: 'BDT',
+            content_name: CONFIG.PRODUCT_NAME, num_items: quantity,
+          });
+        }
+
+        // Success UI
+        closeOrderModal();
+        const success = document.getElementById('success-popup');
+        success.classList.remove('hidden');
+        success.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        form.reset();
+        qtyInput.value = 1;
+        recalcTotals();
+      } catch (err) {
+        alert('দুঃখিত! অর্ডারটি পাঠাতে সমস্যা হয়েছে। আবার চেষ্টা করুন বা সরাসরি কল করুন: 01700-000000');
+      } finally {
+        isSubmitting = false;
+        btn.disabled = false;
+        document.getElementById('submit-label').classList.remove('hidden');
+        document.getElementById('submit-loading').classList.add('hidden');
+        document.getElementById('submit-loading').classList.remove('flex');
+      }
+    });
+
+    function closeSuccessPopup() {
+      const success = document.getElementById('success-popup');
+      success.classList.add('hidden');
+      success.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    /* ====================== Google Form integration ====================== */
+    async function submitToGoogleForm(order) {
+      try {
+        const body = new URLSearchParams();
+        const f = CONFIG.GOOGLE_FORM_FIELDS;
+        body.append(f.productName,   order.productName);
+        body.append(f.quantity,      order.quantity);
+        body.append(f.color,         order.color);
+        body.append(f.size,          order.size);
+        body.append(f.shippingMethod,order.shippingMethod);
+        body.append(f.shippingCost,  order.shippingCost);
+        body.append(f.totalPrice,    order.totalPrice);
+        body.append(f.customerName,  order.customerName);
+        body.append(f.phone,         order.phone);
+        body.append(f.address,       order.address);
+        body.append(f.paymentMethod, order.paymentMethod);
+        await fetch(CONFIG.GOOGLE_FORM_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+        });
+      } catch (e) { console.warn('Google Form submit failed', e); }
+    }
+
+    /* ====================== Telegram Bot integration ====================== */
+    async function notifyTelegram(order) {
+      try {
+        const text =
+          `🛵 *নতুন অর্ডার*\n` +
+          `\n📦 প্রোডাক্ট: ${order.productName}` +
+          `\n🔢 পরিমাণ: ${order.quantity}` +
+          `\n🎨 কালার: ${order.color}` +
+          `\n📏 সাইজ: ${order.size}` +
+          `\n🚚 ডেলিভারি: ${order.shippingMethod} (৳${order.shippingCost})` +
+          `\n💰 মোট: ৳${order.totalPrice}` +
+          `\n💳 পেমেন্ট: ${order.paymentMethod}` +
+          `\n\n👤 ${order.customerName}` +
+          `\n📞 ${order.phone}` +
+          `\n📍 ${order.address}`;
+        const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
+        await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: CONFIG.TELEGRAM_CHAT_ID,
+            text,
+            parse_mode: 'Markdown',
+          }),
+        });
+      } catch (e) { console.warn('Telegram notify failed', e); }
+    }
+
+    /* ====================== Expose handlers on window ====================== */
+    window.openOrderModal = openOrderModal;
+    window.closeOrderModal = closeOrderModal;
+    window.closeLightbox = closeLightbox;
+    window.closeSuccessPopup = closeSuccessPopup;
+    window.adjustQty = adjustQty;
+  </script>
+
+</body>
+</html>
