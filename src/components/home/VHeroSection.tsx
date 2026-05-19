@@ -45,15 +45,13 @@ export default function VHeroSection() {
   // Skip the scroll-linked parallax on phones/tablets and when the user
   // has requested reduced motion. This is what causes the iOS hero shake.
   const disableParallax = isTouch || !!prefersReducedMotion
-  // Touch-device Safari composites the hero behind a single GPU layer.
-  // Every always-on inner animation (rotating rings, text-shadow flicker,
-  // shimmer background-position on transparent text, infinite box-shadow
-  // pulses) repaints inside that layer and, combined with the URL-bar
-  // resize during scroll, makes the whole section visibly tremble.
-  // We freeze all ambient loops on touch and reduced-motion contexts;
-  // entrance animations and tap feedback stay on so the section still
-  // feels alive without the jitter.
-  const disableAmbient = disableParallax
+  // Ambient animations (rotating rings, text flicker, shimmer, glow pulses)
+  // are safe on mobile because the scroll-linked parallax — the actual
+  // source of iOS Safari "shake" — is already disabled above. Each animated
+  // element gets its own compositor layer via Framer Motion, so the
+  // repaints are isolated and do not affect the parent layer during
+  // URL-bar collapse. Only disable for prefers-reduced-motion.
+  const disableAmbient = !!prefersReducedMotion
 
   const { scrollYProgress } = useScroll({
     target: ref,
