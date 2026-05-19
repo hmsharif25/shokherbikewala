@@ -3,12 +3,19 @@ import { Instagram, Music2, Facebook, Youtube, Star, Play, Heart, MessageSquare,
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
-const FOLLOWER_COUNTS = [
-  { icon: Instagram, label: 'Instagram Followers', count: '125K+' },
-  { icon: Music2, label: 'TikTok Followers', count: '65K+' },
-  { icon: Facebook, label: 'Facebook Fans', count: '45K+' },
-  { icon: Youtube, label: 'YouTube Viewers', count: '18K+' },
-]
+const PLATFORM_ICONS: Record<string, typeof Instagram> = {
+  Instagram,
+  TikTok: Music2,
+  Facebook,
+  YouTube: Youtube,
+}
+
+const PLATFORM_LABELS: Record<string, string> = {
+  Instagram: 'Instagram Followers',
+  TikTok: 'TikTok Followers',
+  Facebook: 'Facebook Fans',
+  YouTube: 'YouTube Viewers',
+}
 
 /**
  * Community + social showcase. Mirrors the "Stay Connected With Velocity"
@@ -16,7 +23,7 @@ const FOLLOWER_COUNTS = [
  * reviews, and follower stats strip below.
  */
 export default function VCommunity() {
-  const { products, brandSettings, testimonials, homeSections } = useStore()
+  const { products, brandSettings, testimonials, homeSections, socialFeed } = useStore()
 
   // 9 product images for the IG tile grid (recycle if needed).
   const igImages: string[] = []
@@ -26,8 +33,7 @@ export default function VCommunity() {
   }
   while (igImages.length < 9) igImages.push(igImages[0] || '')
 
-  const tiktokCover =
-    'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80'
+  const tiktokCover = socialFeed.tiktokCoverImage
 
   return (
     <section className="v-premium-section v-community-section relative py-20 sm:py-24 overflow-hidden">
@@ -48,7 +54,7 @@ export default function VCommunity() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
           {/* Instagram tile grid */}
           <SocialCard
-            handle="@shokherbikewala"
+            handle={socialFeed.platforms[0]?.handle ?? '@shokherbikewala'}
             platform="Instagram"
             ctaLabel="Follow"
             url={brandSettings.instagram}
@@ -78,7 +84,7 @@ export default function VCommunity() {
 
           {/* TikTok video */}
           <SocialCard
-            handle="@shokherbikewala"
+            handle={socialFeed.platforms[1]?.handle ?? '@shokherbikewala'}
             platform="TikTok"
             ctaLabel="Follow"
             url={brandSettings.tiktok}
@@ -106,7 +112,7 @@ export default function VCommunity() {
 
           {/* Facebook reviews */}
           <SocialCard
-            handle="Shokher Bikewala"
+            handle={socialFeed.platforms[2]?.handle ?? 'Shokher Bikewala'}
             platform="Facebook"
             ctaLabel="Like Page"
             url={brandSettings.facebook}
@@ -114,13 +120,13 @@ export default function VCommunity() {
             Icon={Facebook}
           >
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl font-headline font-bold text-fg">4.9</span>
+              <span className="text-2xl font-headline font-bold text-fg">{socialFeed.facebookRating}</span>
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <Star key={s} className="w-4 h-4 v-star-fill" />
                 ))}
               </div>
-              <span className="text-xs text-fg-soft font-ui">(1,204 reviews)</span>
+              <span className="text-xs text-fg-soft font-ui">({socialFeed.facebookReviewCount} reviews)</span>
             </div>
             <ul className="space-y-2.5 max-h-72 overflow-hidden">
               {testimonials.slice(0, 3).map((t) => (
@@ -152,7 +158,7 @@ export default function VCommunity() {
           </SocialCard>
 
           <SocialCard
-            handle="Shokher Bikewala"
+            handle={socialFeed.platforms[3]?.handle ?? 'Shokher Bikewala'}
             platform="YouTube"
             ctaLabel="Watch"
             url="https://www.youtube.com/results?search_query=Shokher%20Bikewala"
@@ -169,10 +175,10 @@ export default function VCommunity() {
               </span>
             </div>
             <p className="text-fg font-headline font-bold text-base sm:text-lg mb-1">
-              Cinematic Gear Drops
+              {socialFeed.youtubeTitle}
             </p>
             <p className="text-fg-soft text-xs font-ui leading-relaxed">
-              Premium product films, setup previews, and future rider lifestyle stories.
+              {socialFeed.youtubeDescription}
             </p>
           </SocialCard>
         </div>
@@ -180,21 +186,25 @@ export default function VCommunity() {
         {/* Follower stats */}
         <VReveal delay={200} className="mt-8 sm:mt-10">
           <div className="v-capsule rounded-2xl px-3 py-4 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {FOLLOWER_COUNTS.map((c) => (
-              <div key={c.label} className="flex items-center gap-3 px-2">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
-                  <c.icon className="w-4 h-4" />
+            {socialFeed.platforms.map((p) => {
+              const Icon = PLATFORM_ICONS[p.platform] ?? Instagram
+              const label = PLATFORM_LABELS[p.platform] ?? `${p.platform} Followers`
+              return (
+                <div key={p.platform} className="flex items-center gap-3 px-2">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-headline font-bold text-fg text-base sm:text-xl leading-tight">
+                      {p.followers}
+                    </p>
+                    <p className="text-[10px] sm:text-xs text-fg-soft font-ui uppercase tracking-wider truncate">
+                      {label}
+                    </p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <p className="font-headline font-bold text-fg text-base sm:text-xl leading-tight">
-                    {c.count}
-                  </p>
-                  <p className="text-[10px] sm:text-xs text-fg-soft font-ui uppercase tracking-wider truncate">
-                    {c.label}
-                  </p>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </VReveal>
       </div>

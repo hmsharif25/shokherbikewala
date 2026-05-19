@@ -119,6 +119,21 @@ export interface PageContent {
   contactAddress: string
 }
 
+export interface SocialFeedPlatform {
+  platform: string
+  handle: string
+  followers: string
+}
+
+export interface SocialFeedConfig {
+  platforms: SocialFeedPlatform[]
+  tiktokCoverImage: string
+  youtubeTitle: string
+  youtubeDescription: string
+  facebookRating: string
+  facebookReviewCount: string
+}
+
 export interface SiteConfig {
   faqItems: FAQItem[]
   footer: FooterConfig

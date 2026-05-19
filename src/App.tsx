@@ -43,6 +43,7 @@ const SEOManage = lazy(() => import('@/pages/admin/SEOManage'))
 const FAQManage = lazy(() => import('@/pages/admin/FAQManage'))
 const FooterManage = lazy(() => import('@/pages/admin/FooterManage'))
 const PagesManage = lazy(() => import('@/pages/admin/PagesManage'))
+const SocialFeedManage = lazy(() => import('@/pages/admin/SocialFeedManage'))
 const ChangePassword = lazy(() => import('@/pages/admin/ChangePassword'))
 
 function RouteFallback() {
@@ -154,6 +155,7 @@ function AppRoutes() {
           <Route path="faq" element={<FAQManage />} />
           <Route path="footer" element={<FooterManage />} />
           <Route path="pages" element={<PagesManage />} />
+          <Route path="social-feed" element={<SocialFeedManage />} />
           <Route path="settings" element={<BrandSettings />} />
           <Route path="change-password" element={<ChangePassword />} />
         </Route>

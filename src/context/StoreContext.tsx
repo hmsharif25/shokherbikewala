@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
-import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent } from '@/types'
+import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent, SocialFeedConfig } from '@/types'
 import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { loadRemotePublic, loadHomeSectionsRemote } from '@/lib/db'
+import { loadRemotePublic, loadHomeSectionsRemote, loadSocialFeedRemote } from '@/lib/db'
 
 const defaultFAQItems: FAQItem[] = [
   { id: '1', question: 'How long does delivery take?', answer: 'We deliver across Bangladesh within 2\u20134 business days. For Dhaka city, same-day or next-day delivery is available on selected items. International orders typically arrive in 7\u201314 days.' },
@@ -86,6 +86,20 @@ const defaultHomeSections: HomeSections = {
   faq: { visible: true, heading: 'FREQUENTLY ASKED', subheading: 'Everything you need to know before you ride.' },
 }
 
+const defaultSocialFeed: SocialFeedConfig = {
+  platforms: [
+    { platform: 'Instagram', handle: '@shokherbikewala', followers: '125K+' },
+    { platform: 'TikTok', handle: '@shokherbikewala', followers: '65K+' },
+    { platform: 'Facebook', handle: 'Shokher Bikewala', followers: '45K+' },
+    { platform: 'YouTube', handle: 'Shokher Bikewala', followers: '18K+' },
+  ],
+  tiktokCoverImage: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+  youtubeTitle: 'Cinematic Gear Drops',
+  youtubeDescription: 'Premium product films, setup previews, and future rider lifestyle stories.',
+  facebookRating: '4.9',
+  facebookReviewCount: '1,204',
+}
+
 interface StoreState {
   products: Product[]
   categories: Category[]
@@ -94,6 +108,7 @@ interface StoreState {
   inquiries: Inquiry[]
   homeSections: HomeSections
   siteConfig: SiteConfig
+  socialFeed: SocialFeedConfig
 }
 
 interface StoreContextType extends StoreState {
@@ -118,6 +133,8 @@ interface StoreContextType extends StoreState {
   addInquiry: (inquiry: Inquiry) => void
   updateInquiry: (id: number, inquiry: Inquiry) => void
   deleteInquiry: (id: number) => void
+  socialFeed: SocialFeedConfig
+  setSocialFeed: (config: SocialFeedConfig) => void
   resetAll: () => void
   remoteLoaded: boolean
 }
@@ -152,6 +169,7 @@ const defaultState: StoreState = {
   inquiries: demoInquiries,
   homeSections: defaultHomeSections,
   siteConfig: defaultSiteConfig,
+  socialFeed: defaultSocialFeed,
 }
 
 const StoreContext = createContext<StoreContextType | null>(null)
@@ -164,6 +182,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         ...stored,
         homeSections: stored.homeSections ?? defaultHomeSections,
         siteConfig: stored.siteConfig ?? defaultSiteConfig,
+        socialFeed: stored.socialFeed ?? defaultSocialFeed,
       }
     }
     return defaultState
@@ -178,7 +197,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isSupabaseConfigured()) return
     let cancelled = false
-    Promise.all([loadRemotePublic(), loadHomeSectionsRemote()]).then(([remote, remoteSections]) => {
+    Promise.all([loadRemotePublic(), loadHomeSectionsRemote(), loadSocialFeedRemote()]).then(([remote, remoteSections, remoteSocialFeed]) => {
       if (cancelled) return
       setState((prev) => ({
         products: remote.products && remote.products.length > 0
@@ -194,6 +213,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         inquiries: prev.inquiries,
         homeSections: remoteSections ?? prev.homeSections,
         siteConfig: prev.siteConfig,
+        socialFeed: remoteSocialFeed ?? prev.socialFeed,
       }))
       setRemoteLoaded(true)
     })
@@ -302,6 +322,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
+  const setSocialFeed = useCallback((socialFeed: SocialFeedConfig) => {
+    setState(prev => ({ ...prev, socialFeed }))
+  }, [])
+
   const resetAll = useCallback(() => {
     setState(defaultState)
     localStorage.removeItem(STORAGE_KEY)
@@ -330,6 +354,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       addInquiry,
       updateInquiry,
       deleteInquiry,
+      socialFeed: state.socialFeed,
+      setSocialFeed,
       resetAll,
       remoteLoaded,
     }}>

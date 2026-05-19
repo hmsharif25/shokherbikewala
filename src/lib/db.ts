@@ -7,6 +7,7 @@ import type {
   Product,
   ProductSpecification,
   ProductReview,
+  SocialFeedConfig,
   Testimonial,
 } from '@/types'
 
@@ -445,5 +446,30 @@ export async function saveHomeSectionsRemote(
   const { error } = await supabase
     .from('site_config')
     .upsert({ key: 'home_sections', value: sections as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
+  return { error: error?.message ?? null }
+}
+
+export async function loadSocialFeedRemote(): Promise<SocialFeedConfig | null> {
+  if (!isSupabaseConfigured()) return null
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('value')
+      .eq('key', 'social_feed')
+      .maybeSingle()
+    if (error || !data) return null
+    return data.value as SocialFeedConfig
+  } catch {
+    return null
+  }
+}
+
+export async function saveSocialFeedRemote(
+  config: SocialFeedConfig,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('site_config')
+    .upsert({ key: 'social_feed', value: config as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
   return { error: error?.message ?? null }
 }

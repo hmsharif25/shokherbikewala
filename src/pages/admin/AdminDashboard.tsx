@@ -28,6 +28,7 @@ import {
   HelpCircle,
   PanelBottom,
   FileText,
+  Rss,
 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
@@ -56,6 +57,7 @@ const sidebarGroups = [
       { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
       { name: 'Home Sections', path: '/admin/sections', icon: LayoutList },
       { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquareQuote },
+      { name: 'Social Feed', path: '/admin/social-feed', icon: Rss },
       { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
       { name: 'Pages', path: '/admin/pages', icon: FileText },
     ],
