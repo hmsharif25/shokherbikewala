@@ -159,7 +159,7 @@ function CategoryCard({ cat, featured }: { cat: { id: string; slug: string; name
 
   return (
     <Link
-      to={`/products?category=${cat.slug}`}
+      to={`/shop?category=${cat.slug}`}
       className={`sb-simple-card sb-neon-card sb-card-glow group flex flex-col items-center text-center p-5 sm:p-6 h-full block transition-all duration-300 ${
         featured ? 'ring-2 ring-primary/30 shadow-xl shadow-primary/10' : ''
       }`}

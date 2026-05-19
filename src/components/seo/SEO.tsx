@@ -56,7 +56,7 @@ export default function SEO({ config }: { config?: SeoConfig }) {
   const { products, categories } = useStore()
 
   useEffect(() => {
-    const slug = pathname.startsWith('/products/')
+    const slug = pathname.startsWith('/shop/')
       ? pathname.split('/').filter(Boolean)[1]
       : ''
     const product = slug ? products.find((p) => p.slug === slug) : undefined
@@ -69,8 +69,8 @@ export default function SEO({ config }: { config?: SeoConfig }) {
           structuredData: [
             breadcrumbJsonLd([
               { name: 'Home', path: '/' },
-              { name: 'Products', path: '/products' },
-              { name: product.name, path: `/products/${product.slug}` },
+              { name: 'Products', path: '/shop' },
+              { name: product.name, path: `/shop/${product.slug}` },
             ]),
             productJsonLd(product, category),
           ],

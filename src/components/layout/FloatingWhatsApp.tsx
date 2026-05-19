@@ -23,7 +23,7 @@ export default function FloatingWhatsApp() {
   const { brandSettings } = useStore()
   const location = useLocation()
   const isHome = location.pathname === '/'
-  const isProductDetail = location.pathname.startsWith('/products/')
+  const isProductDetail = location.pathname.startsWith('/shop/')
   const [pastHero, setPastHero] = useState(!isHome)
 
   useEffect(() => {

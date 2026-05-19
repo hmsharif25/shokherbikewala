@@ -21,12 +21,12 @@ const defaultFooter: FooterConfig = {
     { title: 'Easy Returns', sub: 'Hassle-free returns within 7 days' },
   ],
   shopLinks: [
-    { name: 'Helmets', path: '/products?category=helmets' },
-    { name: 'Gloves', path: '/products?category=gloves' },
-    { name: 'Riding Jackets', path: '/products?category=jackets' },
-    { name: 'LED Lights', path: '/products?category=led-lights' },
-    { name: 'Exhaust Systems', path: '/products?category=exhaust-systems' },
-    { name: 'All Accessories', path: '/products' },
+    { name: 'Helmets', path: '/shop?category=helmets' },
+    { name: 'Gloves', path: '/shop?category=gloves' },
+    { name: 'Riding Jackets', path: '/shop?category=jackets' },
+    { name: 'LED Lights', path: '/shop?category=led-lights' },
+    { name: 'Exhaust Systems', path: '/shop?category=exhaust-systems' },
+    { name: 'All Accessories', path: '/shop' },
   ],
   companyLinks: [
     { name: 'About Us', path: '/about' },
