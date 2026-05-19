@@ -1,16 +1,13 @@
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRight, ChefHat, Hand, Shirt, Lightbulb, Wrench, Smartphone, Compass, Headphones, Anchor } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowRight, ChevronLeft, ChevronRight, ChefHat, Hand, Shirt, Lightbulb, Wrench, Smartphone, Compass, Headphones, Anchor } from 'lucide-react'
 import VReveal from '@/components/ui/VReveal'
 import { useStore } from '@/context/StoreContext'
 
-/**
- * Map a category slug to a Lucide icon. Falls back to Compass.
- * Keeps icon system independent of CMS data.
- */
 function iconFor(slug: string) {
   const s = slug.toLowerCase()
-  if (s.includes('helmet')) return ChefHat // closest match for "helmet" silhouette
+  if (s.includes('helmet')) return ChefHat
   if (s.includes('glove')) return Hand
   if (s.includes('jacket')) return Shirt
   if (s.includes('light') || s.includes('led')) return Lightbulb
@@ -21,20 +18,49 @@ function iconFor(slug: string) {
   return Compass
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 50, scale: 0.88, rotateX: 12 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    rotateX: 0,
-    transition: { type: 'spring' as const, stiffness: 150, damping: 18, delay: 0.08 * i },
-  }),
-}
+const AUTO_SLIDE_MS = 3500
 
 export default function VCategoriesGrid() {
   const { categories, homeSections } = useStore()
-  const visible = categories.slice(0, 5)
+  const visible = categories.slice(0, 10)
+  const [current, setCurrent] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [direction, setDirection] = useState(1)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const totalSlides = visible.length
+
+  const goTo = useCallback((idx: number, dir?: number) => {
+    setDirection(dir ?? (idx > current ? 1 : -1))
+    setCurrent(((idx % totalSlides) + totalSlides) % totalSlides)
+  }, [current, totalSlides])
+
+  const next = useCallback(() => goTo(current + 1, 1), [current, goTo])
+  const prev = useCallback(() => goTo(current - 1, -1), [current, goTo])
+
+  useEffect(() => {
+    if (paused || totalSlides <= 1) return
+    timerRef.current = setInterval(next, AUTO_SLIDE_MS)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [paused, next, totalSlides])
+
+  if (totalSlides === 0) return null
+
+  const slideVariants = {
+    enter: (d: number) => ({ x: d > 0 ? 300 : -300, opacity: 0, scale: 0.92 }),
+    center: { x: 0, opacity: 1, scale: 1 },
+    exit: (d: number) => ({ x: d > 0 ? -300 : 300, opacity: 0, scale: 0.92 }),
+  }
+
+  const getVisibleIndices = () => {
+    const indices: number[] = []
+    for (let offset = -1; offset <= 1; offset++) {
+      indices.push(((current + offset) % totalSlides + totalSlides) % totalSlides)
+    }
+    return indices
+  }
+
+  const visibleIndices = getVisibleIndices()
 
   return (
     <section className="sb-clean-section sb-clean-categories relative py-16 sm:py-20 overflow-hidden">
@@ -52,54 +78,92 @@ export default function VCategoriesGrid() {
           </p>
         </VReveal>
 
-        <div className="sb-simple-grid sb-category-scroll grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-          {visible.map((cat, i) => {
-            const Icon = iconFor(cat.slug)
-            return (
-              <motion.div
-                key={cat.id}
-                custom={i}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: '-50px' }}
-                variants={cardVariants}
+        {/* Carousel */}
+        <div
+          className="relative"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {/* Nav arrows */}
+          {totalSlides > 1 && (
+            <>
+              <button
+                onClick={prev}
+                className="absolute -left-2 sm:left-0 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 rounded-full glass border border-white/10 text-white hover:bg-primary/20 hover:border-primary/30 transition-all shadow-lg"
+                aria-label="Previous category"
               >
-                <Link
-                  to={`/products?category=${cat.slug}`}
-                  className="sb-simple-card sb-neon-card sb-card-glow group flex flex-col items-center text-center p-4 sm:p-5 h-full block"
-                >
-                  {/* Icon chip */}
-                  <span className="sb-mini-icon absolute top-3 left-3 z-10">
-                    <Icon className="w-4 h-4" />
-                  </span>
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={next}
+                className="absolute -right-2 sm:right-0 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 rounded-full glass border border-white/10 text-white hover:bg-primary/20 hover:border-primary/30 transition-all shadow-lg"
+                aria-label="Next category"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
 
-                  <div className="relative z-[1] aspect-square w-full overflow-hidden mb-3 sm:mb-4">
-                    <img
-                      src={cat.image_url}
-                      alt={cat.name}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_14px_24px_rgba(255,90,0,0.16)]"
-                    />
-                  </div>
-
-                  <h3 className="relative z-[1] font-headline font-bold text-fg text-sm sm:text-base mb-1 tracking-wide uppercase">
-                    {cat.name}
-                  </h3>
-
-                  {/* Tagline (synthetic) */}
-                  <p className="relative z-[1] text-fg-soft text-xs sm:text-sm leading-snug font-ui mb-3 line-clamp-2">
-                    {taglineFor(cat.slug)}
-                  </p>
-
-                  <div className="relative z-[1] mt-auto inline-flex items-center gap-1.5 text-primary text-xs font-ui font-bold uppercase tracking-[0.16em] group-hover:gap-2.5 transition-all">
-                    Explore
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </Link>
+          {/* Mobile: single card carousel */}
+          <div className="sm:hidden px-8">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={current}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              >
+                <CategoryCard cat={visible[current]} />
               </motion.div>
-            )
-          })}
+            </AnimatePresence>
+          </div>
+
+          {/* Desktop: 3 cards visible */}
+          <div className="hidden sm:block px-12 lg:px-16">
+            <div className="grid grid-cols-3 gap-4 lg:gap-6">
+              {visibleIndices.map((idx, pos) => {
+                const cat = visible[idx]
+                return (
+                  <AnimatePresence mode="wait" key={`slot-${pos}`}>
+                    <motion.div
+                      key={`${idx}-${current}`}
+                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                      animate={{
+                        opacity: pos === 1 ? 1 : 0.7,
+                        scale: pos === 1 ? 1.05 : 0.95,
+                        y: 0,
+                      }}
+                      exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                      transition={{ type: 'spring', stiffness: 250, damping: 25 }}
+                    >
+                      <CategoryCard cat={cat} featured={pos === 1} />
+                    </motion.div>
+                  </AnimatePresence>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Dots */}
+          {totalSlides > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-8">
+              {visible.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`transition-all duration-300 rounded-full ${
+                    i === current
+                      ? 'w-8 h-2.5 bg-primary shadow-lg shadow-primary/40'
+                      : 'w-2.5 h-2.5 bg-white/20 hover:bg-white/40'
+                  }`}
+                  aria-label={`Go to category ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <VReveal delay={300} className="text-center mt-12">
@@ -112,6 +176,46 @@ export default function VCategoriesGrid() {
         </VReveal>
       </div>
     </section>
+  )
+}
+
+function CategoryCard({ cat, featured }: { cat: { id: string; slug: string; name: string; image_url: string }; featured?: boolean }) {
+  const Icon = iconFor(cat.slug)
+
+  return (
+    <Link
+      to={`/products?category=${cat.slug}`}
+      className={`sb-simple-card sb-neon-card sb-card-glow group flex flex-col items-center text-center p-5 sm:p-6 h-full block transition-all duration-300 ${
+        featured ? 'ring-2 ring-primary/30 shadow-xl shadow-primary/10' : ''
+      }`}
+    >
+      <span className="sb-mini-icon absolute top-3 left-3 z-10">
+        <Icon className="w-4 h-4" />
+      </span>
+
+      <div className="relative z-[1] aspect-square w-full overflow-hidden mb-3 sm:mb-4">
+        <img
+          src={cat.image_url}
+          alt={cat.name}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_14px_24px_rgba(255,90,0,0.16)]"
+        />
+      </div>
+
+      <h3 className="relative z-[1] font-headline font-bold text-fg text-sm sm:text-lg mb-1 tracking-wide uppercase">
+        {cat.name}
+      </h3>
+
+      <p className="relative z-[1] text-fg-soft text-xs sm:text-sm leading-snug font-ui mb-3 line-clamp-2">
+        {taglineFor(cat.slug)}
+      </p>
+
+      <div className="relative z-[1] mt-auto inline-flex items-center gap-1.5 text-primary text-xs font-ui font-bold uppercase tracking-[0.16em] group-hover:gap-2.5 transition-all">
+        Explore
+        <ArrowRight className="w-3.5 h-3.5" />
+      </div>
+    </Link>
   )
 }
 
