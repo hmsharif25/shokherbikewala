@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Pencil, Trash2, X, Save, Package, Loader2 } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
-import { Product } from '@/types'
+import { Product, ProductSpecification } from '@/types'
 import ImageUpload from '@/components/ui/ImageUpload'
 import { insertProductRemote, updateProductRemote, deleteProductRemote, loadRemotePublic } from '@/lib/db'
 
@@ -14,7 +14,9 @@ export default function ProductsManage() {
   const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({
     name: '',
+    short_description: '',
     description: '',
+    specifications: [] as ProductSpecification[],
     price: '',
     discount_price: '',
     category_id: '',
@@ -24,7 +26,7 @@ export default function ProductsManage() {
   })
 
   const openAdd = () => {
-    setForm({ name: '', description: '', price: '', discount_price: '', category_id: categories[0]?.id || '', images: [], in_stock: true, featured: false })
+    setForm({ name: '', short_description: '', description: '', specifications: [], price: '', discount_price: '', category_id: categories[0]?.id || '', images: [], in_stock: true, featured: false })
     setEditingProduct(null)
     setIsAdding(true)
   }
@@ -32,7 +34,9 @@ export default function ProductsManage() {
   const openEdit = (product: Product) => {
     setForm({
       name: product.name,
+      short_description: product.short_description || '',
       description: product.description,
+      specifications: product.specifications || [],
       price: product.price.toString(),
       discount_price: product.discount_price?.toString() || '',
       category_id: product.category_id,
@@ -54,6 +58,8 @@ export default function ProductsManage() {
       name: form.name,
       slug: form.name.toLowerCase().replace(/\s+/g, '-'),
       description: form.description,
+      short_description: form.short_description || undefined,
+      specifications: form.specifications.length > 0 ? form.specifications.filter(s => s.label.trim() && s.value.trim()) : undefined,
       price: parseFloat(form.price) || 0,
       discount_price: form.discount_price ? parseFloat(form.discount_price) : null,
       category_id: form.category_id,
@@ -170,14 +176,72 @@ export default function ProductsManage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm text-gray-300 mb-1">Description</label>
+                  <label className="block text-sm text-gray-300 mb-1">Short Description</label>
+                  <input
+                    value={form.short_description}
+                    onChange={e => setForm({ ...form, short_description: e.target.value })}
+                    placeholder="Brief one-line description shown on product cards"
+                    maxLength={160}
+                    className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                  <span className="text-xs text-gray-500 mt-1 block">{form.short_description.length}/160 characters</span>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm text-gray-300 mb-1">Full Description</label>
                   <textarea
-                    rows={3}
+                    rows={4}
                     value={form.description}
                     onChange={e => setForm({ ...form, description: e.target.value })}
-                    placeholder="Product description"
+                    placeholder="Detailed product description shown on the product page"
                     className="w-full px-4 py-2.5 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                   />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm text-gray-300 mb-2">Specifications</label>
+                  <div className="space-y-2">
+                    {form.specifications.map((spec, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <input
+                          value={spec.label}
+                          onChange={e => {
+                            const specs = [...form.specifications]
+                            specs[i] = { ...specs[i], label: e.target.value }
+                            setForm({ ...form, specifications: specs })
+                          }}
+                          placeholder="Label (e.g. Material)"
+                          className="flex-1 px-3 py-2 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                        <input
+                          value={spec.value}
+                          onChange={e => {
+                            const specs = [...form.specifications]
+                            specs[i] = { ...specs[i], value: e.target.value }
+                            setForm({ ...form, specifications: specs })
+                          }}
+                          placeholder="Value (e.g. ABS Shell)"
+                          className="flex-1 px-3 py-2 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const specs = form.specifications.filter((_, j) => j !== i)
+                            setForm({ ...form, specifications: specs })
+                          }}
+                          className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-400/10 transition-all"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setForm({ ...form, specifications: [...form.specifications, { label: '', value: '' }] })}
+                      className="flex items-center gap-1.5 text-sm text-primary hover:text-primary-400 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Specification
+                    </button>
+                  </div>
                 </div>
                 <div className="md:col-span-2">
                   <ImageUpload
