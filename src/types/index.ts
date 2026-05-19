@@ -1,8 +1,24 @@
+export interface ProductSpecification {
+  label: string
+  value: string
+}
+
+export interface ProductReview {
+  id: string
+  author: string
+  rating: number
+  text: string
+  date: string
+}
+
 export interface Product {
   id: string
   name: string
   slug: string
   description: string
+  short_description?: string
+  specifications?: ProductSpecification[]
+  reviews?: ProductReview[]
   price: number
   discount_price: number | null
   category_id: string

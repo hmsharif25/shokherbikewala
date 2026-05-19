@@ -108,7 +108,7 @@ export default function FeaturedProducts() {
                       </h3>
 
                       <p className="text-fg-muted text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 hidden sm:block">
-                        {product.description}
+                        {product.short_description || product.description.slice(0, 80) + '…'}
                       </p>
 
                       <div className="mt-auto flex items-center justify-between gap-2">
