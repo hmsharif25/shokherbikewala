@@ -96,9 +96,24 @@ export default function VCategoriesGrid() {
             </>
           )}
 
-          {/* 3 cards visible on all screens */}
-          <div className="px-8 sm:px-12 lg:px-16">
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
+          {/* Mobile: single card with slide animation */}
+          <div className="sm:hidden px-10">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current}
+                initial={{ opacity: 0, x: 80 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -80 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              >
+                <CategoryCard cat={visible[current]} featured />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Desktop: 3 cards visible */}
+          <div className="hidden sm:block px-12 lg:px-16">
+            <div className="grid grid-cols-3 gap-4 lg:gap-6">
               {visibleIndices.map((idx, pos) => {
                 const cat = visible[idx]
                 return (
