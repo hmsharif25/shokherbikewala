@@ -241,6 +241,8 @@ export async function insertProductRemote(
     name: string
     slug: string
     description: string
+    short_description?: string
+    specifications?: ProductSpecification[]
     price: number
     discount_price: number | null
     category_id: string
@@ -252,19 +254,22 @@ export async function insertProductRemote(
 ): Promise<{ error: string | null; product?: Product }> {
   if (!isSupabaseConfigured()) return { error: null }
   const resolvedCategoryId = await resolveCategoryId(input.category_id, categories)
+  const row: Record<string, unknown> = {
+    name: input.name,
+    slug: input.slug,
+    description: input.description,
+    price: input.price,
+    discount_price: input.discount_price,
+    category_id: resolvedCategoryId,
+    images: input.images,
+    in_stock: input.in_stock,
+    featured: input.featured,
+  }
+  if (input.short_description !== undefined) row.short_description = input.short_description
+  if (input.specifications !== undefined) row.specifications = input.specifications
   const { data, error } = await supabase
     .from('products')
-    .insert({
-      name: input.name,
-      slug: input.slug,
-      description: input.description,
-      price: input.price,
-      discount_price: input.discount_price,
-      category_id: resolvedCategoryId,
-      images: input.images,
-      in_stock: input.in_stock,
-      featured: input.featured,
-    })
+    .insert(row)
     .select('*')
     .single()
   if (error) return { error: error.message }
@@ -277,6 +282,8 @@ export async function updateProductRemote(
     name: string
     slug: string
     description: string
+    short_description?: string
+    specifications?: ProductSpecification[]
     price: number
     discount_price: number | null
     category_id: string
@@ -288,19 +295,22 @@ export async function updateProductRemote(
 ): Promise<{ error: string | null; product?: Product }> {
   if (!isSupabaseConfigured()) return { error: null }
   const resolvedCategoryId = await resolveCategoryId(input.category_id, categories)
+  const row: Record<string, unknown> = {
+    name: input.name,
+    slug: input.slug,
+    description: input.description,
+    price: input.price,
+    discount_price: input.discount_price,
+    category_id: resolvedCategoryId,
+    images: input.images,
+    in_stock: input.in_stock,
+    featured: input.featured,
+  }
+  if (input.short_description !== undefined) row.short_description = input.short_description
+  if (input.specifications !== undefined) row.specifications = input.specifications
   const { data, error } = await supabase
     .from('products')
-    .update({
-      name: input.name,
-      slug: input.slug,
-      description: input.description,
-      price: input.price,
-      discount_price: input.discount_price,
-      category_id: resolvedCategoryId,
-      images: input.images,
-      in_stock: input.in_stock,
-      featured: input.featured,
-    })
+    .update(row)
     .eq('id', id)
     .select('*')
     .single()
