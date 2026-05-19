@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent } from '@/types'
-import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
+import { demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { loadRemotePublic, loadHomeSectionsRemote } from '@/lib/db'
 
@@ -145,8 +145,8 @@ function saveToStorage(state: StoreState) {
 }
 
 const defaultState: StoreState = {
-  products: demoProducts,
-  categories: demoCategories,
+  products: [],
+  categories: [],
   brandSettings: demoBrandSettings,
   testimonials: demoTestimonials,
   inquiries: demoInquiries,
@@ -160,8 +160,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoreState>(() => {
     const stored = loadFromStorage()
     if (stored) {
+      // Strip legacy demo products/categories (numeric string IDs)
+      // so only real Supabase data remains after hydration.
+      const isDemoId = (id: string) => /^\d+$/.test(id)
       return {
         ...stored,
+        products: (stored.products ?? []).filter(p => !isDemoId(p.id)),
+        categories: (stored.categories ?? []).filter(c => !isDemoId(c.id)),
         homeSections: stored.homeSections ?? defaultHomeSections,
         siteConfig: stored.siteConfig ?? defaultSiteConfig,
       }
