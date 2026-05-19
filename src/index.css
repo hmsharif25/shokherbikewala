@@ -4387,6 +4387,25 @@ html {
   border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
+/* Social icon circles and payment badges use theme variables that break
+   on the always-dark footer in light mode. Override to dark-safe values. */
+.v-premium-footer .border-line {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.v-premium-footer .bg-bg\/60 {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Extend footer into the body safe-area padding so no white gap appears
+   below it on mobile in light mode. */
+@media (max-width: 767.98px) {
+  .v-premium-footer {
+    margin-bottom: calc(-4.25rem - env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(7rem + 4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 .v-nav-search {
   background: rgba(255, 255, 255, 0.62);
   border: 1px solid rgba(255, 255, 255, 0.88);
