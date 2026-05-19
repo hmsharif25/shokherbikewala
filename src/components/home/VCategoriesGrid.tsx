@@ -25,18 +25,16 @@ export default function VCategoriesGrid() {
   const visible = categories.slice(0, 10)
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [direction, setDirection] = useState(1)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const totalSlides = visible.length
 
-  const goTo = useCallback((idx: number, dir?: number) => {
-    setDirection(dir ?? (idx > current ? 1 : -1))
+  const goTo = useCallback((idx: number) => {
     setCurrent(((idx % totalSlides) + totalSlides) % totalSlides)
-  }, [current, totalSlides])
+  }, [totalSlides])
 
-  const next = useCallback(() => goTo(current + 1, 1), [current, goTo])
-  const prev = useCallback(() => goTo(current - 1, -1), [current, goTo])
+  const next = useCallback(() => goTo(current + 1), [current, goTo])
+  const prev = useCallback(() => goTo(current - 1), [current, goTo])
 
   useEffect(() => {
     if (paused || totalSlides <= 1) return
@@ -45,12 +43,6 @@ export default function VCategoriesGrid() {
   }, [paused, next, totalSlides])
 
   if (totalSlides === 0) return null
-
-  const slideVariants = {
-    enter: (d: number) => ({ x: d > 0 ? 300 : -300, opacity: 0, scale: 0.92 }),
-    center: { x: 0, opacity: 1, scale: 1 },
-    exit: (d: number) => ({ x: d > 0 ? -300 : 300, opacity: 0, scale: 0.92 }),
-  }
 
   const getVisibleIndices = () => {
     const indices: number[] = []
@@ -104,26 +96,9 @@ export default function VCategoriesGrid() {
             </>
           )}
 
-          {/* Mobile: single card carousel */}
-          <div className="sm:hidden px-8">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={current}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              >
-                <CategoryCard cat={visible[current]} />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Desktop: 3 cards visible */}
-          <div className="hidden sm:block px-12 lg:px-16">
-            <div className="grid grid-cols-3 gap-4 lg:gap-6">
+          {/* 3 cards visible on all screens */}
+          <div className="px-8 sm:px-12 lg:px-16">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
               {visibleIndices.map((idx, pos) => {
                 const cat = visible[idx]
                 return (
