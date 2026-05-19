@@ -5,6 +5,8 @@ import type {
   HomeSections,
   Inquiry,
   Product,
+  ProductSpecification,
+  ProductReview,
   Testimonial,
 } from '@/types'
 
@@ -13,6 +15,9 @@ type DBProduct = {
   name: string
   slug: string
   description: string | null
+  short_description: string | null
+  specifications: ProductSpecification[] | null
+  reviews: ProductReview[] | null
   price: number | string
   discount_price: number | string | null
   category_id: string | null
@@ -72,6 +77,9 @@ export const mapProduct = (row: DBProduct): Product => ({
   name: row.name,
   slug: row.slug,
   description: row.description ?? '',
+  short_description: row.short_description ?? undefined,
+  specifications: row.specifications ?? undefined,
+  reviews: row.reviews ?? undefined,
   price: num(row.price),
   discount_price: numOrNull(row.discount_price),
   category_id: row.category_id ?? '',
