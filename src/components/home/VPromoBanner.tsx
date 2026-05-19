@@ -102,7 +102,7 @@ export default function VPromoBanner() {
               </div>
 
               <div className="flex justify-center pt-2">
-                <Link to="/products" className="sb-cta-primary group">
+                <Link to="/shop" className="sb-cta-primary group">
                   Shop Collection
                   <span className="sb-cta-pin">
                     <ArrowRight className="w-3.5 h-3.5" />

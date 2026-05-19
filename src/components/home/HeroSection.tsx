@@ -165,7 +165,7 @@ export default function HeroSection() {
           transition={{ delay: 0.85 }}
           className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16 px-2 sm:px-0"
         >
-          <Link to="/products" className="w-full sm:w-auto">
+          <Link to="/shop" className="w-full sm:w-auto">
             <motion.div
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}

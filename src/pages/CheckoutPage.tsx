@@ -126,7 +126,7 @@ export default function CheckoutPage() {
   // to the products listing so they can pick something first.
   useEffect(() => {
     if (lines.length === 0 && products.length > 0 && !success) {
-      navigate('/products', { replace: true })
+      navigate('/shop', { replace: true })
     }
   }, [lines.length, products.length, navigate, success])
 
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
             Your cart is empty — pick some items first.
           </p>
           <Link
-            to="/products"
+            to="/shop"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -238,7 +238,7 @@ export default function CheckoutPage() {
     // Wipe the just-ordered items from the cart so they don't linger
     // selected. Direct (?product=) checkout doesn't touch the cart.
     if (!directProduct) clearSelected()
-    navigate('/products')
+    navigate('/shop')
   }
 
   return (
@@ -246,7 +246,7 @@ export default function CheckoutPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-5 sm:mb-8">
           <Link
-            to={directProduct ? `/products/${directProduct.slug}` : '/cart'}
+            to={directProduct ? `/shop/${directProduct.slug}` : '/cart'}
             className="inline-flex items-center gap-2 text-fg-muted hover:text-primary transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -417,7 +417,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <Link
-                        to={`/products/${l.slug}`}
+                        to={`/shop/${l.slug}`}
                         className="text-fg font-semibold text-sm leading-snug line-clamp-2 hover:text-primary"
                       >
                         {l.name}

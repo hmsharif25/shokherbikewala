@@ -63,7 +63,7 @@ export default function VNewArrivals() {
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className="flex-shrink-0 w-64 sm:w-72 snap-start"
               >
-                <Link to={`/products/${p.slug}`} className="v-product-card flex flex-col h-full">
+                <Link to={`/shop/${p.slug}`} className="v-product-card flex flex-col h-full">
                   <div className="relative aspect-square overflow-hidden rounded-t-[1.45rem] bg-bg-2">
                     <img
                       src={p.images[0]}

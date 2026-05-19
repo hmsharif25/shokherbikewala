@@ -43,7 +43,7 @@ const MORE_LINKS: MoreLink[] = [
   },
   {
     name: 'Search',
-    path: '/products',
+    path: '/shop',
     icon: Search,
     accent: 'text-cyan-300',
     gradient: 'linear-gradient(135deg, rgba(34,211,238,0.22), rgba(6,182,212,0.05))',
@@ -117,7 +117,7 @@ export default function MobileBottomNav() {
 
   const tabs: TabItem[] = [
     { name: 'Home', path: '/', icon: Home },
-    { name: 'Shop', path: '/products', icon: ShoppingBag },
+    { name: 'Shop', path: '/shop', icon: ShoppingBag },
     { name: 'Cart', path: '/cart', icon: ShoppingCart },
     profileItem,
   ]

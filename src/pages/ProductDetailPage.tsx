@@ -49,7 +49,7 @@ export default function ProductDetailPage() {
           <h1 className="text-2xl font-display font-bold text-white mb-2">Product Not Found</h1>
           <p className="text-gray-400 mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
           <Link
-            to="/products"
+            to="/shop"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -101,7 +101,7 @@ export default function ProductDetailPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-6 sm:mb-8">
           <Link
-            to="/products"
+            to="/shop"
             className="inline-flex items-center gap-2 text-gray-400 hover:text-primary transition-colors text-sm font-racing tracking-wide"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -580,7 +580,7 @@ export default function ProductDetailPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
               {relatedProducts.map((rp, i) => (
                 <AnimatedSection key={rp.id} delay={i * 0.1}>
-                  <Link to={`/products/${rp.slug}`}>
+                  <Link to={`/shop/${rp.slug}`}>
                     <motion.div
                       whileHover={{ y: -5 }}
                       className="group rounded-2xl overflow-hidden glass-premium racing-card hover:shadow-xl hover:shadow-primary/20 transition-all duration-500 border border-white/5 hover:border-primary/15"

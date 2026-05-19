@@ -138,7 +138,7 @@ export default function ProductsPage() {
             }
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
-                <Link to={`/products/${product.slug}`}>
+                <Link to={`/shop/${product.slug}`}>
                   <motion.div
                     whileHover={{ y: -6, scale: 1.02, transition: { duration: 0.25 } }}
                     whileTap={{ scale: 0.98 }}

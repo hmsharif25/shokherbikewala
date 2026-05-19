@@ -176,7 +176,7 @@ export default function ProfilePage() {
             </Link>
 
             <Link
-              to="/products"
+              to="/shop"
               className="group relative overflow-hidden rounded-2xl glass border border-line p-4 hover:border-primary/40 transition-colors"
             >
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400/25 to-amber-500/5 border border-amber-400/30 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">

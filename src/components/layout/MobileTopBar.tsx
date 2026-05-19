@@ -90,7 +90,7 @@ export default function MobileTopBar() {
   const submitSearch = (raw: string) => {
     const trimmed = raw.trim()
     if (!trimmed) return
-    navigate(`/products?q=${encodeURIComponent(trimmed)}`)
+    navigate(`/shop?q=${encodeURIComponent(trimmed)}`)
     setSearchOpen(false)
     setQuery('')
   }
@@ -257,7 +257,7 @@ export default function MobileTopBar() {
                       {suggestions.map((p) => (
                         <li key={p.id}>
                           <Link
-                            to={`/products/${p.slug}`}
+                            to={`/shop/${p.slug}`}
                             className="v-mobile-search-result"
                           >
                             <div className="w-12 h-12 rounded-xl bg-bg-2 border border-line/40 overflow-hidden flex-shrink-0">
