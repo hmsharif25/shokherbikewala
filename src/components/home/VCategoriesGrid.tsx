@@ -96,15 +96,16 @@ export default function VCategoriesGrid() {
             </>
           )}
 
-          {/* 3 cards visible on all screens */}
+          {/* 2 cards on mobile, 3 on sm+ */}
           <div className="px-8 sm:px-12 lg:px-16">
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
               {visibleIndices.map((idx, pos) => {
                 const cat = visible[idx]
                 return (
                   <AnimatePresence mode="wait" key={`slot-${pos}`}>
                     <motion.div
                       key={`${idx}-${current}`}
+                      className={pos === 2 ? 'hidden sm:block' : ''}
                       initial={{ opacity: 0, scale: 0.9, y: 20 }}
                       animate={{
                         opacity: pos === 1 ? 1 : 0.7,
