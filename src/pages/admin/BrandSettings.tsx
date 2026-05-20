@@ -1,19 +1,32 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Bike, RotateCcw } from 'lucide-react'
+import { Save, Bike, RotateCcw, AlertCircle } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import ImageUpload from '@/components/ui/ImageUpload'
+import { saveBrandSettingsRemote } from '@/lib/db'
 
 export default function BrandSettings() {
   const store = useStore()
   const [settings, setSettings] = useState(store.brandSettings)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSave = () => {
-    store.setBrandSettings(settings)
+  const handleSave = async () => {
+    setSaving(true)
+    setError(null)
+    const res = await saveBrandSettingsRemote(settings)
+    setSaving(false)
+    if (res.error) {
+      setError(res.error)
+      return
+    }
+    const next = { ...settings, id: res.id ?? settings.id }
+    store.setBrandSettings(next)
+    setSettings(next)
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setTimeout(() => setSaved(false), 2200)
   }
 
   const handleReset = () => {
@@ -26,10 +39,19 @@ export default function BrandSettings() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div>
-        <h1 className="text-2xl font-display font-bold text-fg mb-1">Brand Settings</h1>
-        <p className="text-gray-400 text-sm">Customize your store&apos;s brand identity</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Brand Settings</h1>
+          <p className="text-fg-soft text-sm">Customize your store&apos;s brand identity, logo, and social links</p>
+        </div>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span><span className="font-semibold">Save failed:</span> {error}</span>
+        </div>
+      )}
 
       <AnimatedSection>
         <div className="p-6 rounded-xl glass space-y-6">
@@ -112,33 +134,34 @@ export default function BrandSettings() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/5">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleSave}
-              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary to-primary-600 text-white font-medium rounded-lg text-sm"
+              disabled={saving}
+              className="v-admin-save-btn"
             >
               <Save className="w-4 h-4" />
-              Save Settings
+              {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Settings'}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleReset}
-              className="flex items-center gap-2 px-6 py-2.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 font-medium rounded-lg text-sm transition-colors"
+              className="flex items-center gap-2 px-5 py-2.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 font-medium rounded-lg text-sm transition-colors"
             >
               <RotateCcw className="w-4 h-4" />
               Reset All Data
             </motion.button>
-            {saved && (
+            {saved && !saving && (
               <motion.span
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
                 className="text-green-400 text-sm"
               >
-                Settings saved!
+                Saved to Supabase.
               </motion.span>
             )}
           </div>

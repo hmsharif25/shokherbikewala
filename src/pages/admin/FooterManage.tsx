@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Plus, Trash2, Shield, Link2, FileText } from 'lucide-react'
+import { Save, Plus, Trash2, Shield, Link2, FileText, AlertCircle } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { FooterConfig } from '@/types'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import { saveFooterRemote } from '@/lib/db'
 
 type LinkItem = { name: string; path: string }
 type BadgeItem = { title: string; sub: string }
@@ -60,11 +61,21 @@ export default function FooterManage() {
   const { siteConfig, setSiteConfig } = useStore()
   const [footer, setFooter] = useState<FooterConfig>(siteConfig.footer)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true)
+    setError(null)
+    const { error: err } = await saveFooterRemote(footer)
+    setSaving(false)
+    if (err) {
+      setError(err)
+      return
+    }
     setSiteConfig({ ...siteConfig, footer })
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setTimeout(() => setSaved(false), 2200)
   }
 
   const updateBadge = (i: number, field: keyof BadgeItem, value: string) =>
@@ -89,24 +100,28 @@ export default function FooterManage() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Footer Settings</h1>
-          <p className="text-fg-muted text-sm">Manage footer links, trust badges, and copyright</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Footer Settings</h1>
+          <p className="text-fg-soft text-sm">Manage footer links, trust badges, and copyright</p>
         </div>
         <motion.button
           onClick={handleSave}
           whileTap={{ scale: 0.97 }}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-            saved
-              ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-              : 'bg-primary text-white hover:shadow-[0_0_20px_rgba(255,106,26,0.4)]'
-          }`}
+          disabled={saving}
+          className="v-admin-save-btn"
         >
           <Save className="w-4 h-4" />
-          {saved ? 'Saved!' : 'Save Changes'}
+          {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}
         </motion.button>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span><span className="font-semibold">Save failed:</span> {error}</span>
+        </div>
+      )}
 
       <AnimatedSection>
         <div className="p-6 rounded-xl glass space-y-6">

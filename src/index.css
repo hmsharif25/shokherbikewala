@@ -3328,6 +3328,148 @@ html {
   box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.25);
 }
 
+/* ---------- Admin page header + primary "add" button ---------- *
+ * Wraps each manage-page <h1> + Add button in a glass card so that
+ * the row is always clearly visible against the fixed site backdrop
+ * and never blends into the page on any theme / on mobile. */
+.v-admin-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: rgb(var(--glass-bg) / 0.85);
+  border: 1px solid rgb(var(--glass-border) / 0.7);
+  box-shadow: 0 8px 30px -18px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  z-index: 5;
+}
+@media (min-width: 640px) {
+  .v-admin-page-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.35rem;
+  }
+}
+
+.v-admin-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  border-radius: 0.85rem;
+  color: #fff;
+  background: linear-gradient(135deg, #ff7a1f 0%, #ff5a00 100%);
+  box-shadow:
+    0 12px 28px -10px rgba(255, 90, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 122, 31, 0.45);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  align-self: flex-start;
+}
+@media (min-width: 640px) {
+  .v-admin-add-btn { align-self: auto; }
+}
+.v-admin-add-btn:hover {
+  filter: brightness(1.06);
+  box-shadow:
+    0 16px 36px -10px rgba(255, 90, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+.v-admin-add-btn:focus-visible {
+  outline: 2px solid #ff7a1f;
+  outline-offset: 3px;
+}
+
+.v-admin-add-btn--cyan {
+  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow:
+    0 12px 28px -10px rgba(6, 182, 212, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.v-admin-add-btn--cyan:hover {
+  box-shadow:
+    0 16px 36px -10px rgba(6, 182, 212, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+.v-admin-add-btn--cyan:focus-visible { outline-color: #22d3ee; }
+
+.v-admin-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border-radius: 0.8rem;
+  color: #fff;
+  background: linear-gradient(135deg, #ff7a1f 0%, #ff5a00 100%);
+  box-shadow:
+    0 10px 24px -10px rgba(255, 90, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 122, 31, 0.45);
+  transition: filter 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+.v-admin-save-btn:hover:not(:disabled) { filter: brightness(1.06); }
+.v-admin-save-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: saturate(0.6);
+}
+
+/* ---------- Admin stat tile (Dashboard) ---------- */
+.v-admin-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 1rem;
+  background: rgb(var(--glass-bg) / 0.85);
+  border: 1px solid rgb(var(--glass-border) / 0.7);
+  box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+.v-admin-stat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 122, 31, 0.08) 0%, transparent 55%);
+  pointer-events: none;
+}
+.v-admin-stat__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--c-fg) / 0.55);
+}
+.v-admin-stat__value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: rgb(var(--c-fg));
+  line-height: 1.1;
+}
+.v-admin-stat__delta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgb(var(--c-fg) / 0.6);
+}
+
 /* ---------- 4-card hero positioning helpers ----------
  * `.v-float-card` declares `position: relative`, so the pin classes
  * have to re-assert `position: absolute` to win source order.

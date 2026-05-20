@@ -99,16 +99,16 @@ export default function ProductsManage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="v-admin-page-header">
         <div className="min-w-0">
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Products</h1>
-          <p className="text-gray-400 text-sm">{products.length} products in your store</p>
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Products</h1>
+          <p className="text-fg-soft text-sm">{products.length} {products.length === 1 ? 'product' : 'products'} in your store</p>
         </div>
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           onClick={openAdd}
-          className="flex flex-shrink-0 items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-primary to-primary-600 text-white font-medium rounded-xl text-sm whitespace-nowrap shadow-lg shadow-primary/30 self-start sm:self-auto"
+          className="v-admin-add-btn"
         >
           <Plus className="w-4 h-4" />
           Add Product

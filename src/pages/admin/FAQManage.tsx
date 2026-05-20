@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Pencil, Trash2, X, Save, HelpCircle, GripVertical } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Save, HelpCircle, GripVertical, AlertCircle } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { FAQItem } from '@/types'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import { saveFAQItemsRemote } from '@/lib/db'
 
 export default function FAQManage() {
   const { siteConfig, setSiteConfig } = useStore()
@@ -12,6 +13,8 @@ export default function FAQManage() {
   const [isAdding, setIsAdding] = useState(false)
   const [form, setForm] = useState({ question: '', answer: '' })
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const openAdd = () => {
     setForm({ question: '', answer: '' })
@@ -42,24 +45,32 @@ export default function FAQManage() {
     }
   }
 
-  const handleSaveAll = () => {
+  const handleSaveAll = async () => {
+    setSaving(true)
+    setError(null)
+    const { error: err } = await saveFAQItemsRemote(items)
+    setSaving(false)
+    if (err) {
+      setError(err)
+      return
+    }
     setSiteConfig({ ...siteConfig, faqItems: items })
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setTimeout(() => setSaved(false), 2200)
   }
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">FAQ Management</h1>
-          <p className="text-fg-muted text-sm">{items.length} questions</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">FAQ Management</h1>
+          <p className="text-fg-soft text-sm">{items.length} questions on your storefront</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={openAdd}
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan to-cyan-600 text-white font-medium rounded-xl text-sm"
+            className="v-admin-add-btn v-admin-add-btn--cyan"
           >
             <Plus className="w-4 h-4" />
             Add FAQ
@@ -67,17 +78,21 @@ export default function FAQManage() {
           <motion.button
             onClick={handleSaveAll}
             whileTap={{ scale: 0.97 }}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-              saved
-                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                : 'bg-primary text-white hover:shadow-[0_0_20px_rgba(255,106,26,0.4)]'
-            }`}
+            disabled={saving}
+            className="v-admin-save-btn"
           >
             <Save className="w-4 h-4" />
-            {saved ? 'Saved!' : 'Save All'}
+            {saving ? 'Saving...' : saved ? 'Saved!' : 'Save All'}
           </motion.button>
         </div>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span><span className="font-semibold">Save failed:</span> {error}</span>
+        </div>
+      )}
 
       <AnimatePresence>
         {isAdding && (

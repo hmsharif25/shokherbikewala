@@ -1,27 +1,58 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Eye, Image, Type } from 'lucide-react'
+import { Save, Eye, Image, Type, AlertCircle } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import ImageUpload from '@/components/ui/ImageUpload'
+import { saveBrandSettingsRemote } from '@/lib/db'
 
 export default function HeroManage() {
   const { brandSettings, setBrandSettings } = useStore()
   const [settings, setSettings] = useState(brandSettings)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSave = () => {
-    setBrandSettings(settings)
+  const handleSave = async () => {
+    setSaving(true)
+    setError(null)
+    const res = await saveBrandSettingsRemote(settings)
+    setSaving(false)
+    if (res.error) {
+      setError(res.error)
+      return
+    }
+    const next = { ...settings, id: res.id ?? settings.id }
+    setBrandSettings(next)
+    setSettings(next)
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setTimeout(() => setSaved(false), 2200)
   }
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div>
-        <h1 className="text-2xl font-display font-bold text-fg mb-1">Hero & Content</h1>
-        <p className="text-gray-400 text-sm">Customize the homepage hero section and brand content</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Hero &amp; Content</h1>
+          <p className="text-fg-soft text-sm">Customize the homepage hero section and brand content</p>
+        </div>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleSave}
+          disabled={saving}
+          className="v-admin-save-btn"
+        >
+          <Save className="w-4 h-4" />
+          {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}
+        </motion.button>
       </div>
+      {error && (
+        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span><span className="font-semibold">Save failed:</span> {error}</span>
+        </div>
+      )}
 
       <AnimatedSection>
         <div className="p-6 rounded-xl glass space-y-6">
@@ -139,18 +170,19 @@ export default function HeroManage() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleSave}
-          className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary to-primary-600 text-white font-medium rounded-lg text-sm"
+          disabled={saving}
+          className="v-admin-save-btn"
         >
           <Save className="w-4 h-4" />
-          Save All Changes
+          {saving ? 'Saving...' : saved ? 'Saved!' : 'Save All Changes'}
         </motion.button>
-        {saved && (
+        {saved && !saving && (
           <motion.span
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             className="text-green-400 text-sm"
           >
-            Changes saved!
+            Saved to Supabase.
           </motion.span>
         )}
       </div>

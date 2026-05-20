@@ -83,22 +83,19 @@ export default function HomeSectionsManage() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Homepage Sections</h1>
-          <p className="text-gray-400 text-sm">
-            Toggle visibility and edit content for each homepage section &middot;{' '}
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Homepage Sections</h1>
+          <p className="text-fg-soft text-sm">
+            Toggle visibility and edit content for each section &middot;{' '}
             <span className="text-primary font-medium">{visibleCount}/{totalCount} visible</span>
           </p>
         </div>
         <motion.button
           onClick={handleSave}
           whileTap={{ scale: 0.97 }}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-            saved
-              ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-              : 'bg-primary text-white hover:shadow-[0_0_20px_rgba(255,106,26,0.4)]'
-          }`}
+          disabled={saving}
+          className="v-admin-save-btn"
         >
           <Save className="w-4 h-4" />
           {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}

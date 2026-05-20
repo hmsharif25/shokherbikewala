@@ -6,49 +6,53 @@ import { useState } from 'react'
 import { submitInquiry } from '@/lib/db'
 import { useStore } from '@/context/StoreContext'
 
-const contactMethods = [
-  {
-    icon: MessageCircle,
-    title: 'WhatsApp',
-    description: 'Chat with us directly',
-    value: '+880 1518 934708',
-    url: 'https://wa.me/8801518934708',
-    color: 'from-green-500 to-green-600',
-    hoverGlow: 'hover:shadow-green-500/30',
-  },
-  {
-    icon: Facebook,
-    title: 'Facebook',
-    description: 'Follow our page',
-    value: 'Shokher Bikewala',
-    url: 'https://www.facebook.com/share/1CvH4aQ5kU/?mibextid=wwXIfr',
-    color: 'from-blue-500 to-blue-600',
-    hoverGlow: 'hover:shadow-blue-500/30',
-  },
-  {
-    icon: Music2,
-    title: 'TikTok',
-    description: 'Watch our videos',
-    value: '@shokherbikewala',
-    url: 'https://www.tiktok.com/@shokherbikewala?_r=1&_t=ZS-964cHi86h1Q',
-    color: 'from-pink-500 to-rose-600',
-    hoverGlow: 'hover:shadow-pink-500/30',
-  },
-  {
-    icon: Instagram,
-    title: 'Instagram',
-    description: 'See our gallery',
-    value: '@shokherbikewala',
-    url: 'https://www.instagram.com/shokherbikewala?igsh=MWJsbW96aXphNjZsaA==',
-    color: 'from-purple-500 via-pink-500 to-orange-500',
-    hoverGlow: 'hover:shadow-purple-500/30',
-  },
-]
-
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', phone: '', message: '' })
   const [submitting, setSubmitting] = useState(false)
-  const { addInquiry, siteConfig } = useStore()
+  const { addInquiry, siteConfig, brandSettings } = useStore()
+  const pages = siteConfig.pages
+
+  const waNumber = (brandSettings.whatsapp.match(/\d{8,}/) ?? ['8801518934708'])[0]
+  const waLink = `https://wa.me/${waNumber}`
+
+  const contactMethods = [
+    {
+      icon: MessageCircle,
+      title: 'WhatsApp',
+      description: 'Chat with us directly',
+      value: pages.contactPhone || '+880 1518 934708',
+      url: waLink,
+      color: 'from-green-500 to-green-600',
+      hoverGlow: 'hover:shadow-green-500/30',
+    },
+    {
+      icon: Facebook,
+      title: 'Facebook',
+      description: 'Follow our page',
+      value: 'Shokher Bikewala',
+      url: brandSettings.facebook || 'https://www.facebook.com/share/1CvH4aQ5kU/?mibextid=wwXIfr',
+      color: 'from-blue-500 to-blue-600',
+      hoverGlow: 'hover:shadow-blue-500/30',
+    },
+    {
+      icon: Music2,
+      title: 'TikTok',
+      description: 'Watch our videos',
+      value: '@shokherbikewala',
+      url: brandSettings.tiktok || 'https://www.tiktok.com/@shokherbikewala',
+      color: 'from-pink-500 to-rose-600',
+      hoverGlow: 'hover:shadow-pink-500/30',
+    },
+    {
+      icon: Instagram,
+      title: 'Instagram',
+      description: 'See our gallery',
+      value: '@shokherbikewala',
+      url: brandSettings.instagram || 'https://www.instagram.com/shokherbikewala',
+      color: 'from-purple-500 via-pink-500 to-orange-500',
+      hoverGlow: 'hover:shadow-purple-500/30',
+    },
+  ]
 
   const handleWhatsAppSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -74,7 +78,7 @@ export default function ContactPage() {
       // ignore
     }
     const text = `Hi! I'm ${formData.name}.\nPhone: ${formData.phone}\n\n${formData.message}`
-    window.open(`https://wa.me/8801518934708?text=${encodeURIComponent(text)}`, '_blank')
+    window.open(`${waLink}?text=${encodeURIComponent(text)}`, '_blank')
     setSubmitting(false)
   }
 
@@ -130,18 +134,34 @@ export default function ContactPage() {
               <div className="p-5 sm:p-6 rounded-2xl glass mt-6 border border-white/5">
                 <h3 className="text-white font-bold text-lg mb-4 font-racing">Quick Info</h3>
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-400">
-                    <Phone className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>+880 1518 934708</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-400">
-                    <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>info@shokherbikewala.com</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-400">
-                    <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span>Bangladesh</span>
-                  </div>
+                  {pages.contactPhone && (
+                    <a href={`tel:${pages.contactPhone.replace(/\s+/g, '')}`} className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
+                      <Phone className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span>{pages.contactPhone}</span>
+                    </a>
+                  )}
+                  {pages.contactEmail && (
+                    <a href={`mailto:${pages.contactEmail}`} className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors break-all">
+                      <Mail className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span>{pages.contactEmail}</span>
+                    </a>
+                  )}
+                  {pages.contactAddress && (
+                    pages.contactMapUrl ? (
+                      <a href={pages.contactMapUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
+                        <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span>{pages.contactAddress}</span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-3 text-gray-400">
+                        <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span>{pages.contactAddress}</span>
+                      </div>
+                    )
+                  )}
+                  {pages.contactHours && (
+                    <div className="text-fg-soft text-xs pl-8">{pages.contactHours}</div>
+                  )}
                 </div>
               </div>
             </AnimatedSection>

@@ -2,7 +2,12 @@ import { createContext, useContext, useState, useEffect, ReactNode, useCallback 
 import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent, SocialFeedConfig, DeliveryPaymentConfig } from '@/types'
 
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { loadRemotePublic, loadHomeSectionsRemote, loadSocialFeedRemote, loadDeliveryPaymentRemote } from '@/lib/db'
+import {
+  loadRemotePublic,
+  loadSiteConfigRemote,
+  loadSocialFeedRemote,
+  loadDeliveryPaymentRemote,
+} from '@/lib/db'
 
 const defaultFAQItems: FAQItem[] = [
   { id: '1', question: 'How long does delivery take?', answer: 'We deliver across Bangladesh within 2\u20134 business days. For Dhaka city, same-day or next-day delivery is available on selected items. International orders typically arrive in 7\u201314 days.' },
@@ -63,9 +68,11 @@ const defaultPages: PageContent = {
   aboutVision: 'From helmets to exhaust systems, from LED lights to riding gloves, we carefully curate products that meet our high standards of quality, safety, and style. Every product in our collection is tested and approved by real riders.',
   contactHeading: 'Contact Us',
   contactDescription: 'Have a question? Need help choosing the right accessory? We\'re here to help!',
-  contactEmail: 'support@shokherbikewala.com',
+  contactEmail: 'hello@shokherbikewala.com',
   contactPhone: '+880 1518 934708',
   contactAddress: 'Dhaka, Bangladesh',
+  contactMapUrl: 'https://www.google.com/maps/place/Dhaka,+Bangladesh',
+  contactHours: 'Mon\u2013Sat: 10am \u2013 9pm',
 }
 
 const defaultSiteConfig: SiteConfig = {
@@ -228,25 +235,40 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isSupabaseConfigured()) return
     let cancelled = false
-    Promise.all([loadRemotePublic(), loadHomeSectionsRemote(), loadSocialFeedRemote(), loadDeliveryPaymentRemote()]).then(([remote, remoteSections, remoteSocialFeed, remoteDeliveryPayment]) => {
+    Promise.all([
+      loadRemotePublic(),
+      loadSiteConfigRemote(),
+      loadSocialFeedRemote(),
+      loadDeliveryPaymentRemote(),
+    ]).then(([remote, remoteSiteConfig, remoteSocialFeed, remoteDeliveryPayment]) => {
       if (cancelled) return
-      setState((prev) => ({
-        products: remote.products && remote.products.length > 0
-          ? remote.products
-          : prev.products,
-        categories: remote.categories && remote.categories.length > 0
-          ? remote.categories
-          : prev.categories,
-        brandSettings: remote.brandSettings ?? prev.brandSettings,
-        testimonials: remote.testimonials && remote.testimonials.length > 0
-          ? remote.testimonials
-          : prev.testimonials,
-        inquiries: prev.inquiries,
-        homeSections: remoteSections ?? prev.homeSections,
-        siteConfig: prev.siteConfig,
-        socialFeed: remoteSocialFeed ?? prev.socialFeed,
-        deliveryPayment: remoteDeliveryPayment ?? prev.deliveryPayment,
-      }))
+      setState((prev) => {
+        const mergedPages: PageContent = {
+          ...prev.siteConfig.pages,
+          ...(remoteSiteConfig.pages ?? {}),
+        }
+        return {
+          products:
+            remote.products && remote.products.length > 0 ? remote.products : prev.products,
+          categories:
+            remote.categories && remote.categories.length > 0 ? remote.categories : prev.categories,
+          brandSettings: remote.brandSettings ?? prev.brandSettings,
+          testimonials:
+            remote.testimonials && remote.testimonials.length > 0
+              ? remote.testimonials
+              : prev.testimonials,
+          inquiries: prev.inquiries,
+          homeSections: remoteSiteConfig.homeSections ?? prev.homeSections,
+          siteConfig: {
+            faqItems: remoteSiteConfig.faqItems ?? prev.siteConfig.faqItems,
+            footer: remoteSiteConfig.footer ?? prev.siteConfig.footer,
+            seo: remoteSiteConfig.seo ?? prev.siteConfig.seo,
+            pages: mergedPages,
+          },
+          socialFeed: remoteSocialFeed ?? prev.socialFeed,
+          deliveryPayment: remoteDeliveryPayment ?? prev.deliveryPayment,
+        }
+      })
       setRemoteLoaded(true)
     })
     return () => {
