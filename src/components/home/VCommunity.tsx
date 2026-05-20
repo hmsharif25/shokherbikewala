@@ -34,6 +34,7 @@ export default function VCommunity() {
   while (igImages.length < 9) igImages.push(igImages[0] || '')
 
   const tiktokCover = socialFeed.tiktokCoverImage
+  const youtubeCover = socialFeed.youtubeCoverImage || tiktokCover
 
   return (
     <section className="v-premium-section v-community-section relative py-20 sm:py-24 overflow-hidden">
@@ -166,7 +167,7 @@ export default function VCommunity() {
             Icon={Youtube}
           >
             <div className="relative aspect-video rounded-2xl overflow-hidden bg-bg-2 mb-3">
-              <img src={tiktokCover} alt="YouTube rider drop" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
+              <img src={youtubeCover} alt="YouTube rider drop" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/20 to-primary/30" />
               <span className="absolute inset-0 flex items-center justify-center">
                 <span className="w-14 h-14 rounded-full bg-white/90 text-red-600 flex items-center justify-center shadow-2xl">

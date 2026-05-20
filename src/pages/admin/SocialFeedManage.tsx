@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Instagram, Music2, Facebook, Youtube, Image, Type, Hash } from 'lucide-react'
+import { Save, Instagram, Music2, Facebook, Youtube, Type, Hash } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { SocialFeedConfig } from '@/types'
 import { saveSocialFeedRemote } from '@/lib/db'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import ImageUpload from '@/components/ui/ImageUpload'
 
 const PLATFORM_META = [
   { platform: 'Instagram', icon: Instagram, color: 'text-pink-400', bg: 'bg-pink-500/10 border-pink-500/20' },
@@ -152,23 +153,16 @@ export default function SocialFeedManage() {
       <AnimatedSection delay={0.15}>
         <div className="rounded-xl glass border border-white/10 p-5 space-y-4">
           <h2 className="text-lg font-display font-bold text-fg flex items-center gap-2">
-            <Image className="w-5 h-5 text-cyan" />
+            <Music2 className="w-5 h-5 text-white" />
             TikTok Cover Image
           </h2>
-          <div>
-            <label className="block text-xs text-gray-400 mb-1">Image URL</label>
-            <input
-              value={config.tiktokCoverImage}
-              onChange={e => setConfig(prev => ({ ...prev, tiktokCoverImage: e.target.value }))}
-              className="w-full px-3 py-2 rounded-lg bg-bg-2/80 border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              placeholder="https://..."
-            />
-          </div>
-          {config.tiktokCoverImage && (
-            <div className="aspect-[9/14] max-w-[200px] rounded-xl overflow-hidden bg-bg-2">
-              <img src={config.tiktokCoverImage} alt="TikTok cover preview" className="w-full h-full object-cover" />
-            </div>
-          )}
+          <ImageUpload
+            value={config.tiktokCoverImage}
+            onChange={v => setConfig(prev => ({ ...prev, tiktokCoverImage: v as string }))}
+            folder="social-feed"
+            label="Upload or paste TikTok cover image"
+            hint="Recommended: 9:14 portrait ratio (e.g. 720×1120)"
+          />
         </div>
       </AnimatedSection>
 
@@ -179,6 +173,13 @@ export default function SocialFeedManage() {
             <Type className="w-5 h-5 text-red-400" />
             YouTube Section Content
           </h2>
+          <ImageUpload
+            value={config.youtubeCoverImage}
+            onChange={v => setConfig(prev => ({ ...prev, youtubeCoverImage: v as string }))}
+            folder="social-feed"
+            label="YouTube Cover Image"
+            hint="Recommended: 16:9 landscape ratio (e.g. 1280×720)"
+          />
           <div>
             <label className="block text-xs text-gray-400 mb-1">Title</label>
             <input
