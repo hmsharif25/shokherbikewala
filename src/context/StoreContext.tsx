@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent, SocialFeedConfig, DeliveryPaymentConfig } from '@/types'
-import { demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
+
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { loadRemotePublic, loadHomeSectionsRemote, loadSocialFeedRemote, loadDeliveryPaymentRemote } from '@/lib/db'
 
@@ -87,18 +87,13 @@ const defaultHomeSections: HomeSections = {
 }
 
 const defaultSocialFeed: SocialFeedConfig = {
-  platforms: [
-    { platform: 'Instagram', handle: '@shokherbikewala', followers: '125K+' },
-    { platform: 'TikTok', handle: '@shokherbikewala', followers: '65K+' },
-    { platform: 'Facebook', handle: 'Shokher Bikewala', followers: '45K+' },
-    { platform: 'YouTube', handle: 'Shokher Bikewala', followers: '18K+' },
-  ],
-  tiktokCoverImage: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
-  youtubeCoverImage: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
-  youtubeTitle: 'Cinematic Gear Drops',
-  youtubeDescription: 'Premium product films, setup previews, and future rider lifestyle stories.',
-  facebookRating: '4.9',
-  facebookReviewCount: '1,204',
+  platforms: [],
+  tiktokCoverImage: '',
+  youtubeCoverImage: '',
+  youtubeTitle: '',
+  youtubeDescription: '',
+  facebookRating: '',
+  facebookReviewCount: '',
 }
 
 const defaultDeliveryPayment: DeliveryPaymentConfig = {
@@ -178,12 +173,24 @@ function saveToStorage(state: StoreState) {
   }
 }
 
+const defaultBrandSettings: BrandSettings = {
+  id: '1',
+  brand_name: 'Shokher Bikewala',
+  tagline: '',
+  logo_url: '',
+  hero_image_url: '',
+  whatsapp: 'https://wa.me/8801518934708',
+  facebook: '',
+  tiktok: '',
+  instagram: '',
+}
+
 const defaultState: StoreState = {
   products: [],
   categories: [],
-  brandSettings: demoBrandSettings,
-  testimonials: demoTestimonials,
-  inquiries: demoInquiries,
+  brandSettings: defaultBrandSettings,
+  testimonials: [],
+  inquiries: [],
   homeSections: defaultHomeSections,
   siteConfig: defaultSiteConfig,
   socialFeed: defaultSocialFeed,
