@@ -128,6 +128,7 @@ export interface SocialFeedPlatform {
 export interface SocialFeedConfig {
   platforms: SocialFeedPlatform[]
   tiktokCoverImage: string
+  youtubeCoverImage: string
   youtubeTitle: string
   youtubeDescription: string
   facebookRating: string

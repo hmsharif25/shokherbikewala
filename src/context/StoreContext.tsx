@@ -94,6 +94,7 @@ const defaultSocialFeed: SocialFeedConfig = {
     { platform: 'YouTube', handle: 'Shokher Bikewala', followers: '18K+' },
   ],
   tiktokCoverImage: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+  youtubeCoverImage: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
   youtubeTitle: 'Cinematic Gear Drops',
   youtubeDescription: 'Premium product films, setup previews, and future rider lifestyle stories.',
   facebookRating: '4.9',
