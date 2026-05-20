@@ -101,6 +101,8 @@ export interface PageContent {
   contactEmail: string
   contactPhone: string
   contactAddress: string
+  contactMapUrl: string
+  contactHours: string
 }
 
 export interface SiteConfig {

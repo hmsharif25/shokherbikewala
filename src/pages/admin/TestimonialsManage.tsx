@@ -1,14 +1,21 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Pencil, Trash2, X, Save, Star, Quote } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Save, Star, Quote, AlertCircle } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Testimonial } from '@/types'
+import {
+  deleteTestimonialRemote,
+  insertTestimonialRemote,
+  updateTestimonialRemote,
+} from '@/lib/db'
 
 export default function TestimonialsManage() {
   const { testimonials, addTestimonial, updateTestimonial, deleteTestimonial } = useStore()
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null)
   const [isAdding, setIsAdding] = useState(false)
   const [form, setForm] = useState({ name: '', rating: '5', text: '', product: '' })
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const openAdd = () => {
     setForm({ name: '', rating: '5', text: '', product: '' })
@@ -27,47 +34,62 @@ export default function TestimonialsManage() {
     setIsAdding(true)
   }
 
-  const handleSave = () => {
-    const testimonial: Testimonial = {
-      id: editingTestimonial?.id || Date.now(),
+  const handleSave = async () => {
+    if (!form.name.trim() || !form.text.trim()) return
+    setSaving(true)
+    setError(null)
+    const payload = {
       name: form.name,
       rating: parseInt(form.rating) || 5,
       text: form.text,
       product: form.product,
     }
-
     if (editingTestimonial) {
-      updateTestimonial(editingTestimonial.id, testimonial)
+      const res = await updateTestimonialRemote(editingTestimonial.id, payload)
+      setSaving(false)
+      if (res.error) { setError(res.error); return }
+      updateTestimonial(editingTestimonial.id, { id: editingTestimonial.id, ...payload })
     } else {
-      addTestimonial(testimonial)
+      const res = await insertTestimonialRemote(payload)
+      setSaving(false)
+      if (res.error) { setError(res.error); return }
+      addTestimonial({ id: res.id ?? Date.now(), ...payload })
     }
     setIsAdding(false)
     setEditingTestimonial(null)
   }
 
-  const handleDelete = (id: number) => {
-    if (confirm('Are you sure you want to delete this testimonial?')) {
-      deleteTestimonial(id)
-    }
+  const handleDelete = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this testimonial?')) return
+    const res = await deleteTestimonialRemote(id)
+    if (res.error) { setError(res.error); return }
+    deleteTestimonial(id)
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Testimonials</h1>
-          <p className="text-gray-400 text-sm">{testimonials.length} customer reviews</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Testimonials</h1>
+          <p className="text-fg-soft text-sm">{testimonials.length} {testimonials.length === 1 ? 'review' : 'reviews'} on your storefront</p>
         </div>
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           onClick={openAdd}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-gold to-primary text-white font-medium rounded-xl text-sm"
+          className="v-admin-add-btn"
         >
           <Plus className="w-4 h-4" />
           Add Review
         </motion.button>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span><span className="font-semibold">Failed:</span> {error}</span>
+        </div>
+      )}
 
       <AnimatePresence>
         {isAdding && (
@@ -135,10 +157,11 @@ export default function TestimonialsManage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-gold text-dark font-medium rounded-lg text-sm"
+                  disabled={saving}
+                  className="v-admin-save-btn"
                 >
                   <Save className="w-4 h-4" />
-                  {editingTestimonial ? 'Update' : 'Add Review'}
+                  {saving ? 'Saving...' : editingTestimonial ? 'Update' : 'Add Review'}
                 </motion.button>
                 <button
                   onClick={() => setIsAdding(false)}

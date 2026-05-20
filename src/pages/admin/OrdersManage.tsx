@@ -15,6 +15,9 @@ import {
   XCircle,
   AlertCircle,
   RefreshCw,
+  Search,
+  Download,
+  Filter,
 } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { Inquiry } from '@/types'
@@ -120,10 +123,46 @@ function parseOrderMessage(raw: string): ParsedOrder {
   return out
 }
 
+function parseAmount(msg: string): number {
+  const m = msg.match(/Total:\s*(?:BDT\s*|৳\s*)?([0-9,]+)/i)
+  return m ? parseInt(m[1].replace(/,/g, ''), 10) || 0 : 0
+}
+
+const DATE_RANGES = [
+  { value: 'all', label: 'All time' },
+  { value: 'today', label: 'Today' },
+  { value: '7d', label: 'Last 7 days' },
+  { value: '30d', label: 'Last 30 days' },
+] as const
+
+type DateRange = typeof DATE_RANGES[number]['value']
+
+function withinRange(created_at: string, range: DateRange): boolean {
+  if (range === 'all') return true
+  const d = new Date(created_at)
+  const now = new Date()
+  const day = 24 * 60 * 60 * 1000
+  if (range === 'today') {
+    const start = new Date(now)
+    start.setHours(0, 0, 0, 0)
+    return d >= start
+  }
+  if (range === '7d') return now.getTime() - d.getTime() <= 7 * day
+  if (range === '30d') return now.getTime() - d.getTime() <= 30 * day
+  return true
+}
+
+function csvEscape(value: string): string {
+  if (/[",\n]/.test(value)) return `"${value.replace(/"/g, '""')}"`
+  return value
+}
+
 export default function OrdersManage() {
   const { inquiries, setInquiries, updateInquiry, deleteInquiry } = useStore()
   const [viewingInquiry, setViewingInquiry] = useState<Inquiry | null>(null)
   const [filter, setFilter] = useState<string>('all')
+  const [dateRange, setDateRange] = useState<DateRange>('all')
+  const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
 
@@ -140,7 +179,68 @@ export default function OrdersManage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const filtered = filter === 'all' ? inquiries : inquiries.filter((i) => i.status === filter)
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase()
+    return inquiries.filter((i) => {
+      if (filter !== 'all' && i.status !== filter) return false
+      if (!withinRange(i.created_at, dateRange)) return false
+      if (term) {
+        const hay = [
+          i.customer_name,
+          i.phone,
+          i.product_name,
+          i.message,
+        ]
+          .join(' \u00b7 ')
+          .toLowerCase()
+        if (!hay.includes(term)) return false
+      }
+      return true
+    })
+  }, [inquiries, filter, dateRange, search])
+
+  const totals = useMemo(() => {
+    const revenue = filtered.reduce((s, i) => s + parseAmount(i.message || ''), 0)
+    return {
+      count: filtered.length,
+      revenue,
+    }
+  }, [filtered])
+
+  const exportCSV = () => {
+    const header = [
+      'Order #',
+      'Date',
+      'Customer',
+      'Phone',
+      'Status',
+      'Items',
+      'Total (৳)',
+      'Message',
+    ]
+    const rows = filtered.map((i) => [
+      i.id.toString(),
+      new Date(i.created_at).toISOString(),
+      i.customer_name,
+      i.phone,
+      i.status,
+      i.product_name || '',
+      parseAmount(i.message || '').toString(),
+      i.message || '',
+    ])
+    const csv = [header, ...rows]
+      .map((r) => r.map(csvEscape).join(','))
+      .join('\n')
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
 
   const handleStatusChange = async (id: number, status: Inquiry['status']) => {
     const inquiry = inquiries.find((i) => i.id === id)
@@ -179,47 +279,83 @@ export default function OrdersManage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Orders & Inquiries</h1>
-          <p className="text-fg-muted text-sm">Manage customer inquiries and order requests</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Orders &amp; Inquiries</h1>
+          <p className="text-fg-soft text-sm">
+            {totals.count} {totals.count === 1 ? 'order' : 'orders'} shown · Revenue{' '}
+            <span className="text-primary font-semibold">৳{totals.revenue.toLocaleString()}</span>
+          </p>
         </div>
-
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => void refresh()}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-racing tracking-wide hover:bg-primary/15 transition-all disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-xs font-bold tracking-wide hover:bg-primary/15 transition-all disabled:opacity-60"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             {loading ? 'Syncing' : 'Refresh'}
+          </button>
+          <button
+            onClick={exportCSV}
+            disabled={filtered.length === 0}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-cyan/10 border border-cyan/30 text-cyan text-xs font-bold tracking-wide hover:bg-cyan/20 transition-all disabled:opacity-50"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Export CSV
           </button>
         </div>
       </div>
 
       {actionError && (
-        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-racing">
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
           {actionError}
         </div>
       )}
 
-      <div className="flex items-center gap-2 flex-wrap">
-        {(['all', 'new', 'contacted', 'completed', 'cancelled'] as const).map((s) => (
-          <button
-            key={s}
-            onClick={() => setFilter(s)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${
-              filter === s
-                ? 'bg-primary text-white'
-                : 'bg-bg-2 text-fg-muted hover:text-fg hover:bg-primary/10 border border-line'
-            }`}
-          >
-            {s}{' '}
-            {s !== 'all' &&
-              `(${inquiries.filter((i) => i.status === s).length})`}
-            {s === 'all' && `(${inquiries.length})`}
-          </button>
-        ))}
+      <div className="p-4 rounded-xl glass border border-line space-y-3">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fg-soft pointer-events-none" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name, phone, product..."
+              className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-surface-soft border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+          </div>
+          <div className="relative sm:w-52">
+            <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fg-soft pointer-events-none" />
+            <select
+              value={dateRange}
+              onChange={(e) => setDateRange(e.target.value as DateRange)}
+              className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-surface-soft border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none cursor-pointer"
+            >
+              {DATE_RANGES.map((r) => (
+                <option key={r.value} value={r.value}>{r.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {(['all', 'new', 'contacted', 'completed', 'cancelled'] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize ${
+                filter === s
+                  ? 'bg-primary text-white'
+                  : 'bg-bg-2 text-fg-muted hover:text-fg hover:bg-primary/10 border border-line'
+              }`}
+            >
+              {s}{' '}
+              {s !== 'all' &&
+                `(${inquiries.filter((i) => i.status === s).length})`}
+              {s === 'all' && `(${inquiries.length})`}
+            </button>
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 ? (
@@ -232,6 +368,7 @@ export default function OrdersManage() {
           {filtered.map((inquiry) => {
             const config = statusConfig[inquiry.status]
             const StatusIcon = config.icon
+            const amount = parseAmount(inquiry.message || '')
             return (
               <motion.div
                 key={inquiry.id}
@@ -248,10 +385,19 @@ export default function OrdersManage() {
                         <StatusIcon className="w-3 h-3" />
                         {config.label}
                       </span>
+                      {amount > 0 && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/15 text-primary border border-primary/30">
+                          ৳{amount.toLocaleString()}
+                        </span>
+                      )}
                       <span className="text-fg-soft text-[10px]">
-                        {new Date(inquiry.created_at).toLocaleDateString()}
+                        {new Date(inquiry.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
                       </span>
                     </div>
+                    <p className="text-fg-muted text-xs mb-1 truncate">
+                      <span className="text-fg-soft">Phone:</span>{' '}
+                      <a href={`tel:${inquiry.phone}`} className="text-primary hover:underline">{inquiry.phone}</a>
+                    </p>
                     <p className="text-fg-muted text-xs mb-1 truncate">
                       <span className="text-fg-soft">Items:</span> {inquiry.product_name || '—'}
                     </p>

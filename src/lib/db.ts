@@ -2,9 +2,14 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type {
   BrandSettings,
   Category,
+  FAQItem,
+  FooterConfig,
   HomeSections,
   Inquiry,
+  PageContent,
   Product,
+  SEOSettings,
+  SiteConfig,
   Testimonial,
 } from '@/types'
 
@@ -406,26 +411,199 @@ export async function deleteInquiryRemote(
 /* ── Site Config (home sections etc.) ── */
 
 export async function loadHomeSectionsRemote(): Promise<HomeSections | null> {
-  if (!isSupabaseConfigured()) return null
-  try {
-    const { data, error } = await supabase
-      .from('site_config')
-      .select('value')
-      .eq('key', 'home_sections')
-      .maybeSingle()
-    if (error || !data) return null
-    return data.value as HomeSections
-  } catch {
-    return null
-  }
+  return loadSiteConfigKeyRemote<HomeSections>('home_sections')
 }
 
 export async function saveHomeSectionsRemote(
   sections: HomeSections,
 ): Promise<{ error: string | null }> {
+  return saveSiteConfigKeyRemote('home_sections', sections)
+}
+
+/* ── Generic site_config key/value helpers ── */
+
+async function loadSiteConfigKeyRemote<T>(key: string): Promise<T | null> {
+  if (!isSupabaseConfigured()) return null
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('value')
+      .eq('key', key)
+      .maybeSingle()
+    if (error || !data) return null
+    return data.value as T
+  } catch {
+    return null
+  }
+}
+
+async function saveSiteConfigKeyRemote(
+  key: string,
+  value: unknown,
+): Promise<{ error: string | null }> {
   if (!isSupabaseConfigured()) return { error: null }
   const { error } = await supabase
     .from('site_config')
-    .upsert({ key: 'home_sections', value: sections as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
+    .upsert(
+      {
+        key,
+        value: value as unknown as Record<string, unknown>,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'key' },
+    )
+  return { error: error?.message ?? null }
+}
+
+/* ── Brand Settings ── */
+
+export async function saveBrandSettingsRemote(
+  brand: BrandSettings,
+): Promise<{ error: string | null; id?: string }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  // Always keep a single row. If we already know its id, update it. Otherwise,
+  // upsert by selecting any existing row first.
+  const payload: Record<string, unknown> = {
+    brand_name: brand.brand_name,
+    tagline: brand.tagline,
+    logo_url: brand.logo_url,
+    hero_image_url: brand.hero_image_url,
+    whatsapp: brand.whatsapp,
+    facebook: brand.facebook,
+    tiktok: brand.tiktok,
+    instagram: brand.instagram,
+    updated_at: new Date().toISOString(),
+  }
+
+  if (brand.id && UUID_RE.test(brand.id)) {
+    const { error } = await supabase
+      .from('brand_settings')
+      .update(payload)
+      .eq('id', brand.id)
+    if (error) return { error: error.message }
+    return { error: null, id: brand.id }
+  }
+
+  const existing = await supabase
+    .from('brand_settings')
+    .select('id')
+    .limit(1)
+    .maybeSingle()
+  if (existing.data?.id) {
+    const { error } = await supabase
+      .from('brand_settings')
+      .update(payload)
+      .eq('id', existing.data.id)
+    if (error) return { error: error.message }
+    return { error: null, id: existing.data.id }
+  }
+
+  const { data, error } = await supabase
+    .from('brand_settings')
+    .insert(payload)
+    .select('id')
+    .maybeSingle()
+  if (error) return { error: error.message }
+  return { error: null, id: data?.id }
+}
+
+/* ── Site Config (footer / seo / pages / faq) ── */
+
+export type SiteConfigRemote = Partial<SiteConfig> & {
+  homeSections?: HomeSections
+}
+
+export async function loadSiteConfigRemote(): Promise<SiteConfigRemote> {
+  if (!isSupabaseConfigured()) return {}
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('key,value')
+    if (error || !data) return {}
+    const out: SiteConfigRemote = {}
+    for (const row of data) {
+      switch (row.key) {
+        case 'home_sections':
+          out.homeSections = row.value as HomeSections
+          break
+        case 'footer':
+          out.footer = row.value as FooterConfig
+          break
+        case 'seo':
+          out.seo = row.value as SEOSettings
+          break
+        case 'pages':
+          out.pages = row.value as PageContent
+          break
+        case 'faq_items':
+          out.faqItems = row.value as FAQItem[]
+          break
+      }
+    }
+    return out
+  } catch {
+    return {}
+  }
+}
+
+export const saveFooterRemote = (footer: FooterConfig) =>
+  saveSiteConfigKeyRemote('footer', footer)
+
+export const saveSEORemote = (seo: SEOSettings) =>
+  saveSiteConfigKeyRemote('seo', seo)
+
+export const savePagesRemote = (pages: PageContent) =>
+  saveSiteConfigKeyRemote('pages', pages)
+
+export const saveFAQItemsRemote = (items: FAQItem[]) =>
+  saveSiteConfigKeyRemote('faq_items', items)
+
+/* ── Testimonials CRUD ── */
+
+export async function insertTestimonialRemote(input: {
+  name: string
+  rating: number
+  text: string
+  product: string
+}): Promise<{ error: string | null; id?: number }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { data, error } = await supabase
+    .from('testimonials')
+    .insert({
+      name: input.name,
+      rating: input.rating,
+      text: input.text,
+      product: input.product,
+    })
+    .select('id')
+    .maybeSingle()
+  return { error: error?.message ?? null, id: data?.id }
+}
+
+export async function updateTestimonialRemote(
+  id: number,
+  input: { name: string; rating: number; text: string; product: string },
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('testimonials')
+    .update({
+      name: input.name,
+      rating: input.rating,
+      text: input.text,
+      product: input.product,
+    })
+    .eq('id', id)
+  return { error: error?.message ?? null }
+}
+
+export async function deleteTestimonialRemote(
+  id: number,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('testimonials')
+    .delete()
+    .eq('id', id)
   return { error: error?.message ?? null }
 }

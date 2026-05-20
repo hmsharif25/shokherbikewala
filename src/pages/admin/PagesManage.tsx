@@ -1,41 +1,56 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, FileText, Phone, Mail, MapPin } from 'lucide-react'
+import { Save, FileText, Phone, Mail, MapPin, AlertCircle, Clock, Map } from 'lucide-react'
 import { useStore } from '@/context/StoreContext'
 import { PageContent } from '@/types'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+import { savePagesRemote } from '@/lib/db'
 
 export default function PagesManage() {
   const { siteConfig, setSiteConfig } = useStore()
   const [pages, setPages] = useState<PageContent>(siteConfig.pages)
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    setSaving(true)
+    setError(null)
+    const { error: err } = await savePagesRemote(pages)
+    setSaving(false)
+    if (err) {
+      setError(err)
+      return
+    }
     setSiteConfig({ ...siteConfig, pages })
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setTimeout(() => setSaved(false), 2200)
   }
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Page Content</h1>
-          <p className="text-fg-muted text-sm">Edit About and Contact page content</p>
+      <div className="v-admin-page-header">
+        <div className="min-w-0">
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Page Content</h1>
+          <p className="text-fg-soft text-sm">Edit About page, Contact info, and Location/Map shown across the site</p>
         </div>
         <motion.button
           onClick={handleSave}
           whileTap={{ scale: 0.97 }}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-            saved
-              ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-              : 'bg-primary text-white hover:shadow-[0_0_20px_rgba(255,106,26,0.4)]'
-          }`}
+          disabled={saving}
+          className="v-admin-save-btn"
         >
           <Save className="w-4 h-4" />
-          {saved ? 'Saved!' : 'Save Changes'}
+          {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}
         </motion.button>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm">
+          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span><span className="font-semibold">Save failed:</span> {error}</span>
+        </div>
+      )}
 
       <AnimatedSection>
         <div className="p-6 rounded-xl glass space-y-6">
@@ -148,8 +163,33 @@ export default function PagesManage() {
               <input
                 value={pages.contactAddress}
                 onChange={(e) => setPages({ ...pages, contactAddress: e.target.value })}
+                placeholder="House # / Road # / Area, City"
                 className="w-full px-4 py-2.5 rounded-lg bg-surface-soft border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="flex items-center gap-1.5 text-sm text-fg-muted mb-1">
+                  <Clock className="w-3.5 h-3.5" /> Business Hours
+                </label>
+                <input
+                  value={pages.contactHours}
+                  onChange={(e) => setPages({ ...pages, contactHours: e.target.value })}
+                  placeholder="e.g. Mon–Sat: 10am – 9pm"
+                  className="w-full px-4 py-2.5 rounded-lg bg-surface-soft border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+              </div>
+              <div>
+                <label className="flex items-center gap-1.5 text-sm text-fg-muted mb-1">
+                  <Map className="w-3.5 h-3.5" /> Google Maps URL
+                </label>
+                <input
+                  value={pages.contactMapUrl}
+                  onChange={(e) => setPages({ ...pages, contactMapUrl: e.target.value })}
+                  placeholder="https://www.google.com/maps/place/..."
+                  className="w-full px-4 py-2.5 rounded-lg bg-surface-soft border border-line text-fg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+              </div>
             </div>
           </div>
         </div>

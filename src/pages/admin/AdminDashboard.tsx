@@ -82,7 +82,8 @@ const statusMeta: Record<
 }
 
 function parseAmountFromMessage(msg: string): number {
-  const match = msg.match(/Total:\s*BDT\s*([0-9,]+)/i)
+  // Match "Total: ৳5,000" or "Total: BDT 5,000" or "Total: 5000"
+  const match = msg.match(/Total:\s*(?:BDT\s*|৳\s*)?([0-9,]+)/i)
   if (!match) return 0
   return parseInt(match[1].replace(/,/g, ''), 10) || 0
 }
@@ -112,44 +113,71 @@ function DashboardHome() {
     const total = inquiries.length
     const newCount = inquiries.filter((i) => i.status === 'new').length
     const completed = inquiries.filter((i) => i.status === 'completed').length
-    const revenue = inquiries
+
+    // Revenue from any inquiry that carries a "Total: ..." line (cart orders).
+    const orderRevenues = inquiries
+      .map((i) => parseAmountFromMessage(i.message || ''))
+      .filter((v) => v > 0)
+    const grossRevenue = orderRevenues.reduce((a, b) => a + b, 0)
+    const completedRevenue = inquiries
       .filter((i) => i.status === 'completed')
       .reduce((sum, i) => sum + parseAmountFromMessage(i.message || ''), 0)
+
+    // Today's revenue (any order with a Total today).
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+    const todayRevenue = inquiries
+      .filter((i) => new Date(i.created_at) >= todayStart)
+      .reduce((sum, i) => sum + parseAmountFromMessage(i.message || ''), 0)
+    const todayCount = inquiries.filter(
+      (i) => new Date(i.created_at) >= todayStart,
+    ).length
+
+    const aov = orderRevenues.length
+      ? Math.round(grossRevenue / orderRevenues.length)
+      : 0
+
     return [
+      {
+        label: 'Total Revenue',
+        value: `৳${grossRevenue.toLocaleString()}`,
+        icon: DollarSign,
+        color: 'text-gold',
+        bg: 'bg-gold/10',
+        sub: `৳${completedRevenue.toLocaleString()} confirmed`,
+      },
+      {
+        label: 'Today',
+        value: `৳${todayRevenue.toLocaleString()}`,
+        icon: TrendingUp,
+        color: 'text-green-400',
+        bg: 'bg-green-400/10',
+        sub: `${todayCount} order${todayCount === 1 ? '' : 's'} today`,
+      },
       {
         label: 'Total Orders',
         value: total.toString(),
         icon: ShoppingBag,
         color: 'text-primary',
         bg: 'bg-primary/10',
-        sub: `${newCount} new`,
+        sub: `${newCount} new · ${completed} done`,
       },
       {
-        label: 'Completed',
-        value: completed.toString(),
-        icon: CheckCircle,
-        color: 'text-green-400',
-        bg: 'bg-green-400/10',
-        sub: total > 0 ? `${Math.round((completed / total) * 100)}% rate` : '0% rate',
-      },
-      {
-        label: 'Revenue',
-        value: `৳${revenue.toLocaleString()}`,
-        icon: DollarSign,
-        color: 'text-gold',
-        bg: 'bg-gold/10',
-        sub: `from ${completed} order${completed === 1 ? '' : 's'}`,
-      },
-      {
-        label: 'Catalog',
-        value: products.length.toString(),
-        icon: Package,
+        label: 'Avg. Order Value',
+        value: aov ? `৳${aov.toLocaleString()}` : '—',
+        icon: TrendingUp,
         color: 'text-cyan',
         bg: 'bg-cyan/10',
-        sub: `${categories.length} categories`,
+        sub: `${orderRevenues.length} priced order${orderRevenues.length === 1 ? '' : 's'}`,
       },
     ]
-  }, [inquiries, products.length, categories.length])
+  }, [inquiries])
+
+  const catalogStats = useMemo(() => {
+    const inStock = products.filter((p) => p.in_stock).length
+    const outOfStock = products.length - inStock
+    return { inStock, outOfStock, total: products.length, categories: categories.length }
+  }, [products, categories.length])
 
   const statusBreakdown = useMemo(() => {
     const buckets: Record<'new' | 'contacted' | 'completed' | 'cancelled', number> = {
@@ -255,28 +283,38 @@ function DashboardHome() {
                 {recentInquiries.map((inq) => {
                   const meta = statusMeta[inq.status]
                   const Icon = meta.icon
+                  const amount = parseAmountFromMessage(inq.message || '')
                   return (
-                    <div
+                    <Link
                       key={inq.id}
+                      to="/admin/orders"
                       className="flex items-center justify-between gap-3 p-3 rounded-lg bg-bg-2/50 border border-line/50 hover:border-primary/30 transition-all"
                     >
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2 mb-0.5">
+                        <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                           <span className="text-fg font-medium text-sm truncate">{inq.customer_name}</span>
                           <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-medium border ${meta.color}`}>
                             <Icon className="w-2.5 h-2.5" />
                             {meta.label}
                           </span>
                         </div>
-                        <div className="text-fg-soft text-xs truncate">{inq.product_name}</div>
+                        <div className="text-fg-soft text-xs truncate">{inq.product_name || '—'}</div>
                       </div>
-                      <a
-                        href={`tel:${inq.phone}`}
-                        className="p-1.5 rounded-md bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors flex-shrink-0"
-                      >
-                        <Phone className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {amount > 0 && (
+                          <span className="text-primary font-bold text-sm whitespace-nowrap">
+                            ৳{amount.toLocaleString()}
+                          </span>
+                        )}
+                        <a
+                          href={`tel:${inq.phone}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-1.5 rounded-md bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </Link>
                   )
                 })}
               </div>
@@ -320,29 +358,60 @@ function DashboardHome() {
         </AnimatedSection>
       </div>
 
-      {topProducts.length > 0 && (
-        <AnimatedSection delay={0.4}>
-          <div className="p-5 rounded-xl glass border border-line">
-            <h2 className="text-base font-bold text-fg mb-4">Top Products by Inquiries</h2>
-            <div className="space-y-2">
-              {topProducts.map((p, i) => (
-                <div
-                  key={p.name}
-                  className="flex items-center justify-between gap-3 p-3 rounded-lg bg-bg-2/40 border border-line/50"
-                >
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center text-xs font-bold flex-shrink-0">
-                      {i + 1}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {topProducts.length > 0 && (
+          <AnimatedSection delay={0.4} className="lg:col-span-2">
+            <div className="p-5 rounded-xl glass border border-line h-full">
+              <h2 className="text-base font-bold text-fg mb-4">Top Products by Inquiries</h2>
+              <div className="space-y-2">
+                {topProducts.map((p, i) => (
+                  <div
+                    key={p.name}
+                    className="flex items-center justify-between gap-3 p-3 rounded-lg bg-bg-2/40 border border-line/50"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="w-7 h-7 rounded-full bg-primary/15 text-primary flex items-center justify-center text-xs font-bold flex-shrink-0">
+                        {i + 1}
+                      </div>
+                      <span className="text-fg text-sm truncate">{p.name}</span>
                     </div>
-                    <span className="text-fg text-sm truncate">{p.name}</span>
+                    <span className="text-primary font-bold text-sm">{p.count}</span>
                   </div>
-                  <span className="text-primary font-bold text-sm">{p.count}</span>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+        )}
+
+        <AnimatedSection delay={0.5} className={topProducts.length > 0 ? '' : 'lg:col-span-3'}>
+          <div className="p-5 rounded-xl glass border border-line h-full">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-bold text-fg">Catalog Snapshot</h2>
+              <Link to="/admin/products" className="text-primary text-xs hover:underline font-racing inline-flex items-center gap-1">
+                Manage <ArrowUpRight className="w-3 h-3" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-lg bg-cyan/10 border border-cyan/30">
+                <div className="text-2xl font-display font-bold text-cyan">{catalogStats.total}</div>
+                <div className="text-fg-soft text-xs">Products</div>
+              </div>
+              <div className="p-3 rounded-lg bg-primary/10 border border-primary/30">
+                <div className="text-2xl font-display font-bold text-primary">{catalogStats.categories}</div>
+                <div className="text-fg-soft text-xs">Categories</div>
+              </div>
+              <div className="p-3 rounded-lg bg-green-400/10 border border-green-400/30">
+                <div className="text-2xl font-display font-bold text-green-400">{catalogStats.inStock}</div>
+                <div className="text-fg-soft text-xs">In stock</div>
+              </div>
+              <div className="p-3 rounded-lg bg-red-400/10 border border-red-400/30">
+                <div className="text-2xl font-display font-bold text-red-400">{catalogStats.outOfStock}</div>
+                <div className="text-fg-soft text-xs">Out of stock</div>
+              </div>
             </div>
           </div>
         </AnimatedSection>
-      )}
+      </div>
     </div>
   )
 }

@@ -89,16 +89,16 @@ export default function CategoriesManage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="v-admin-page-header">
         <div className="min-w-0">
-          <h1 className="text-2xl font-display font-bold text-fg mb-1">Categories</h1>
-          <p className="text-gray-400 text-sm">{categories.length} categories in your store</p>
+          <h1 className="text-2xl md:text-3xl font-display font-bold text-fg mb-1">Categories</h1>
+          <p className="text-fg-soft text-sm">{categories.length} {categories.length === 1 ? 'category' : 'categories'} in your store</p>
         </div>
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
           onClick={openAdd}
-          className="flex flex-shrink-0 items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-cyan to-cyan-600 text-white font-medium rounded-xl text-sm whitespace-nowrap shadow-lg shadow-cyan/30 self-start sm:self-auto"
+          className="v-admin-add-btn v-admin-add-btn--cyan"
         >
           <Plus className="w-4 h-4" />
           Add Category

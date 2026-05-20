@@ -24,6 +24,7 @@ const BADGE_ICONS = [Shield, Truck, Award, RotateCcw]
 export default function Footer() {
   const { brandSettings, siteConfig } = useStore()
   const footerConfig = siteConfig.footer
+  const pages = siteConfig.pages
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -40,7 +41,7 @@ export default function Footer() {
     { Icon: Facebook, url: brandSettings.facebook, label: 'Facebook' },
     { Icon: Music2, url: brandSettings.tiktok, label: 'TikTok' },
     { Icon: Youtube, url: 'https://www.youtube.com/results?search_query=Shokher%20Bikewala', label: 'YouTube' },
-  ]
+  ].filter((s) => Boolean(s.url))
 
   return (
     <footer className="v-premium-footer relative bg-bg-2/40 border-t border-line pt-12 sm:pt-16 pb-28 md:pb-12 overflow-hidden">
@@ -196,32 +197,46 @@ export default function Footer() {
               <span className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent" />
             </h4>
             <ul className="space-y-3 text-sm font-ui">
-              <li className="flex gap-3 items-start text-fg-muted">
-                <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
-                  <MapPin className="w-3.5 h-3.5" />
-                </span>
-                <span>
-                  Dhaka, Bangladesh
-                  <br />
-                  <span className="text-fg-soft text-xs">Free local pickup available</span>
-                </span>
-              </li>
-              <li className="flex gap-3 items-start text-fg-muted">
-                <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
-                  <Phone className="w-3.5 h-3.5" />
-                </span>
-                <span>
-                  +880 1518 934708
-                  <br />
-                  <span className="text-fg-soft text-xs">Mon–Sat: 10am – 9pm</span>
-                </span>
-              </li>
-              <li className="flex gap-3 items-start text-fg-muted">
-                <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
-                  <Mail className="w-3.5 h-3.5" />
-                </span>
-                <span className="break-all">hello@shokherbikewala.com</span>
-              </li>
+              {pages.contactAddress && (
+                <li className="flex gap-3 items-start text-fg-muted">
+                  <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
+                    <MapPin className="w-3.5 h-3.5" />
+                  </span>
+                  {pages.contactMapUrl ? (
+                    <a href={pages.contactMapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                      {pages.contactAddress}
+                      <br />
+                      <span className="text-fg-soft text-xs">Open on Google Maps</span>
+                    </a>
+                  ) : (
+                    <span>{pages.contactAddress}</span>
+                  )}
+                </li>
+              )}
+              {pages.contactPhone && (
+                <li className="flex gap-3 items-start text-fg-muted">
+                  <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
+                    <Phone className="w-3.5 h-3.5" />
+                  </span>
+                  <a href={`tel:${pages.contactPhone.replace(/\s+/g, '')}`} className="hover:text-primary transition-colors">
+                    {pages.contactPhone}
+                    {pages.contactHours && (
+                      <>
+                        <br />
+                        <span className="text-fg-soft text-xs">{pages.contactHours}</span>
+                      </>
+                    )}
+                  </a>
+                </li>
+              )}
+              {pages.contactEmail && (
+                <li className="flex gap-3 items-start text-fg-muted">
+                  <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
+                    <Mail className="w-3.5 h-3.5" />
+                  </span>
+                  <a href={`mailto:${pages.contactEmail}`} className="break-all hover:text-primary transition-colors">{pages.contactEmail}</a>
+                </li>
+              )}
               <li className="flex gap-3 items-start text-fg-muted">
                 <span className="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
                   <Globe className="w-3.5 h-3.5" />
