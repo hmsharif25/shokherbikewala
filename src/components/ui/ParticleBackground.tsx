@@ -10,6 +10,10 @@ interface Particle {
   color: string
 }
 
+const PARTICLE_COUNT = 35
+const LINK_DIST = 100
+const LINK_DIST_SQ = LINK_DIST * LINK_DIST
+
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -31,22 +35,24 @@ export default function ParticleBackground() {
     resize()
     window.addEventListener('resize', resize)
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
         size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
+        opacity: Math.random() * 0.4 + 0.1,
         color: colors[Math.floor(Math.random() * colors.length)],
       })
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const len = particles.length
 
-      particles.forEach((p, i) => {
+      for (let i = 0; i < len; i++) {
+        const p = particles[i]
         p.x += p.vx
         p.y += p.vy
 
@@ -59,22 +65,22 @@ export default function ParticleBackground() {
         ctx.globalAlpha = p.opacity
         ctx.fill()
 
-        particles.forEach((p2, j) => {
-          if (i === j) return
+        for (let j = i + 1; j < len; j++) {
+          const p2 = particles[j]
           const dx = p.x - p2.x
           const dy = p.y - p2.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 120) {
+          const distSq = dx * dx + dy * dy
+          if (distSq < LINK_DIST_SQ) {
             ctx.beginPath()
             ctx.moveTo(p.x, p.y)
             ctx.lineTo(p2.x, p2.y)
             ctx.strokeStyle = p.color
-            ctx.globalAlpha = (1 - dist / 120) * 0.15
+            ctx.globalAlpha = (1 - Math.sqrt(distSq) / LINK_DIST) * 0.12
             ctx.lineWidth = 0.5
             ctx.stroke()
           }
-        })
-      })
+        }
+      }
 
       ctx.globalAlpha = 1
       animationId = requestAnimationFrame(animate)

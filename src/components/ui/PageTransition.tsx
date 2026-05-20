@@ -9,29 +9,20 @@ interface PageTransitionProps {
 const pageVariants = {
   initial: {
     opacity: 0,
-    y: 40,
-    scale: 0.95,
-    rotateX: 4,
+    y: 20,
   },
   animate: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    rotateX: 0,
     transition: {
-      type: 'spring' as const,
-      stiffness: 120,
-      damping: 20,
-      staggerChildren: 0.06,
+      duration: 0.3,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   },
   exit: {
     opacity: 0,
-    y: -20,
-    scale: 0.97,
     transition: {
-      duration: 0.25,
-      ease: 'easeIn' as const,
+      duration: 0.15,
     },
   },
 }

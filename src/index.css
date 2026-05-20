@@ -160,16 +160,16 @@
 
   .glass {
     background: rgb(var(--glass-bg) / var(--glass-bg-alpha));
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
     box-shadow: var(--shadow-card);
   }
 
   .glass-premium {
     background: rgb(var(--glass-bg) / calc(var(--glass-bg-alpha) + 0.05));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgb(var(--glass-border) / calc(var(--glass-border-alpha) + 0.02));
     box-shadow: var(--shadow-soft);
   }
@@ -7740,5 +7740,27 @@ html {
 .v-mobile-cta-primary:active {
   transform: scale(0.97);
   box-shadow: 0 8px 16px -10px rgba(255, 90, 0, 0.55);
+}
+
+/* ── Mobile performance: reduce GPU-heavy effects ──
+ * backdrop-filter blur is extremely expensive on low-end mobile GPUs.
+ * Reduce blur radius on touch devices so scrolling stays smooth.
+ */
+@media (hover: none) and (pointer: coarse) {
+  .glass {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .glass-premium {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .glass-dark {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .sb-backdrop-grid {
+    animation-duration: 40s;
+  }
 }
 
