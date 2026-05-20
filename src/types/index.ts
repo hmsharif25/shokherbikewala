@@ -135,6 +135,22 @@ export interface SocialFeedConfig {
   facebookReviewCount: string
 }
 
+export interface PaymentMethod {
+  id: string
+  name: string
+  type: 'cod' | 'mobile' | 'bank'
+  enabled: boolean
+  details: string
+}
+
+export interface DeliveryPaymentConfig {
+  deliveryCharge: number
+  deliveryChargeMode: 'inside' | 'outside'
+  deliveryChargeLabel: string
+  freeDeliveryMin: number
+  paymentMethods: PaymentMethod[]
+}
+
 export interface SiteConfig {
   faqItems: FAQItem[]
   footer: FooterConfig
