@@ -44,7 +44,10 @@ export default function Footer() {
 
   return (
     <footer className="v-premium-footer relative bg-bg-2/40 border-t border-line pt-12 sm:pt-16 pb-28 md:pb-12 overflow-hidden">
+      <div className="absolute inset-0 v-dot-field opacity-20 pointer-events-none" />
+      <div className="sb-hex-pattern" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="sb-energy-divider" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trust badges */}
