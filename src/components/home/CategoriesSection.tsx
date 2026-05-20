@@ -31,7 +31,7 @@ export default function CategoriesSection() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
           {demoCategories.map((category, i) => (
             <AnimatedSection key={category.id} delay={i * 0.08}>
-              <Link to={`/products?category=${category.slug}`}>
+              <Link to={`/shop?category=${category.slug}`}>
                 <motion.div
                   whileHover={{ y: -6 }}
                   whileTap={{ scale: 0.98 }}

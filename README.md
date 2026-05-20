@@ -68,10 +68,47 @@ If `VITE_SUPABASE_ANON_KEY` isn't set the app falls back to localStorage:
   loader, racing stripes, neon borders, glitch text effect.
 
 ## Deployment
-The repo includes [`vercel.json`](vercel.json) so client-side routes
-resolve correctly. After connecting the repo to Vercel, set
-`VITE_SUPABASE_ANON_KEY` in *Project Settings → Environment Variables*
-and redeploy.
+
+The repo is host-agnostic — it ships with config files for both
+Cloudflare Pages and Vercel so it can be deployed to either without
+code changes.
+
+### Cloudflare Pages (recommended — free for commercial use)
+
+Required files (already in this repo):
+- [`public/_redirects`](public/_redirects) — SPA fallback so client-side
+  routes (`/products/:slug`, `/cart`, `/admin`) resolve to `index.html`.
+- [`public/_headers`](public/_headers) — long-cache headers for
+  hashed assets and a baseline security policy.
+
+Cloudflare dashboard steps:
+1. **Workers & Pages → Create → Pages → Connect to Git**, pick
+   `hmsharif25/shokherbikewala`.
+2. Build settings:
+   - Framework preset: **Vite** (or *None* — defaults are fine).
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Root directory: *(leave blank)*
+3. **Environment variables** (Production *and* Preview):
+   - `VITE_SUPABASE_URL` — `https://pfegrhsefyqqjzmbgurs.supabase.co`
+     (or leave unset; the app defaults to this).
+   - `VITE_SUPABASE_ANON_KEY` — the anon public key from Supabase
+     `Project Settings → API`.
+   - `NODE_VERSION` — `20` (recommended; the build uses TS 5 + Vite 5).
+4. **Custom domains** → add `shokherbikewala.com` and
+   `www.shokherbikewala.com` → point your registrar's DNS at the
+   `*.pages.dev` target Cloudflare shows (or move the zone to
+   Cloudflare for one-click setup).
+5. Add `https://<your-pages-subdomain>.pages.dev` *and* the custom
+   domain to Supabase **Authentication → URL Configuration → Site
+   URL / Redirect URLs** so OAuth + email links work.
+
+### Vercel
+
+The original [`vercel.json`](vercel.json) is still in the repo — its
+`rewrites` block is the equivalent of `_redirects`. Connect the repo
+to Vercel, set `VITE_SUPABASE_ANON_KEY` in *Project Settings →
+Environment Variables*, and deploy.
 
 ## Project structure
 ```

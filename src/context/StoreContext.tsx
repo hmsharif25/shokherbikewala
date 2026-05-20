@@ -1,8 +1,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
-import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent } from '@/types'
-import { demoProducts, demoCategories, demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
+import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent, SocialFeedConfig, DeliveryPaymentConfig } from '@/types'
+
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { loadRemotePublic, loadSiteConfigRemote } from '@/lib/db'
+import {
+  loadRemotePublic,
+  loadSiteConfigRemote,
+  loadSocialFeedRemote,
+  loadDeliveryPaymentRemote,
+} from '@/lib/db'
 
 const defaultFAQItems: FAQItem[] = [
   { id: '1', question: 'How long does delivery take?', answer: 'We deliver across Bangladesh within 2\u20134 business days. For Dhaka city, same-day or next-day delivery is available on selected items. International orders typically arrive in 7\u201314 days.' },
@@ -21,12 +26,12 @@ const defaultFooter: FooterConfig = {
     { title: 'Easy Returns', sub: 'Hassle-free returns within 7 days' },
   ],
   shopLinks: [
-    { name: 'Helmets', path: '/products?category=helmets' },
-    { name: 'Gloves', path: '/products?category=gloves' },
-    { name: 'Riding Jackets', path: '/products?category=jackets' },
-    { name: 'LED Lights', path: '/products?category=led-lights' },
-    { name: 'Exhaust Systems', path: '/products?category=exhaust-systems' },
-    { name: 'All Accessories', path: '/products' },
+    { name: 'Helmets', path: '/shop?category=helmets' },
+    { name: 'Gloves', path: '/shop?category=gloves' },
+    { name: 'Riding Jackets', path: '/shop?category=jackets' },
+    { name: 'LED Lights', path: '/shop?category=led-lights' },
+    { name: 'Exhaust Systems', path: '/shop?category=exhaust-systems' },
+    { name: 'All Accessories', path: '/shop' },
   ],
   companyLinks: [
     { name: 'About Us', path: '/about' },
@@ -88,6 +93,29 @@ const defaultHomeSections: HomeSections = {
   faq: { visible: true, heading: 'FREQUENTLY ASKED', subheading: 'Everything you need to know before you ride.' },
 }
 
+const defaultSocialFeed: SocialFeedConfig = {
+  platforms: [],
+  tiktokCoverImage: '',
+  youtubeCoverImage: '',
+  youtubeTitle: '',
+  youtubeDescription: '',
+  facebookRating: '',
+  facebookReviewCount: '',
+}
+
+const defaultDeliveryPayment: DeliveryPaymentConfig = {
+  deliveryCharge: 120,
+  deliveryChargeMode: 'inside',
+  deliveryChargeLabel: 'Dhaka',
+  freeDeliveryMin: 5000,
+  paymentMethods: [
+    { id: 'cod', name: 'Cash on Delivery', type: 'cod', enabled: true, details: 'Pay when you receive your order' },
+    { id: 'bkash', name: 'bKash', type: 'mobile', enabled: true, details: 'Send to: 01518934708 (Personal)' },
+    { id: 'nagad', name: 'Nagad', type: 'mobile', enabled: true, details: 'Send to: 01518934708 (Personal)' },
+    { id: 'bank', name: 'Bank Transfer', type: 'bank', enabled: true, details: 'Bank: Dutch-Bangla Bank\nA/C: 1234567890\nBranch: Dhanmondi' },
+  ],
+}
+
 interface StoreState {
   products: Product[]
   categories: Category[]
@@ -96,6 +124,8 @@ interface StoreState {
   inquiries: Inquiry[]
   homeSections: HomeSections
   siteConfig: SiteConfig
+  socialFeed: SocialFeedConfig
+  deliveryPayment: DeliveryPaymentConfig
 }
 
 interface StoreContextType extends StoreState {
@@ -120,6 +150,10 @@ interface StoreContextType extends StoreState {
   addInquiry: (inquiry: Inquiry) => void
   updateInquiry: (id: number, inquiry: Inquiry) => void
   deleteInquiry: (id: number) => void
+  socialFeed: SocialFeedConfig
+  setSocialFeed: (config: SocialFeedConfig) => void
+  deliveryPayment: DeliveryPaymentConfig
+  setDeliveryPayment: (config: DeliveryPaymentConfig) => void
   resetAll: () => void
   remoteLoaded: boolean
 }
@@ -146,14 +180,28 @@ function saveToStorage(state: StoreState) {
   }
 }
 
+const defaultBrandSettings: BrandSettings = {
+  id: '1',
+  brand_name: 'Shokher Bikewala',
+  tagline: '',
+  logo_url: '',
+  hero_image_url: '',
+  whatsapp: 'https://wa.me/8801518934708',
+  facebook: '',
+  tiktok: '',
+  instagram: '',
+}
+
 const defaultState: StoreState = {
-  products: demoProducts,
-  categories: demoCategories,
-  brandSettings: demoBrandSettings,
-  testimonials: demoTestimonials,
-  inquiries: demoInquiries,
+  products: [],
+  categories: [],
+  brandSettings: defaultBrandSettings,
+  testimonials: [],
+  inquiries: [],
   homeSections: defaultHomeSections,
   siteConfig: defaultSiteConfig,
+  socialFeed: defaultSocialFeed,
+  deliveryPayment: defaultDeliveryPayment,
 }
 
 const StoreContext = createContext<StoreContextType | null>(null)
@@ -162,10 +210,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoreState>(() => {
     const stored = loadFromStorage()
     if (stored) {
+      // Strip legacy demo products/categories (numeric string IDs)
+      // so only real Supabase data remains after hydration.
+      const isDemoId = (id: string) => /^\d+$/.test(id)
       return {
         ...stored,
+        products: (stored.products ?? []).filter(p => !isDemoId(p.id)),
+        categories: (stored.categories ?? []).filter(c => !isDemoId(c.id)),
         homeSections: stored.homeSections ?? defaultHomeSections,
         siteConfig: stored.siteConfig ?? defaultSiteConfig,
+        socialFeed: stored.socialFeed ?? defaultSocialFeed,
+        deliveryPayment: stored.deliveryPayment ?? defaultDeliveryPayment,
       }
     }
     return defaultState
@@ -180,7 +235,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isSupabaseConfigured()) return
     let cancelled = false
-    Promise.all([loadRemotePublic(), loadSiteConfigRemote()]).then(([remote, remoteSiteConfig]) => {
+    Promise.all([
+      loadRemotePublic(),
+      loadSiteConfigRemote(),
+      loadSocialFeedRemote(),
+      loadDeliveryPaymentRemote(),
+    ]).then(([remote, remoteSiteConfig, remoteSocialFeed, remoteDeliveryPayment]) => {
       if (cancelled) return
       setState((prev) => {
         const mergedPages: PageContent = {
@@ -188,16 +248,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           ...(remoteSiteConfig.pages ?? {}),
         }
         return {
-          products: remote.products && remote.products.length > 0
-            ? remote.products
-            : prev.products,
-          categories: remote.categories && remote.categories.length > 0
-            ? remote.categories
-            : prev.categories,
+          products:
+            remote.products && remote.products.length > 0 ? remote.products : prev.products,
+          categories:
+            remote.categories && remote.categories.length > 0 ? remote.categories : prev.categories,
           brandSettings: remote.brandSettings ?? prev.brandSettings,
-          testimonials: remote.testimonials && remote.testimonials.length > 0
-            ? remote.testimonials
-            : prev.testimonials,
+          testimonials:
+            remote.testimonials && remote.testimonials.length > 0
+              ? remote.testimonials
+              : prev.testimonials,
           inquiries: prev.inquiries,
           homeSections: remoteSiteConfig.homeSections ?? prev.homeSections,
           siteConfig: {
@@ -206,6 +265,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             seo: remoteSiteConfig.seo ?? prev.siteConfig.seo,
             pages: mergedPages,
           },
+          socialFeed: remoteSocialFeed ?? prev.socialFeed,
+          deliveryPayment: remoteDeliveryPayment ?? prev.deliveryPayment,
         }
       })
       setRemoteLoaded(true)
@@ -315,6 +376,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     }))
   }, [])
 
+  const setSocialFeed = useCallback((socialFeed: SocialFeedConfig) => {
+    setState(prev => ({ ...prev, socialFeed }))
+  }, [])
+
+  const setDeliveryPayment = useCallback((deliveryPayment: DeliveryPaymentConfig) => {
+    setState(prev => ({ ...prev, deliveryPayment }))
+  }, [])
+
   const resetAll = useCallback(() => {
     setState(defaultState)
     localStorage.removeItem(STORAGE_KEY)
@@ -343,6 +412,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       addInquiry,
       updateInquiry,
       deleteInquiry,
+      socialFeed: state.socialFeed,
+      setSocialFeed,
+      deliveryPayment: state.deliveryPayment,
+      setDeliveryPayment,
       resetAll,
       remoteLoaded,
     }}>

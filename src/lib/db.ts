@@ -8,6 +8,10 @@ import type {
   Inquiry,
   PageContent,
   Product,
+  ProductSpecification,
+  ProductReview,
+  SocialFeedConfig,
+  DeliveryPaymentConfig,
   SEOSettings,
   SiteConfig,
   Testimonial,
@@ -18,6 +22,9 @@ type DBProduct = {
   name: string
   slug: string
   description: string | null
+  short_description: string | null
+  specifications: ProductSpecification[] | null
+  reviews: ProductReview[] | null
   price: number | string
   discount_price: number | string | null
   category_id: string | null
@@ -77,6 +84,9 @@ export const mapProduct = (row: DBProduct): Product => ({
   name: row.name,
   slug: row.slug,
   description: row.description ?? '',
+  short_description: row.short_description ?? undefined,
+  specifications: row.specifications ?? undefined,
+  reviews: row.reviews ?? undefined,
   price: num(row.price),
   discount_price: numOrNull(row.discount_price),
   category_id: row.category_id ?? '',
@@ -238,6 +248,8 @@ export async function insertProductRemote(
     name: string
     slug: string
     description: string
+    short_description?: string
+    specifications?: ProductSpecification[]
     price: number
     discount_price: number | null
     category_id: string
@@ -249,19 +261,22 @@ export async function insertProductRemote(
 ): Promise<{ error: string | null; product?: Product }> {
   if (!isSupabaseConfigured()) return { error: null }
   const resolvedCategoryId = await resolveCategoryId(input.category_id, categories)
+  const row: Record<string, unknown> = {
+    name: input.name,
+    slug: input.slug,
+    description: input.description,
+    price: input.price,
+    discount_price: input.discount_price,
+    category_id: resolvedCategoryId,
+    images: input.images,
+    in_stock: input.in_stock,
+    featured: input.featured,
+  }
+  if (input.short_description !== undefined) row.short_description = input.short_description
+  if (input.specifications !== undefined) row.specifications = input.specifications
   const { data, error } = await supabase
     .from('products')
-    .insert({
-      name: input.name,
-      slug: input.slug,
-      description: input.description,
-      price: input.price,
-      discount_price: input.discount_price,
-      category_id: resolvedCategoryId,
-      images: input.images,
-      in_stock: input.in_stock,
-      featured: input.featured,
-    })
+    .insert(row)
     .select('*')
     .single()
   if (error) return { error: error.message }
@@ -274,6 +289,8 @@ export async function updateProductRemote(
     name: string
     slug: string
     description: string
+    short_description?: string
+    specifications?: ProductSpecification[]
     price: number
     discount_price: number | null
     category_id: string
@@ -285,19 +302,22 @@ export async function updateProductRemote(
 ): Promise<{ error: string | null; product?: Product }> {
   if (!isSupabaseConfigured()) return { error: null }
   const resolvedCategoryId = await resolveCategoryId(input.category_id, categories)
+  const row: Record<string, unknown> = {
+    name: input.name,
+    slug: input.slug,
+    description: input.description,
+    price: input.price,
+    discount_price: input.discount_price,
+    category_id: resolvedCategoryId,
+    images: input.images,
+    in_stock: input.in_stock,
+    featured: input.featured,
+  }
+  if (input.short_description !== undefined) row.short_description = input.short_description
+  if (input.specifications !== undefined) row.specifications = input.specifications
   const { data, error } = await supabase
     .from('products')
-    .update({
-      name: input.name,
-      slug: input.slug,
-      description: input.description,
-      price: input.price,
-      discount_price: input.discount_price,
-      category_id: resolvedCategoryId,
-      images: input.images,
-      in_stock: input.in_stock,
-      featured: input.featured,
-    })
+    .update(row)
     .eq('id', id)
     .select('*')
     .single()
@@ -605,5 +625,55 @@ export async function deleteTestimonialRemote(
     .from('testimonials')
     .delete()
     .eq('id', id)
+  return { error: error?.message ?? null }
+}
+
+export async function loadSocialFeedRemote(): Promise<SocialFeedConfig | null> {
+  if (!isSupabaseConfigured()) return null
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('value')
+      .eq('key', 'social_feed')
+      .maybeSingle()
+    if (error || !data) return null
+    return data.value as SocialFeedConfig
+  } catch {
+    return null
+  }
+}
+
+export async function saveSocialFeedRemote(
+  config: SocialFeedConfig,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('site_config')
+    .upsert({ key: 'social_feed', value: config as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
+  return { error: error?.message ?? null }
+}
+
+export async function loadDeliveryPaymentRemote(): Promise<DeliveryPaymentConfig | null> {
+  if (!isSupabaseConfigured()) return null
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('value')
+      .eq('key', 'delivery_payment')
+      .maybeSingle()
+    if (error || !data) return null
+    return data.value as DeliveryPaymentConfig
+  } catch {
+    return null
+  }
+}
+
+export async function saveDeliveryPaymentRemote(
+  config: DeliveryPaymentConfig,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('site_config')
+    .upsert({ key: 'delivery_payment', value: config as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
   return { error: error?.message ?? null }
 }

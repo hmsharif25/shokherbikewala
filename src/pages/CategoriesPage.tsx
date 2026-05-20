@@ -27,7 +27,7 @@ export default function CategoriesPage() {
             const productCount = demoProducts.filter(p => p.category_id === category.id).length
             return (
               <AnimatedSection key={category.id} delay={i * 0.1}>
-                <Link to={`/products?category=${category.slug}`}>
+                <Link to={`/shop?category=${category.slug}`}>
                   <motion.div
                     whileHover={{ y: -8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

@@ -17,7 +17,7 @@ import ThemeToggle from '@/components/ui/ThemeToggle'
 
 const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'Shop', path: '/products' },
+  { name: 'Shop', path: '/shop' },
   { name: 'Categories', path: '/categories' },
   { name: 'About', path: '/about' },
   { name: 'Contact', path: '/contact' },
@@ -66,7 +66,7 @@ export default function Navbar() {
   const onSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!search.trim()) return
-    navigate(`/products?q=${encodeURIComponent(search.trim())}`)
+    navigate(`/shop?q=${encodeURIComponent(search.trim())}`)
   }
 
   return (
@@ -159,7 +159,7 @@ export default function Navbar() {
 
               {user ? (
                 <Link
-                  to={isAdmin ? '/admin' : '/auth'}
+                  to={isAdmin ? '/admin' : '/profile'}
                   aria-label="Profile"
                   className="hidden sm:inline-flex v-icon-btn"
                 >

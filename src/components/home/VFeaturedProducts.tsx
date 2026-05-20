@@ -98,7 +98,7 @@ export default function VFeaturedProducts() {
                       <Heart className="w-4 h-4" />
                     </button>
 
-                    <Link to={`/products/${product.slug}`} className="block w-full h-full">
+                    <Link to={`/shop/${product.slug}`} className="block w-full h-full">
                       <img
                         src={product.images[0]}
                         alt={product.name}
@@ -110,7 +110,7 @@ export default function VFeaturedProducts() {
                   </div>
 
                   <div className="p-3 sm:p-4 flex flex-col flex-1">
-                    <Link to={`/products/${product.slug}`} className="block mb-1">
+                    <Link to={`/shop/${product.slug}`} className="block mb-1">
                       <h3 className="font-headline font-bold text-fg text-sm sm:text-base leading-tight line-clamp-1 hover:text-primary transition-colors">
                         {product.name}
                       </h3>
@@ -205,7 +205,7 @@ export default function VFeaturedProducts() {
         </div>
 
         <VReveal delay={300} className="text-center mt-10 sm:mt-14">
-          <Link to="/products" className="v-pill-ghost">
+          <Link to="/shop" className="v-pill-ghost">
             View All Products
             <ArrowRight className="w-4 h-4" />
           </Link>

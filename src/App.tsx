@@ -5,10 +5,10 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import FloatingWhatsApp from '@/components/layout/FloatingWhatsApp'
 import MobileBottomNav from '@/components/layout/MobileBottomNav'
+import MobileTopBar from '@/components/layout/MobileTopBar'
 import HomePage from '@/pages/HomePage'
 import PageLoader from '@/components/ui/PageLoader'
-import GamingBackdrop from '@/components/ui/GamingBackdrop'
-import ScrollProgress from '@/components/ui/ScrollProgress'
+
 import SEO from '@/components/seo/SEO'
 import { StoreProvider } from '@/context/StoreContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
@@ -27,6 +27,8 @@ const CheckoutPage = lazy(() => import('@/pages/CheckoutPage'))
 const CartPage = lazy(() => import('@/pages/CartPage'))
 const TrackOrderPage = lazy(() => import('@/pages/TrackOrderPage'))
 const AuthPage = lazy(() => import('@/pages/AuthPage'))
+const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'))
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
 const AdminLoginPage = lazy(() => import('@/pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
 const ProductsManage = lazy(() => import('@/pages/admin/ProductsManage'))
@@ -40,6 +42,9 @@ const SEOManage = lazy(() => import('@/pages/admin/SEOManage'))
 const FAQManage = lazy(() => import('@/pages/admin/FAQManage'))
 const FooterManage = lazy(() => import('@/pages/admin/FooterManage'))
 const PagesManage = lazy(() => import('@/pages/admin/PagesManage'))
+const SocialFeedManage = lazy(() => import('@/pages/admin/SocialFeedManage'))
+const DeliveryPaymentManage = lazy(() => import('@/pages/admin/DeliveryPaymentManage'))
+const ChangePassword = lazy(() => import('@/pages/admin/ChangePassword'))
 
 function RouteFallback() {
   return (
@@ -80,18 +85,20 @@ function PublicLayout() {
   return (
     <div className="v-public-site">
       <Navbar />
+      <MobileTopBar />
       <AnimatePresence mode="wait">
         <Suspense fallback={<RouteFallback />}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:slug" element={<ProductDetailPage />} />
+            <Route path="/shop" element={<ProductsPage />} />
+            <Route path="/shop/:slug" element={<ProductDetailPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/track" element={<TrackOrderPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </Suspense>
       </AnimatePresence>
@@ -111,9 +118,7 @@ function App() {
           <Router>
             <ScrollToTop />
             <SEO />
-            <ScrollProgress />
             <PageLoader />
-            <GamingBackdrop />
             <AppRoutes />
           </Router>
           </CartProvider>
@@ -128,6 +133,7 @@ function AppRoutes() {
     <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route
           path="/admin"
@@ -147,7 +153,10 @@ function AppRoutes() {
           <Route path="faq" element={<FAQManage />} />
           <Route path="footer" element={<FooterManage />} />
           <Route path="pages" element={<PagesManage />} />
+          <Route path="social-feed" element={<SocialFeedManage />} />
+          <Route path="delivery-payment" element={<DeliveryPaymentManage />} />
           <Route path="settings" element={<BrandSettings />} />
+          <Route path="change-password" element={<ChangePassword />} />
         </Route>
         <Route path="/*" element={<PublicLayout />} />
       </Routes>

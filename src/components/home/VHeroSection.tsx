@@ -45,6 +45,13 @@ export default function VHeroSection() {
   // Skip the scroll-linked parallax on phones/tablets and when the user
   // has requested reduced motion. This is what causes the iOS hero shake.
   const disableParallax = isTouch || !!prefersReducedMotion
+  // Ambient animations (rotating rings, text flicker, shimmer, glow pulses)
+  // are safe on mobile because the scroll-linked parallax — the actual
+  // source of iOS Safari "shake" — is already disabled above. Each animated
+  // element gets its own compositor layer via Framer Motion, so the
+  // repaints are isolated and do not affect the parent layer during
+  // URL-bar collapse. Only disable for prefers-reduced-motion.
+  const disableAmbient = !!prefersReducedMotion
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -88,9 +95,14 @@ export default function VHeroSection() {
         style={{
           y,
           opacity,
+          // Only force a GPU compositor layer when the wrapper actually
+          // animates (desktop parallax). On iOS Safari a hard-promoted
+          // layer with backdrop-filter children inside is one of the
+          // main causes of the hero "shake" during URL-bar collapse.
           willChange: disableParallax ? 'auto' : 'transform, opacity',
-          backfaceVisibility: 'hidden',
-          transform: 'translateZ(0)',
+          ...(disableParallax
+            ? null
+            : { backfaceVisibility: 'hidden', transform: 'translateZ(0)' }),
         }}
         className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[calc(100svh-8rem)]"
       >
@@ -104,8 +116,12 @@ export default function VHeroSection() {
           {/* Outer rotating ring */}
           <motion.div
             className="absolute inset-[-18px] sm:inset-[-24px] rounded-full border border-primary/20"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            animate={disableAmbient ? undefined : { rotate: 360 }}
+            transition={
+              disableAmbient
+                ? undefined
+                : { duration: 20, repeat: Infinity, ease: 'linear' }
+            }
           >
             <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(255,106,26,0.6)]" />
             <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(0,183,229,0.6)]" />
@@ -114,8 +130,12 @@ export default function VHeroSection() {
           {/* Counter-rotating inner ring */}
           <motion.div
             className="absolute inset-[-8px] sm:inset-[-12px] rounded-full border border-white/[0.06]"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+            animate={disableAmbient ? undefined : { rotate: -360 }}
+            transition={
+              disableAmbient
+                ? undefined
+                : { duration: 14, repeat: Infinity, ease: 'linear' }
+            }
           >
             <span className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-primary/60" />
           </motion.div>
@@ -123,14 +143,30 @@ export default function VHeroSection() {
           {/* Pulsing glow behind */}
           <motion.div
             className="absolute inset-0 rounded-full"
-            animate={{
-              boxShadow: [
-                '0 0 30px rgba(255,106,26,0.15), 0 0 60px rgba(255,106,26,0.08)',
-                '0 0 50px rgba(255,106,26,0.25), 0 0 100px rgba(255,106,26,0.12)',
-                '0 0 30px rgba(255,106,26,0.15), 0 0 60px rgba(255,106,26,0.08)',
-              ],
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            style={
+              disableAmbient
+                ? {
+                    boxShadow:
+                      '0 0 30px rgba(255,106,26,0.18), 0 0 60px rgba(255,106,26,0.09)',
+                  }
+                : undefined
+            }
+            animate={
+              disableAmbient
+                ? undefined
+                : {
+                    boxShadow: [
+                      '0 0 30px rgba(255,106,26,0.15), 0 0 60px rgba(255,106,26,0.08)',
+                      '0 0 50px rgba(255,106,26,0.25), 0 0 100px rgba(255,106,26,0.12)',
+                      '0 0 30px rgba(255,106,26,0.15), 0 0 60px rgba(255,106,26,0.08)',
+                    ],
+                  }
+            }
+            transition={
+              disableAmbient
+                ? undefined
+                : { duration: 3, repeat: Infinity, ease: 'easeInOut' }
+            }
           />
 
           {/* Main icon container */}
@@ -158,14 +194,17 @@ export default function VHeroSection() {
             </div>
 
             {/* Shine sweep */}
-            <motion.div
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.05) 50%, transparent 55%)',
-              }}
-              animate={{ x: ['-100%', '200%'] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-            />
+            {!disableAmbient && (
+              <motion.div
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  background:
+                    'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.05) 50%, transparent 55%)',
+                }}
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
+              />
+            )}
           </div>
         </motion.div>
 
@@ -176,17 +215,41 @@ export default function VHeroSection() {
           className="sb-cinematic-title items-center"
         >
           <motion.span
-            className="sb-cinematic-line sb-flicker"
-            animate={{ textShadow: [
-              '0 0 8px rgba(255,106,26,0.3), 0 0 24px rgba(255,106,26,0.1)',
-              '0 0 16px rgba(255,106,26,0.5), 0 0 40px rgba(255,106,26,0.2)',
-              '0 0 8px rgba(255,106,26,0.3), 0 0 24px rgba(255,106,26,0.1)',
-            ] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            className={`sb-cinematic-line${disableAmbient ? '' : ' sb-flicker'}`}
+            style={
+              disableAmbient
+                ? {
+                    textShadow:
+                      '0 0 12px rgba(255,106,26,0.4), 0 0 32px rgba(255,106,26,0.15)',
+                  }
+                : undefined
+            }
+            animate={
+              disableAmbient
+                ? undefined
+                : {
+                    textShadow: [
+                      '0 0 8px rgba(255,106,26,0.3), 0 0 24px rgba(255,106,26,0.1)',
+                      '0 0 16px rgba(255,106,26,0.5), 0 0 40px rgba(255,106,26,0.2)',
+                      '0 0 8px rgba(255,106,26,0.3), 0 0 24px rgba(255,106,26,0.1)',
+                    ],
+                  }
+            }
+            transition={
+              disableAmbient
+                ? undefined
+                : { duration: 3, repeat: Infinity, ease: 'easeInOut' }
+            }
           >
             SHOKHER
           </motion.span>
-          <span className="sb-cinematic-line sb-cinematic-line-accent sb-shimmer-text">BIKEWALA</span>
+          <span
+            className={`sb-cinematic-line sb-cinematic-line-accent${
+              disableAmbient ? '' : ' sb-shimmer-text'
+            }`}
+          >
+            BIKEWALA
+          </span>
         </motion.h1>
 
         {/* Social links — premium animated cards */}
@@ -238,12 +301,19 @@ export default function VHeroSection() {
               <div className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg transition-all duration-300 group-hover:shadow-xl`}
                 style={{ boxShadow: `0 4px 16px ${color}35` }}
               >
-                <motion.div
-                  className="absolute inset-0 rounded-xl"
-                  style={{ background: `${color}`, opacity: 0 }}
-                  animate={{ opacity: [0, 0.3, 0], scale: [1, 1.4, 1] }}
-                  transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
-                />
+                {!disableAmbient && (
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    style={{ background: `${color}`, opacity: 0 }}
+                    animate={{ opacity: [0, 0.3, 0], scale: [1, 1.4, 1] }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      delay: i * 0.5,
+                      ease: 'easeInOut',
+                    }}
+                  />
+                )}
                 <Icon className="relative z-10 w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 <motion.div
                   className="absolute inset-0 rounded-xl pointer-events-none"
@@ -284,15 +354,28 @@ export default function VHeroSection() {
         >
           <span className="text-[9px] font-ui uppercase tracking-[0.25em] text-fg-soft/50">Scroll</span>
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            animate={disableAmbient ? undefined : { y: [0, 8, 0] }}
+            transition={
+              disableAmbient
+                ? undefined
+                : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }
+            }
           >
             <ChevronDown className="w-5 h-5 text-primary/60" />
           </motion.div>
           <motion.div
             className="w-px h-8 bg-gradient-to-b from-primary/40 to-transparent"
-            animate={{ scaleY: [0.5, 1, 0.5], opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={disableAmbient ? { opacity: 0.5 } : undefined}
+            animate={
+              disableAmbient
+                ? undefined
+                : { scaleY: [0.5, 1, 0.5], opacity: [0.3, 0.7, 0.3] }
+            }
+            transition={
+              disableAmbient
+                ? undefined
+                : { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+            }
           />
         </motion.div>
 

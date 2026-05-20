@@ -39,7 +39,7 @@ export const ROUTE_SEO: Record<string, RouteSeoConfig> = {
     description: SITE_DESCRIPTION,
     keywords: SITE_KEYWORDS,
   },
-  '/products': {
+  '/shop': {
     title: `Shop Motorcycle Accessories in Bangladesh | ${SITE_NAME}`,
     description:
       'Browse helmets, gloves, jackets, LED lights, phone mounts, exhaust systems, and premium motorcycle accessories with WhatsApp ordering in Bangladesh.',
@@ -105,8 +105,8 @@ export function absoluteImageUrl(image?: string): string {
 }
 
 export function routeSeoForPath(pathname: string): RouteSeoConfig {
-  if (pathname.startsWith('/products/')) {
-    return ROUTE_SEO['/products']
+  if (pathname.startsWith('/shop/')) {
+    return ROUTE_SEO['/shop']
   }
   return ROUTE_SEO[pathname] ?? ROUTE_SEO['/']
 }
@@ -118,7 +118,7 @@ export function buildProductSeo(product: Product, category?: Category): SeoConfi
   return {
     title: `${product.name} | ${SITE_NAME}`,
     description,
-    path: `/products/${product.slug}`,
+    path: `/shop/${product.slug}`,
     image: product.images[0],
     type: 'product',
     keywords: [
@@ -184,7 +184,7 @@ export function websiteJsonLd() {
     },
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${SITE_URL}/products?search={search_term_string}`,
+      target: `${SITE_URL}/shop?search={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
   }
@@ -208,7 +208,7 @@ export function productJsonLd(product: Product, category?: Category) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': absoluteUrl(`/products/${product.slug}#product`),
+    '@id': absoluteUrl(`/shop/${product.slug}#product`),
     name: product.name,
     description: product.description,
     image: product.images.map(absoluteImageUrl),
@@ -219,7 +219,7 @@ export function productJsonLd(product: Product, category?: Category) {
     },
     offers: {
       '@type': 'Offer',
-      url: absoluteUrl(`/products/${product.slug}`),
+      url: absoluteUrl(`/shop/${product.slug}`),
       priceCurrency: 'BDT',
       price,
       availability: product.in_stock

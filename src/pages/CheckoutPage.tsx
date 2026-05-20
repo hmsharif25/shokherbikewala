@@ -1,9 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft,
+  Camera,
   CheckCircle2,
+  Copy,
+  CreditCard,
   Mail,
   MapPin,
   MessageCircle,
@@ -11,6 +14,7 @@ import {
   ShoppingBag,
   StickyNote,
   Truck,
+  Upload,
   User,
   X,
 } from 'lucide-react'
@@ -19,6 +23,7 @@ import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
 import { useCart, CartItem } from '@/context/CartContext'
 import { submitInquiry } from '@/lib/db'
+import { uploadImage } from '@/lib/storage'
 
 interface FormState {
   name: string
@@ -28,6 +33,7 @@ interface FormState {
   city: string
   area: string
   notes: string
+  trxId: string
 }
 
 const empty: FormState = {
@@ -38,6 +44,7 @@ const empty: FormState = {
   city: '',
   area: '',
   notes: '',
+  trxId: '',
 }
 
 const STORAGE_KEY = 'sbw_checkout_form_v1'
@@ -54,7 +61,7 @@ interface CheckoutLine {
 export default function CheckoutPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { products, brandSettings, addInquiry } = useStore()
+  const { products, brandSettings, addInquiry, deliveryPayment } = useStore()
   const { selectedItems, clearSelected } = useCart()
 
   const directSlug = searchParams.get('product') || ''
@@ -63,8 +70,6 @@ export default function CheckoutPage() {
     [products, directSlug],
   )
 
-  // Either checkout the URL-pinned single product, or every selected
-  // cart item.
   const lines: CheckoutLine[] = useMemo(() => {
     if (directProduct) {
       const unit = directProduct.discount_price ?? directProduct.price
@@ -89,10 +94,17 @@ export default function CheckoutPage() {
     }))
   }, [directProduct, selectedItems])
 
-  const total = useMemo(
+  const subtotal = useMemo(
     () => lines.reduce((sum, l) => sum + l.price * l.qty, 0),
     [lines],
   )
+
+  const deliveryCharge = useMemo(() => {
+    if (deliveryPayment.freeDeliveryMin > 0 && subtotal >= deliveryPayment.freeDeliveryMin) return 0
+    return deliveryPayment.deliveryCharge
+  }, [subtotal, deliveryPayment])
+
+  const total = subtotal + deliveryCharge
   const totalQty = useMemo(
     () => lines.reduce((sum, l) => sum + l.qty, 0),
     [lines],
@@ -109,30 +121,84 @@ export default function CheckoutPage() {
       return empty
     }
   })
+  const enabledMethods = useMemo(
+    () => deliveryPayment.paymentMethods.filter(m => m.enabled),
+    [deliveryPayment],
+  )
+  const [selectedPayment, setSelectedPayment] = useState<string>(() =>
+    enabledMethods.length > 0 ? enabledMethods[0].name : '',
+  )
+  const selectedMethod = useMemo(
+    () => enabledMethods.find(m => m.name === selectedPayment),
+    [enabledMethods, selectedPayment],
+  )
+  const showPaymentFields = selectedMethod && selectedMethod.type !== 'cod'
+
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [copiedField, setCopiedField] = useState<string | null>(null)
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
+  const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null)
+  const [uploadingScreenshot, setUploadingScreenshot] = useState(false)
+  const screenshotInputRef = useRef<HTMLInputElement>(null)
 
-  // Persist form so the customer doesn't lose entered info on reload.
   useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(form))
+      const { trxId: _trx, ...rest } = form
+      void _trx
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(rest))
     } catch {
       // ignore
     }
   }, [form])
 
-  // If the user lands on /checkout with no items at all, redirect them
-  // to the products listing so they can pick something first.
   useEffect(() => {
     if (lines.length === 0 && products.length > 0 && !success) {
-      navigate('/products', { replace: true })
+      navigate('/shop', { replace: true })
     }
   }, [lines.length, products.length, navigate, success])
 
+  const handleCopy = async (text: string, fieldId: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedField(fieldId)
+      setTimeout(() => setCopiedField(null), 2000)
+    } catch {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea')
+      ta.value = text
+      document.body.appendChild(ta)
+      ta.select()
+      document.execCommand('copy')
+      document.body.removeChild(ta)
+      setCopiedField(fieldId)
+      setTimeout(() => setCopiedField(null), 2000)
+    }
+  }
+
+  const handleScreenshotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 8 * 1024 * 1024) {
+      setError('Screenshot must be under 8MB')
+      return
+    }
+    setPaymentScreenshot(file)
+    const reader = new FileReader()
+    reader.onload = () => setScreenshotPreview(reader.result as string)
+    reader.readAsDataURL(file)
+  }
+
+  const removeScreenshot = () => {
+    setPaymentScreenshot(null)
+    setScreenshotPreview(null)
+    if (screenshotInputRef.current) screenshotInputRef.current.value = ''
+  }
+
   const phoneDigits = (brandSettings.whatsapp || '').replace(/[^0-9]/g, '')
 
-  const buildMessage = (): string => {
+  const buildMessage = (screenshotUrl?: string): string => {
     const out: string[] = []
     out.push(`Hi! I want to buy:`)
     lines.forEach((l, idx) => {
@@ -141,7 +207,11 @@ export default function CheckoutPage() {
       )
     })
     out.push('')
+    if (deliveryCharge > 0) out.push(`Delivery: ৳${deliveryCharge.toLocaleString()}`)
     out.push(`Total: ৳${total.toLocaleString()} (${totalQty} item${totalQty === 1 ? '' : 's'})`)
+    if (selectedPayment) out.push(`Payment: ${selectedPayment}`)
+    if (form.trxId.trim()) out.push(`TRX ID: ${form.trxId.trim()}`)
+    if (screenshotUrl) out.push(`Payment screenshot: ${screenshotUrl}`)
     out.push('')
     out.push(`— Customer info —`)
     out.push(`Name: ${form.name}`)
@@ -160,6 +230,8 @@ export default function CheckoutPage() {
     return `${lines[0].name} × ${lines[0].qty} (+${lines.length - 1} more)`
   }
 
+  const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (lines.length === 0) {
@@ -173,10 +245,25 @@ export default function CheckoutPage() {
     setError(null)
     setSubmitting(true)
 
-    const message = buildMessage()
-    const productSummary = buildProductSummary()
-
     try {
+      let uploadedUrl: string | undefined
+
+      if (paymentScreenshot) {
+        setUploadingScreenshot(true)
+        try {
+          const result = await uploadImage(paymentScreenshot, { folder: 'payment-proofs' })
+          uploadedUrl = result.url
+          setScreenshotUrl(result.url)
+        } catch (err) {
+          console.warn('[checkout] screenshot upload failed:', err)
+        } finally {
+          setUploadingScreenshot(false)
+        }
+      }
+
+      const message = buildMessage(uploadedUrl)
+      const productSummary = buildProductSummary()
+
       addInquiry({
         id: Date.now(),
         customer_name: form.name.trim(),
@@ -195,7 +282,6 @@ export default function CheckoutPage() {
       })
 
       if (remoteErr) {
-        // Non-fatal — local copy is saved; admin will still see it on this device.
         console.warn('[checkout] remote submit failed:', remoteErr)
       }
 
@@ -219,7 +305,7 @@ export default function CheckoutPage() {
             Your cart is empty — pick some items first.
           </p>
           <Link
-            to="/products"
+            to="/shop"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -230,15 +316,31 @@ export default function CheckoutPage() {
     )
   }
 
-  const waText = encodeURIComponent(buildMessage())
+  const waText = encodeURIComponent(buildMessage(screenshotUrl ?? undefined))
   const waHref = phoneDigits ? `https://wa.me/${phoneDigits}?text=${waText}` : '#'
 
   const handleClosePopup = () => {
     setSuccess(false)
-    // Wipe the just-ordered items from the cart so they don't linger
-    // selected. Direct (?product=) checkout doesn't touch the cart.
     if (!directProduct) clearSelected()
-    navigate('/products')
+    navigate('/shop')
+  }
+
+  /** Parse payment details string into copyable lines */
+  const parsePaymentDetails = (details: string): { label: string; value: string }[] => {
+    const result: { label: string; value: string }[] = []
+    const lines = details.split('\n').map(l => l.trim()).filter(Boolean)
+    for (const line of lines) {
+      const colonIdx = line.indexOf(':')
+      if (colonIdx > 0) {
+        result.push({
+          label: line.slice(0, colonIdx).trim(),
+          value: line.slice(colonIdx + 1).trim(),
+        })
+      } else {
+        result.push({ label: '', value: line })
+      }
+    }
+    return result
   }
 
   return (
@@ -246,7 +348,7 @@ export default function CheckoutPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="mb-5 sm:mb-8">
           <Link
-            to={directProduct ? `/products/${directProduct.slug}` : '/cart'}
+            to={directProduct ? `/shop/${directProduct.slug}` : '/cart'}
             className="inline-flex items-center gap-2 text-fg-muted hover:text-primary transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -267,7 +369,7 @@ export default function CheckoutPage() {
                   Checkout
                 </h1>
                 <p className="text-fg-soft text-sm mt-1">
-                  Cash on Delivery — confirm by phone or WhatsApp after submit.
+                  Confirm by phone or WhatsApp after placing your order.
                 </p>
               </div>
 
@@ -359,6 +461,156 @@ export default function CheckoutPage() {
                 </Field>
               </div>
 
+              {/* Payment Method Selection */}
+              {enabledMethods.length > 0 && (
+                <Field label="Payment method" icon={<CreditCard className="w-4 h-4" />} required>
+                  <div className="space-y-2">
+                    {enabledMethods.map((m) => (
+                      <label
+                        key={m.id}
+                        className={`block rounded-xl border cursor-pointer transition-all ${
+                          selectedPayment === m.name
+                            ? 'border-primary/40 bg-primary/5'
+                            : 'border-line bg-surface-soft hover:border-primary/20'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3 p-3">
+                          <input
+                            type="radio"
+                            name="payment"
+                            value={m.name}
+                            checked={selectedPayment === m.name}
+                            onChange={() => {
+                              setSelectedPayment(m.name)
+                              setForm(prev => ({ ...prev, trxId: '' }))
+                              removeScreenshot()
+                            }}
+                            className="mt-0.5 accent-primary"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <span className="text-fg font-medium text-sm">{m.name}</span>
+                            {m.type === 'cod' && m.details && (
+                              <p className="text-fg-soft text-xs mt-0.5">{m.details}</p>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Payment details with copy buttons for non-COD */}
+                        {selectedPayment === m.name && m.type !== 'cod' && m.details && (
+                          <div className="px-3 pb-3 pt-0">
+                            <div className="rounded-lg bg-bg/60 border border-line/50 p-3 space-y-2">
+                              {parsePaymentDetails(m.details).map((item, idx) => {
+                                const copyId = `${m.id}-${idx}`
+                                return (
+                                  <div key={idx} className="flex items-center justify-between gap-2">
+                                    <div className="min-w-0 flex-1">
+                                      {item.label && (
+                                        <span className="text-fg-soft text-xs">{item.label}: </span>
+                                      )}
+                                      <span className="text-fg text-sm font-medium">{item.value}</span>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        handleCopy(item.value, copyId)
+                                      }}
+                                      className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
+                                        copiedField === copyId
+                                          ? 'bg-green-500/10 text-green-500'
+                                          : 'bg-primary/10 text-primary hover:bg-primary/20'
+                                      }`}
+                                    >
+                                      {copiedField === copyId ? (
+                                        <>
+                                          <CheckCircle2 className="w-3 h-3" />
+                                          Copied
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Copy className="w-3 h-3" />
+                                          Copy
+                                        </>
+                                      )}
+                                    </button>
+                                  </div>
+                                )
+                              })}
+                            </div>
+
+                            <p className="text-[11px] text-fg-soft mt-2">
+                              Send ৳{total.toLocaleString()} to the above {m.type === 'mobile' ? 'number' : 'account'} and enter your transaction details below.
+                            </p>
+                          </div>
+                        )}
+                      </label>
+                    ))}
+                  </div>
+                </Field>
+              )}
+
+              {/* TRX ID & Screenshot — only for non-COD */}
+              {showPaymentFields && (
+                <div className="space-y-4 rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-4">
+                  <Field
+                    label="Transaction ID (TRX ID)"
+                    icon={<CreditCard className="w-4 h-4" />}
+                  >
+                    <input
+                      type="text"
+                      value={form.trxId}
+                      onChange={(e) => setForm({ ...form, trxId: e.target.value })}
+                      placeholder="e.g. ABC123XYZ"
+                      className={inputCls}
+                    />
+                    <p className="text-[11px] text-fg-soft mt-1">
+                      Optional — enter after completing payment
+                    </p>
+                  </Field>
+
+                  <Field
+                    label="Payment screenshot (optional)"
+                    icon={<Camera className="w-4 h-4" />}
+                  >
+                    {screenshotPreview ? (
+                      <div className="relative">
+                        <img
+                          src={screenshotPreview}
+                          alt="Payment screenshot"
+                          className="w-full max-h-48 object-contain rounded-xl border border-line bg-surface-soft"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeScreenshot}
+                          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-bg/90 border border-line text-fg-muted hover:text-red-500 grid place-items-center"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => screenshotInputRef.current?.click()}
+                        className="w-full min-h-[80px] flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-line bg-surface-soft hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer"
+                      >
+                        <Upload className="w-5 h-5 text-fg-soft" />
+                        <span className="text-xs text-fg-soft">
+                          Tap to upload screenshot
+                        </span>
+                      </button>
+                    )}
+                    <input
+                      ref={screenshotInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleScreenshotChange}
+                      className="hidden"
+                    />
+                  </Field>
+                </div>
+              )}
+
               <Field label="Notes (optional)" icon={<StickyNote className="w-4 h-4" />}>
                 <textarea
                   rows={2}
@@ -377,15 +629,17 @@ export default function CheckoutPage() {
 
               <motion.button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || uploadingScreenshot}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full min-h-[52px] inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-primary to-primary-600 text-white font-bold rounded-xl shadow-lg shadow-primary/25 disabled:opacity-60 transition-all"
               >
                 <Truck className="w-5 h-5" />
-                {submitting
-                  ? 'Placing order…'
-                  : `Place order · ৳${total.toLocaleString()}`}
+                {uploadingScreenshot
+                  ? 'Uploading screenshot…'
+                  : submitting
+                    ? 'Placing order…'
+                    : `Place order · ৳${total.toLocaleString()}`}
               </motion.button>
 
               <p className="text-[11px] text-fg-soft text-center">
@@ -417,7 +671,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <Link
-                        to={`/products/${l.slug}`}
+                        to={`/shop/${l.slug}`}
                         className="text-fg font-semibold text-sm leading-snug line-clamp-2 hover:text-primary"
                       >
                         {l.name}
@@ -434,8 +688,12 @@ export default function CheckoutPage() {
               </div>
 
               <div className="border-t border-line pt-3 space-y-1.5 text-sm">
-                <Row label={`Items (${totalQty})`} value={`৳${total.toLocaleString()}`} />
-                <Row label="Delivery" value="To be confirmed" />
+                <Row label={`Subtotal (${totalQty})`} value={`৳${subtotal.toLocaleString()}`} />
+                <Row
+                  label={`Delivery${deliveryCharge === 0 ? ' (Free)' : ''}`}
+                  value={deliveryCharge > 0 ? `৳${deliveryCharge.toLocaleString()}` : 'Free'}
+                />
+                {selectedPayment && <Row label="Payment" value={selectedPayment} />}
                 <Row
                   label="Total"
                   value={`৳${total.toLocaleString()}`}
@@ -507,6 +765,16 @@ export default function CheckoutPage() {
                     ৳{total.toLocaleString()}
                   </span>
                 </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-fg-soft">Payment</span>
+                  <span className="text-fg">{selectedPayment || 'N/A'}</span>
+                </div>
+                {form.trxId.trim() && (
+                  <div className="flex justify-between gap-4">
+                    <span className="text-fg-soft">TRX ID</span>
+                    <span className="text-fg font-mono text-xs">{form.trxId.trim()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between gap-4">
                   <span className="text-fg-soft">Phone</span>
                   <span className="text-fg">{form.phone}</span>

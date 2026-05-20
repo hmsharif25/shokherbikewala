@@ -53,7 +53,7 @@ export default function CartPage() {
                 what to checkout from here later.
               </p>
               <Link
-                to="/products"
+                to="/shop"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -72,7 +72,7 @@ export default function CartPage() {
         <AnimatedSection className="mb-5 sm:mb-8 flex items-center justify-between gap-3">
           <div className="min-w-0">
             <Link
-              to="/products"
+              to="/shop"
               className="inline-flex items-center gap-2 text-fg-muted hover:text-primary transition-colors text-sm mb-2"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -151,7 +151,7 @@ export default function CartPage() {
                     </label>
 
                     <Link
-                      to={`/products/${item.slug}`}
+                      to={`/shop/${item.slug}`}
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border border-line bg-surface-soft flex-shrink-0"
                     >
                       {item.image ? (
@@ -170,7 +170,7 @@ export default function CartPage() {
 
                     <div className="flex-1 min-w-0 flex flex-col">
                       <Link
-                        to={`/products/${item.slug}`}
+                        to={`/shop/${item.slug}`}
                         className="text-fg font-semibold text-sm sm:text-base leading-snug line-clamp-2 hover:text-primary"
                       >
                         {item.name}

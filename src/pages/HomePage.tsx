@@ -14,12 +14,9 @@ const VCommunity = lazy(() => import('@/components/home/VCommunity'))
 const VTestimonials = lazy(() => import('@/components/home/VTestimonials'))
 const VFAQ = lazy(() => import('@/components/home/VFAQ'))
 
-function GamingDivider() {
+function SectionDivider() {
   return (
-    <div className="relative" aria-hidden="true">
-      <div className="sb-gaming-divider" />
-      <div className="sb-energy-divider" />
-    </div>
+    <div className="mx-auto max-w-[60%] h-px bg-gradient-to-r from-transparent via-line/30 to-transparent" aria-hidden="true" />
   )
 }
 
@@ -38,43 +35,43 @@ export default function HomePage() {
       {s.hero.visible && <VHeroSection />}
       {s.categories.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VCategoriesGrid /></LazySection>
         </>
       )}
       {s.featuredProducts.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VFeaturedProducts /></LazySection>
         </>
       )}
       {s.brandStory.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VBrandStory /></LazySection>
         </>
       )}
       {s.promoBanner.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VPromoBanner /></LazySection>
         </>
       )}
       {s.community.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VCommunity /></LazySection>
         </>
       )}
       {s.testimonials.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VTestimonials /></LazySection>
         </>
       )}
       {s.faq.visible && (
         <>
-          <GamingDivider />
+          <SectionDivider />
           <LazySection><VFAQ /></LazySection>
         </>
       )}

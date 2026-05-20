@@ -138,7 +138,7 @@ export default function ProductsPage() {
             }
             return (
               <AnimatedSection key={product.id} delay={i * 0.05}>
-                <Link to={`/products/${product.slug}`}>
+                <Link to={`/shop/${product.slug}`}>
                   <motion.div
                     whileHover={{ y: -6, scale: 1.02, transition: { duration: 0.25 } }}
                     whileTap={{ scale: 0.98 }}
@@ -175,7 +175,7 @@ export default function ProductsPage() {
                       <h3 className="text-fg font-bold text-xs sm:text-base mb-0.5 sm:mb-1 group-hover:text-primary transition-colors line-clamp-1 font-racing">
                         {product.name}
                       </h3>
-                      <p className="text-fg-muted text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.description}</p>
+                      <p className="text-fg-muted text-[10px] sm:text-sm mb-2 sm:mb-3 line-clamp-1 sm:line-clamp-2 hidden sm:block">{product.short_description || product.description.slice(0, 80) + '…'}</p>
                       <div className="mb-2 sm:mb-3">
                         {product.discount_price ? (
                           <div className="flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-2">

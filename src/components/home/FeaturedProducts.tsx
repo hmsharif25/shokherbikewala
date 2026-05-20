@@ -36,7 +36,7 @@ export default function FeaturedProducts() {
             </p>
           </div>
           <Link
-            to="/products"
+            to="/shop"
             className="self-start sm:self-end inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/[0.08] border border-primary/25 text-primary hover:bg-primary/[0.14] hover:border-primary/40 font-racing tracking-wide group transition-all"
           >
             View All
@@ -56,7 +56,7 @@ export default function FeaturedProducts() {
                 delay={i * 0.08}
                 direction={i % 2 === 0 ? 'left' : 'right'}
               >
-                <Link to={`/products/${product.slug}`} className="block">
+                <Link to={`/shop/${product.slug}`} className="block">
                   <motion.div
                     whileHover={{ y: -8 }}
                     transition={{ type: 'spring', stiffness: 220, damping: 18 }}
@@ -108,7 +108,7 @@ export default function FeaturedProducts() {
                       </h3>
 
                       <p className="text-fg-muted text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-1 sm:line-clamp-2 hidden sm:block">
-                        {product.description}
+                        {product.short_description || product.description.slice(0, 80) + '…'}
                       </p>
 
                       <div className="mt-auto flex items-center justify-between gap-2">

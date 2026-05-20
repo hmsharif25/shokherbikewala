@@ -6,6 +6,7 @@ import {
   Package,
   Grid3X3,
   Settings,
+  KeyRound,
   LogOut,
   Bike,
   Menu,
@@ -27,6 +28,8 @@ import {
   HelpCircle,
   PanelBottom,
   FileText,
+  Rss,
+  CreditCard,
 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
@@ -47,6 +50,7 @@ const sidebarGroups = [
       { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
       { name: 'Products', path: '/admin/products', icon: Package },
       { name: 'Categories', path: '/admin/categories', icon: Grid3X3 },
+      { name: 'Delivery & Payments', path: '/admin/delivery-payment', icon: CreditCard },
     ],
   },
   {
@@ -55,6 +59,7 @@ const sidebarGroups = [
       { name: 'Hero & Content', path: '/admin/hero', icon: Sparkles },
       { name: 'Home Sections', path: '/admin/sections', icon: LayoutList },
       { name: 'Testimonials', path: '/admin/testimonials', icon: MessageSquareQuote },
+      { name: 'Social Feed', path: '/admin/social-feed', icon: Rss },
       { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
       { name: 'Pages', path: '/admin/pages', icon: FileText },
     ],
@@ -65,6 +70,7 @@ const sidebarGroups = [
       { name: 'SEO Settings', path: '/admin/seo', icon: Search },
       { name: 'Footer', path: '/admin/footer', icon: PanelBottom },
       { name: 'Brand Settings', path: '/admin/settings', icon: Settings },
+      { name: 'Change Password', path: '/admin/change-password', icon: KeyRound },
     ],
   },
 ]
