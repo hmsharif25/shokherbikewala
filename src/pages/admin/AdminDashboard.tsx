@@ -29,6 +29,7 @@ import {
   PanelBottom,
   FileText,
   Rss,
+  CreditCard,
 } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { useStore } from '@/context/StoreContext'
@@ -49,6 +50,7 @@ const sidebarGroups = [
       { name: 'Orders', path: '/admin/orders', icon: ShoppingBag },
       { name: 'Products', path: '/admin/products', icon: Package },
       { name: 'Categories', path: '/admin/categories', icon: Grid3X3 },
+      { name: 'Delivery & Payments', path: '/admin/delivery-payment', icon: CreditCard },
     ],
   },
   {

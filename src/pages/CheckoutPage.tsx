@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowLeft,
   CheckCircle2,
+  CreditCard,
   Mail,
   MapPin,
   MessageCircle,
@@ -54,7 +55,7 @@ interface CheckoutLine {
 export default function CheckoutPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { products, brandSettings, addInquiry } = useStore()
+  const { products, brandSettings, addInquiry, deliveryPayment } = useStore()
   const { selectedItems, clearSelected } = useCart()
 
   const directSlug = searchParams.get('product') || ''
@@ -89,10 +90,17 @@ export default function CheckoutPage() {
     }))
   }, [directProduct, selectedItems])
 
-  const total = useMemo(
+  const subtotal = useMemo(
     () => lines.reduce((sum, l) => sum + l.price * l.qty, 0),
     [lines],
   )
+
+  const deliveryCharge = useMemo(() => {
+    if (deliveryPayment.freeDeliveryMin > 0 && subtotal >= deliveryPayment.freeDeliveryMin) return 0
+    return deliveryPayment.deliveryCharge
+  }, [subtotal, deliveryPayment])
+
+  const total = subtotal + deliveryCharge
   const totalQty = useMemo(
     () => lines.reduce((sum, l) => sum + l.qty, 0),
     [lines],
@@ -109,6 +117,13 @@ export default function CheckoutPage() {
       return empty
     }
   })
+  const enabledMethods = useMemo(
+    () => deliveryPayment.paymentMethods.filter(m => m.enabled),
+    [deliveryPayment],
+  )
+  const [selectedPayment, setSelectedPayment] = useState<string>(() =>
+    enabledMethods.length > 0 ? enabledMethods[0].name : '',
+  )
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -141,7 +156,9 @@ export default function CheckoutPage() {
       )
     })
     out.push('')
+    if (deliveryCharge > 0) out.push(`Delivery: ৳${deliveryCharge.toLocaleString()}`)
     out.push(`Total: ৳${total.toLocaleString()} (${totalQty} item${totalQty === 1 ? '' : 's'})`)
+    if (selectedPayment) out.push(`Payment: ${selectedPayment}`)
     out.push('')
     out.push(`— Customer info —`)
     out.push(`Name: ${form.name}`)
@@ -267,7 +284,7 @@ export default function CheckoutPage() {
                   Checkout
                 </h1>
                 <p className="text-fg-soft text-sm mt-1">
-                  Cash on Delivery — confirm by phone or WhatsApp after submit.
+                  Confirm by phone or WhatsApp after placing your order.
                 </p>
               </div>
 
@@ -359,6 +376,39 @@ export default function CheckoutPage() {
                 </Field>
               </div>
 
+              {/* Payment Method Selection */}
+              {enabledMethods.length > 0 && (
+                <Field label="Payment method" icon={<CreditCard className="w-4 h-4" />} required>
+                  <div className="space-y-2">
+                    {enabledMethods.map((m) => (
+                      <label
+                        key={m.id}
+                        className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                          selectedPayment === m.name
+                            ? 'border-primary/40 bg-primary/5'
+                            : 'border-line bg-surface-soft hover:border-primary/20'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="payment"
+                          value={m.name}
+                          checked={selectedPayment === m.name}
+                          onChange={() => setSelectedPayment(m.name)}
+                          className="mt-0.5 accent-primary"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span className="text-fg font-medium text-sm">{m.name}</span>
+                          {m.details && (
+                            <p className="text-fg-soft text-xs mt-0.5 whitespace-pre-line">{m.details}</p>
+                          )}
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </Field>
+              )}
+
               <Field label="Notes (optional)" icon={<StickyNote className="w-4 h-4" />}>
                 <textarea
                   rows={2}
@@ -434,8 +484,12 @@ export default function CheckoutPage() {
               </div>
 
               <div className="border-t border-line pt-3 space-y-1.5 text-sm">
-                <Row label={`Items (${totalQty})`} value={`৳${total.toLocaleString()}`} />
-                <Row label="Delivery" value="To be confirmed" />
+                <Row label={`Subtotal (${totalQty})`} value={`৳${subtotal.toLocaleString()}`} />
+                <Row
+                  label={`Delivery${deliveryCharge === 0 ? ' (Free)' : ''}`}
+                  value={deliveryCharge > 0 ? `৳${deliveryCharge.toLocaleString()}` : 'Free'}
+                />
+                {selectedPayment && <Row label="Payment" value={selectedPayment} />}
                 <Row
                   label="Total"
                   value={`৳${total.toLocaleString()}`}

@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
-import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent, SocialFeedConfig } from '@/types'
+import { Product, Category, BrandSettings, Testimonial, Inquiry, HomeSections, SiteConfig, FAQItem, FooterConfig, SEOSettings, PageContent, SocialFeedConfig, DeliveryPaymentConfig } from '@/types'
 import { demoBrandSettings, demoTestimonials, demoInquiries } from '@/data/demo-data'
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { loadRemotePublic, loadHomeSectionsRemote, loadSocialFeedRemote } from '@/lib/db'
+import { loadRemotePublic, loadHomeSectionsRemote, loadSocialFeedRemote, loadDeliveryPaymentRemote } from '@/lib/db'
 
 const defaultFAQItems: FAQItem[] = [
   { id: '1', question: 'How long does delivery take?', answer: 'We deliver across Bangladesh within 2\u20134 business days. For Dhaka city, same-day or next-day delivery is available on selected items. International orders typically arrive in 7\u201314 days.' },
@@ -101,6 +101,19 @@ const defaultSocialFeed: SocialFeedConfig = {
   facebookReviewCount: '1,204',
 }
 
+const defaultDeliveryPayment: DeliveryPaymentConfig = {
+  deliveryCharge: 120,
+  deliveryChargeMode: 'inside',
+  deliveryChargeLabel: 'Dhaka',
+  freeDeliveryMin: 5000,
+  paymentMethods: [
+    { id: 'cod', name: 'Cash on Delivery', type: 'cod', enabled: true, details: 'Pay when you receive your order' },
+    { id: 'bkash', name: 'bKash', type: 'mobile', enabled: true, details: 'Send to: 01518934708 (Personal)' },
+    { id: 'nagad', name: 'Nagad', type: 'mobile', enabled: true, details: 'Send to: 01518934708 (Personal)' },
+    { id: 'bank', name: 'Bank Transfer', type: 'bank', enabled: true, details: 'Bank: Dutch-Bangla Bank\nA/C: 1234567890\nBranch: Dhanmondi' },
+  ],
+}
+
 interface StoreState {
   products: Product[]
   categories: Category[]
@@ -110,6 +123,7 @@ interface StoreState {
   homeSections: HomeSections
   siteConfig: SiteConfig
   socialFeed: SocialFeedConfig
+  deliveryPayment: DeliveryPaymentConfig
 }
 
 interface StoreContextType extends StoreState {
@@ -136,6 +150,8 @@ interface StoreContextType extends StoreState {
   deleteInquiry: (id: number) => void
   socialFeed: SocialFeedConfig
   setSocialFeed: (config: SocialFeedConfig) => void
+  deliveryPayment: DeliveryPaymentConfig
+  setDeliveryPayment: (config: DeliveryPaymentConfig) => void
   resetAll: () => void
   remoteLoaded: boolean
 }
@@ -171,6 +187,7 @@ const defaultState: StoreState = {
   homeSections: defaultHomeSections,
   siteConfig: defaultSiteConfig,
   socialFeed: defaultSocialFeed,
+  deliveryPayment: defaultDeliveryPayment,
 }
 
 const StoreContext = createContext<StoreContextType | null>(null)
@@ -189,6 +206,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         homeSections: stored.homeSections ?? defaultHomeSections,
         siteConfig: stored.siteConfig ?? defaultSiteConfig,
         socialFeed: stored.socialFeed ?? defaultSocialFeed,
+        deliveryPayment: stored.deliveryPayment ?? defaultDeliveryPayment,
       }
     }
     return defaultState
@@ -203,7 +221,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isSupabaseConfigured()) return
     let cancelled = false
-    Promise.all([loadRemotePublic(), loadHomeSectionsRemote(), loadSocialFeedRemote()]).then(([remote, remoteSections, remoteSocialFeed]) => {
+    Promise.all([loadRemotePublic(), loadHomeSectionsRemote(), loadSocialFeedRemote(), loadDeliveryPaymentRemote()]).then(([remote, remoteSections, remoteSocialFeed, remoteDeliveryPayment]) => {
       if (cancelled) return
       setState((prev) => ({
         products: remote.products && remote.products.length > 0
@@ -220,6 +238,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         homeSections: remoteSections ?? prev.homeSections,
         siteConfig: prev.siteConfig,
         socialFeed: remoteSocialFeed ?? prev.socialFeed,
+        deliveryPayment: remoteDeliveryPayment ?? prev.deliveryPayment,
       }))
       setRemoteLoaded(true)
     })
@@ -332,6 +351,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState(prev => ({ ...prev, socialFeed }))
   }, [])
 
+  const setDeliveryPayment = useCallback((deliveryPayment: DeliveryPaymentConfig) => {
+    setState(prev => ({ ...prev, deliveryPayment }))
+  }, [])
+
   const resetAll = useCallback(() => {
     setState(defaultState)
     localStorage.removeItem(STORAGE_KEY)
@@ -362,6 +385,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       deleteInquiry,
       socialFeed: state.socialFeed,
       setSocialFeed,
+      deliveryPayment: state.deliveryPayment,
+      setDeliveryPayment,
       resetAll,
       remoteLoaded,
     }}>

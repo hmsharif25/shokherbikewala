@@ -8,6 +8,7 @@ import type {
   ProductSpecification,
   ProductReview,
   SocialFeedConfig,
+  DeliveryPaymentConfig,
   Testimonial,
 } from '@/types'
 
@@ -471,5 +472,30 @@ export async function saveSocialFeedRemote(
   const { error } = await supabase
     .from('site_config')
     .upsert({ key: 'social_feed', value: config as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
+  return { error: error?.message ?? null }
+}
+
+export async function loadDeliveryPaymentRemote(): Promise<DeliveryPaymentConfig | null> {
+  if (!isSupabaseConfigured()) return null
+  try {
+    const { data, error } = await supabase
+      .from('site_config')
+      .select('value')
+      .eq('key', 'delivery_payment')
+      .maybeSingle()
+    if (error || !data) return null
+    return data.value as DeliveryPaymentConfig
+  } catch {
+    return null
+  }
+}
+
+export async function saveDeliveryPaymentRemote(
+  config: DeliveryPaymentConfig,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured()) return { error: null }
+  const { error } = await supabase
+    .from('site_config')
+    .upsert({ key: 'delivery_payment', value: config as unknown as Record<string, unknown>, updated_at: new Date().toISOString() }, { onConflict: 'key' })
   return { error: error?.message ?? null }
 }
